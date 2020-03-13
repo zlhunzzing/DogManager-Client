@@ -1,12 +1,22 @@
 import * as React from 'react';
 
-// 회원가입은 고객만
+import Typography from '@material-ui/core/Typography';
 
-const Signin: React.FC = () => (
+interface Props {
+    idInput: string;
+    pwInput: string;
+    onPwChange(e: any): void;
+    onIdChange(e: any): void;
+  }
+
+const Signin: React.SFC<Props> = ({idInput, pwInput, onPwChange, onIdChange}) => (
     <div>
         여기는 로그인
-        <input type="text" placeholder="아이디"></input>
-        <input type="text" placeholder="비밀번호"></input>
+        <Typography component="h1" variant="h5">
+            Sign in
+        </Typography>
+        <input onChange={onIdChange} value={idInput} placeholder="아이디" />
+        <input onChange={onPwChange} value={pwInput} placeholder="비번"/>
         <button>로그인</button>
     </div>
 )

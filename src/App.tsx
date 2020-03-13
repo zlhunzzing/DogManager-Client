@@ -5,17 +5,22 @@ import Admin from './pages/Admin'
 import Home from './pages/Home'
 import Signin from './pages/Signin'
 import EventEdit from './pages/EventEdit'
+import SigninContainer from './pages/SigninContainer'
+import SignInSide from './pages/SignInSide'
 
 // 중첩 라우팅
 
 function App() {
   return (
+    
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route path="/admin" component={Admin} />
-        <Route path="/signin" component={Signin} />
-        <Route path="/signin/admin" component={Signin} />
+        <Route path="/user/signin" component={SignInSide}/>
+        <Route path="/user/event-list" />
+        <Route path="/admin/signin" />
+        <Route path="/admin/event-list" component={Admin} />
+        <Route path="/admin/event-edit" />
         <Redirect path="*" to="/" />
       </Switch>
     </BrowserRouter>
