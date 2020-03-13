@@ -1,9 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 
-const EventEdit: React.FC = () => (
-    <div>
-        여기는 이벤트 등록 및 수정
-    </div>
-)
+function EventEdit() {
+  return <div>여기가 이벤트 수정/생성</div>;
+}
 
 export default EventEdit;

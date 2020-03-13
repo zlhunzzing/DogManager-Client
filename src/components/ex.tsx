@@ -1,9 +1,16 @@
-import * as React from 'react';
+import React from 'react';
 
-const Admin: React.FC = () => (
-    <div>
-        여기는 관리자 기본페이지
-    </div>
-)
+interface ExProps {
+  name: string;
+  num: number;
+}
 
-export default Admin;
+function Ex({ name, num }: ExProps) {
+  return <div>예시 컴포넌트</div>;
+}
+
+Ex.defaultProps = {
+  num: 0,
+};
+
+export default Ex;

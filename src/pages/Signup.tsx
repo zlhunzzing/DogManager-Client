@@ -1,8 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 
-const Signup: React.FC = () => (
-    <div>
-    </div>
-)
+function Signup() {
+  return <div>여기가 회원가입</div>;
+}
 
 export default Signup;
