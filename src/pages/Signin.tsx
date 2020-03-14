@@ -1,7 +1,8 @@
 import React from 'react';
+import SigninContainer from '../containers/SigninContainer';
 
 function Signin() {
-  return <div>여기가 로그인</div>;
+  return <SigninContainer isAdmin={false} />;
 }
 
 export default Signin;
