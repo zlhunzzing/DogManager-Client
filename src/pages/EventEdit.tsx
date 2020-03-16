@@ -1,7 +1,12 @@
 import React from 'react';
+import EventEditContainer from '../containers/EventEditContainer';
 
 function EventEdit() {
-  return <div>여기가 이벤트 수정/생성</div>;
+  return (
+    <div>
+      <EventEditContainer></EventEditContainer>
+    </div>
+  );
 }
 
 export default EventEdit;
