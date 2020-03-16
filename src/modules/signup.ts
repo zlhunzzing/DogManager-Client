@@ -1,11 +1,11 @@
-export interface SigninState {
+export interface SignupState {
   idInput: string;
   pwInput: string;
 }
 
 // export const TOGGLE = "todo/TOGGLE";
-export const CHANGE_ID_INPUT = 'signin/CHANGE_ID_INPUT';
-export const CHANGE_PW_INPUT = 'signin/CHANGE_PW_INPUT';
+export const CHANGE_ID_INPUT = 'signup/CHANGE_ID_INPUT';
+export const CHANGE_PW_INPUT = 'signup/CHANGE_PW_INPUT';
 
 interface ChangeIdInputAction {
   type: typeof CHANGE_ID_INPUT;
@@ -21,7 +21,7 @@ interface ChangePwInputAction {
   };
 }
 
-export type SigninActionTypes = ChangeIdInputAction | ChangePwInputAction;
+export type SignupActionTypes = ChangeIdInputAction | ChangePwInputAction;
 
 // actions
 
@@ -50,15 +50,15 @@ export const actionCreators = {
 
 // reducers
 
-const initialState: SigninState = {
+const initialState: SignupState = {
   idInput: '',
   pwInput: '',
 };
 
-export function signinReducer(
+export function signupReducer(
   state = initialState,
-  action: SigninActionTypes,
-): SigninState {
+  action: SignupActionTypes,
+): SignupState {
   switch (action.type) {
     case CHANGE_ID_INPUT:
       return {

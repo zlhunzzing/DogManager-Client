@@ -60,21 +60,21 @@ export const actionCreators = {
 
 const fakeData: Array<EventData> = [
   {
-    id: 1,
+    id: 11,
     event_title: '이벤트명',
     start_date: 20200401,
     end_date: 20200430,
     detail_page_url: '주소',
   },
   {
-    id: 2,
+    id: 12,
     event_title: '이벤트명2',
     start_date: 20200301,
     end_date: 20200331,
     detail_page_url: '주소',
   },
   {
-    id: 3,
+    id: 13,
     event_title: '이벤트명3',
     start_date: 20200201,
     end_date: 20200301,

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
@@ -40,11 +41,15 @@ function EventListMenu() {
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setAge(event.target.value as string);
   };
+
+  // 새 이벤트 추가 로직
+  // 페이지 이동 -> admin/evetn-edit
+
   return (
     <div>
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-          Age
+          상태
         </InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
@@ -62,18 +67,11 @@ function EventListMenu() {
         </Select>
       </FormControl>
 
-      {/* <Autocomplete
-        id="combo-box-demo"
-        options={['모두', '진행중', '준비중', '완료']}
-        // getOptionLabel={option => option.title}
-        style={{ width: 300, float: 'left' }}
-        renderInput={(params: any) => (
-          <TextField {...params} label="Combo box" variant="outlined" />
-        )}
-      /> */}
-      <Button variant="outlined" style={{ height: 56, marginRight: 10 }}>
-        새 이벤트 추가
-      </Button>
+      <Link to="/admin/event-edit">
+        <Button variant="outlined" style={{ height: 56, marginRight: 10 }}>
+          새 이벤트 추가
+        </Button>
+      </Link>
     </div>
   );
 }

@@ -28,7 +28,7 @@ function EventListTable({ eventLists, selectedEvent, filter }: EventState) {
       </TableHead>
       <TableBody>
         {eventLists.map((event, index) => {
-          return <EventItem key={index} event={event} />;
+          return <EventItem key={index} num={index} event={event} />;
         })}
       </TableBody>
     </Table>

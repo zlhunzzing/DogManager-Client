@@ -7,9 +7,10 @@ import TableCell from '@material-ui/core/TableCell';
 
 interface EventItemProps {
   event: EventData;
+  num: number;
 }
 
-function EventItem({ event }: EventItemProps) {
+function EventItem({ num, event }: EventItemProps) {
   // start_date과 end_date으로 진행중 준비중 완료 구분하는 로직
   const now: number = Number(moment(new Date()).format('YYYYMMDD'));
   let eventCondition: string;
@@ -28,21 +29,22 @@ function EventItem({ event }: EventItemProps) {
   };
 
   // 수정 버튼을 누를 때 로직
-  const handleClickEdit = () => {
-    // 이벤트 이름 한번 더 확인해주기
+  const handleClickEdit = (id: number) => {
+    // id를 selected-event에 매치 (아 이거 타입을 그냥 number로 바꿀까봐)
+    // id에 해당하는 event 객체를 event-edit 페이지에 넘겨준다
     alert('수정 페이지로 이동 할 거야');
   };
 
   // 삭제 버튼을 누를 때 로직
-  const handleClickDelete = () => {
+  const handleClickDelete = (id: number) => {
     // 이벤트 이름 한번 더 확인해주기
-    alert('정말 삭제하시겠습니까?');
+    alert(`id: ${id} / 이벤트를 정말 삭제하시겠습니까?`);
     // 서버에 이벤트 삭제 요청
     //DELETE /api/admin/events/entry/:id
   };
   return (
     <TableRow>
-      <TableCell>번호</TableCell>
+      <TableCell>{num}</TableCell>
       <TableCell>{eventCondition}</TableCell>
       <TableCell>{event.event_title}</TableCell>
       <TableCell>
@@ -52,10 +54,10 @@ function EventItem({ event }: EventItemProps) {
         <button onClick={handleClickView}>보기</button>
       </TableCell>
       <TableCell>
-        <button onClick={handleClickEdit}>수정</button>
+        <button onClick={handleClickEdit.bind(null, event.id)}>수정</button>
       </TableCell>
       <TableCell>
-        <button onClick={handleClickDelete}>삭제</button>
+        <button onClick={handleClickDelete.bind(null, event.id)}>삭제</button>
       </TableCell>
     </TableRow>
   );

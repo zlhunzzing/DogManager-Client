@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { RouteComponentProps } from 'react-router-dom';
 import AdminMenu from '../views/AdminMenu';
 import EventListMenu from '../views/EventListMenu';
 import EventListTable from '../views/EventListTable';

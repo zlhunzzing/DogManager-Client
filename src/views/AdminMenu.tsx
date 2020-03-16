@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
 import { actionCreators as adminActions } from '../modules/admin';
@@ -21,6 +22,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import { RouteProps } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,7 +49,6 @@ interface AdminMenuProps {
 
 function AdminMenu({ nowMenu, AdminActions, menuDrawerIsOpen }: AdminMenuProps) {
   const classes = useStyles();
-
   const toggleDrawer = (open: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent,
   ) => {
@@ -61,9 +62,19 @@ function AdminMenu({ nowMenu, AdminActions, menuDrawerIsOpen }: AdminMenuProps) 
     AdminActions.ChangeMenuDrawer(open);
   };
 
-  const clickHandleMenuName = (menuName: string) => (event: React.MouseEvent) => {
-    AdminActions.ChangeNowMenu(menuName);
+  const clickHandleMenuName = (menu: Menu) => (event: React.MouseEvent) => {
+    AdminActions.ChangeNowMenu(menu['name']);
   };
+
+  interface Menu {
+    name: string;
+    url: string;
+  }
+  const menuList: Menu[] = [
+    { name: '이벤트 관리', url: '/admin/event-list' },
+    { name: '쿠폰 등록', url: '/admin/coupon' },
+    { name: 'Q&A 관리', url: '/admin/support' },
+  ];
 
   const sideList = () => (
     <div
@@ -82,11 +93,13 @@ function AdminMenu({ nowMenu, AdminActions, menuDrawerIsOpen }: AdminMenuProps) 
       </List>
       <Divider />
       <List>
-        {['이벤트 관리', '쿠폰 등록', 'Q&A 관리'].map((text, index) => (
-          <ListItem button key={text} onClick={clickHandleMenuName(text)}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
+        {menuList.map((menu, index) => (
+          <Link to={menu.url}>
+            <ListItem button key={index} onClick={clickHandleMenuName(menu)}>
+              {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
+              <ListItemText primary={menu['name']} />
+            </ListItem>
+          </Link>
         ))}
       </List>
     </div>
@@ -113,9 +126,11 @@ function AdminMenu({ nowMenu, AdminActions, menuDrawerIsOpen }: AdminMenuProps) 
           <Typography variant="h6" className={classes.title}>
             {nowMenu}
           </Typography>
-          <Button color="inherit" className={classes.logout}>
-            로그아웃
-          </Button>
+          <Link to="/">
+            <Button color="inherit" className={classes.logout}>
+              로그아웃
+            </Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </div>
