@@ -24,7 +24,7 @@ interface ChangeNowMenuAction {
 export type AdminActionTypes = ChangeMenuDrawerAction | ChangeNowMenuAction;
 
 // actions
-function ChangeMenuDrawer(input: boolean) {
+function ChangeMenuDrawer(input: boolean): object {
   return {
     type: CHANGE_MENU_DRAWER,
     meta: {
@@ -33,7 +33,7 @@ function ChangeMenuDrawer(input: boolean) {
   };
 }
 
-function ChangeNowMenu(input: string) {
+function ChangeNowMenu(input: string): object {
   return {
     type: CHANGE_NOW_MENU,
     meta: {

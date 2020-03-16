@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-function SecondEventEditContainer() {
+const SecondEventEditContainer: React.FunctionComponent = () => {
   const classes = useStyles();
   return (
     <div>
@@ -69,6 +69,6 @@ function SecondEventEditContainer() {
       </div>
     </div>
   );
-}
+};
 
 export default SecondEventEditContainer;

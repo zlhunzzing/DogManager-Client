@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+// import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 interface SigninContainerProps {
   isAdmin: boolean;
@@ -18,7 +18,10 @@ interface SigninContainerProps {
   SigninActions: typeof signinActions;
 }
 
-function SigninContainer({ isAdmin, SigninActions }: SigninContainerProps) {
+const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
+  isAdmin,
+  SigninActions,
+}: SigninContainerProps) => {
   // 로그인 버튼 눌렀을 때
   // 서버에 로그인 요청
   // isAdmin으로 구분해서 요청
@@ -30,8 +33,6 @@ function SigninContainer({ isAdmin, SigninActions }: SigninContainerProps) {
     version = '고객';
   }
 
-  const onClickSignup = () => {};
-
   const signupButton = (
     <Link to="/user/signup">
       <Button style={{ width: 100, marginRight: 10 }} variant="outlined">
@@ -40,7 +41,7 @@ function SigninContainer({ isAdmin, SigninActions }: SigninContainerProps) {
     </Link>
   );
 
-  const signinButton = (isAdmin: boolean) => {
+  const signinButton = (isAdmin: boolean): JSX.Element => {
     let url: string;
     if (isAdmin) {
       url = '/admin/event-list';
@@ -55,6 +56,7 @@ function SigninContainer({ isAdmin, SigninActions }: SigninContainerProps) {
       </Link>
     );
   };
+
   return (
     <div style={{ textAlign: 'center' }}>
       <UserMenu />
@@ -66,7 +68,7 @@ function SigninContainer({ isAdmin, SigninActions }: SigninContainerProps) {
           id="outlined-basic"
           label="Outlined"
           variant="outlined"
-          onChange={event => {
+          onChange={(event): void => {
             const { value } = event.target;
             SigninActions.changeIdInput(value);
           }}
@@ -81,7 +83,7 @@ function SigninContainer({ isAdmin, SigninActions }: SigninContainerProps) {
           type="password"
           autoComplete="current-password"
           variant="outlined"
-          onChange={event => {
+          onChange={(event): void => {
             const { value } = event.target;
             SigninActions.changePwInput(value);
           }}
@@ -97,7 +99,7 @@ function SigninContainer({ isAdmin, SigninActions }: SigninContainerProps) {
       </div>
     </div>
   );
-}
+};
 
 export default connect(
   ({ signin }: StoreState) => ({

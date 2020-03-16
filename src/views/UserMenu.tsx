@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 
-export default function SimpleTabs() {
+const UserMenu: React.FunctionComponent = () => {
   return (
     <div>
       <div style={{ height: 50 }}>
@@ -22,4 +22,6 @@ export default function SimpleTabs() {
       <Divider />
     </div>
   );
-}
+};
+
+export default UserMenu;

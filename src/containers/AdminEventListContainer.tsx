@@ -4,7 +4,7 @@ import AdminMenu from '../views/AdminMenu';
 import EventListMenu from '../views/EventListMenu';
 import EventListTable from '../views/EventListTable';
 
-function AdminEventListContainer() {
+const AdminEventListContainer: React.FunctionComponent = () => {
   return (
     <div>
       <AdminMenu />
@@ -13,6 +13,6 @@ function AdminEventListContainer() {
       <EventListTable />
     </div>
   );
-}
+};
 
 export default AdminEventListContainer;
