@@ -9,17 +9,20 @@ import AdminSignin from './pages/AdminSignin';
 import AdminSupport from './pages/AdminSupport';
 import AdminCoupon from './pages/AdminCoupon';
 import EventEdit from './pages/EventEdit';
+import EventList from './pages/EventList';
+import Event from './pages/Event';
 import SecondEventEdit from './pages/SecondEventEdit';
 
 // 중첩라우팅?
-function App() {
+function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/user/signin" component={Signin} />
         <Route path="/user/signup" component={Signup} />
-        <Route path="/user/event-list" />
+        <Route path="/user/event-list" component={EventList} />
+        <Route path="/user/event/:eventurl" component={Event} />
         <Route path="/admin/signin" component={AdminSignin} />
         <Route path="/admin/support" component={AdminSupport} />
         <Route path="/admin/coupon" component={AdminCoupon} />

@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import AdminMenu from '../views/AdminMenu';
 import EventListMenu from '../views/EventListMenu';
 import EventListTable from '../views/EventListTable';
-
+import UserMenu from '../views/UserMenu';
 const AdminEventListContainer: React.FunctionComponent = () => {
   return (
     <div>

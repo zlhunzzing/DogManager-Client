@@ -1,6 +1,9 @@
 import React from 'react';
 import { EventData } from '../modules/event';
 
+import axios from 'axios';
+import serverurl from '../server';
+
 import moment from 'moment';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,20 +18,21 @@ const EventItem: React.FunctionComponent<EventItemProps> = ({
   event,
 }: EventItemProps) => {
   // start_date과 end_date으로 진행중 준비중 완료 구분하는 로직
-  const now = Number(moment(new Date()).format('YYYYMMDD'));
-  let eventCondition: string;
-  if (event.endDate < now) {
-    eventCondition = '완료';
-  } else if (event.startDate <= now) {
-    eventCondition = '진행중';
-  } else {
-    eventCondition = '준비중';
-  }
+  // const now = Number(moment(new Date()).format('YYYYMMDD'));
+  // let eventCondition: string;
+  // if (event.endDate < now) {
+  //   eventCondition = '완료';
+  // } else if (event.startDate <= now) {
+  //   eventCondition = '진행중';
+  // } else {
+  //   eventCondition = '준비중';
+  // }
 
   // 보기 버튼을 누를 때 로직
   const handleClickView = (): void => {
     // 이벤트 이름 한번 더 확인해주기
-    alert('상세 페이지로 이동 할 거야');
+    // alert('상세 페이지로 이동 할 거야');
+    window.open('http://www.naver.com');
   };
 
   // 수정 버튼을 누를 때 로직
@@ -38,17 +42,18 @@ const EventItem: React.FunctionComponent<EventItemProps> = ({
     alert('수정 페이지로 이동 할 거야');
   };
 
-  // 삭제 버튼을 누를 때 로직
+  // 삭제 버튼을 누를 때
   const handleClickDelete = (id: number): void => {
     // 이벤트 이름 한번 더 확인해주기
     alert(`id: ${id} / 이벤트를 정말 삭제하시겠습니까?`);
+
     // 서버에 이벤트 삭제 요청
-    //DELETE /api/admin/events/entry/:id
+    axios.delete(`${serverurl}'/api/admin/events/entry/${id}`);
   };
   return (
     <TableRow>
       <TableCell>{num}</TableCell>
-      <TableCell>{eventCondition}</TableCell>
+      <TableCell>준비중</TableCell>
       <TableCell>{event.eventTitle}</TableCell>
       <TableCell>
         {event.startDate} - {event.endDate}
