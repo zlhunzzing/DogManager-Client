@@ -24,7 +24,7 @@ function App() {
         <Route path="/admin/support" component={AdminSupport} />
         <Route path="/admin/coupon" component={AdminCoupon} />
         <Route path="/admin/event-list" component={AdminEventList} />
-        <Route path="/admin/event-edit" component={SecondEventEdit} />
+        <Route path="/admin/event-edit" component={EventEdit} />
         <Redirect path="*" to="/" />
       </Switch>
     </BrowserRouter>
