@@ -1,9 +1,12 @@
 export interface EventData {
   id: number;
-  eventTitle: string;
-  startDate: number;
-  endDate: number;
-  detailPageUrl: string;
+  eventTitle?: string;
+  startDate?: number | undefined;
+  endDate?: number | undefined;
+  detailPageUrl?: string;
+  buttonImage?: string;
+  bannerImage?: string;
+  pageImage?: string;
 }
 
 export interface EventState {
@@ -13,8 +16,16 @@ export interface EventState {
 }
 
 // type
+export const CHANGE_EVENT_LISTS = 'event/CHANGE_EVENT_LISTS';
 export const SELECT_EVENT = 'event/SELECT_EVENT';
 export const CHANGE_FILTER = 'event/CHANGE_FILTER';
+
+interface ChangeEventListsAction {
+  type: typeof CHANGE_EVENT_LISTS;
+  meta: {
+    input: EventData[];
+  };
+}
 
 interface SelectEventAction {
   type: typeof SELECT_EVENT;
@@ -30,9 +41,22 @@ interface ChangeFilterAction {
   };
 }
 
-export type EventActionTypes = SelectEventAction | ChangeFilterAction;
+export type EventActionTypes =
+  | ChangeEventListsAction
+  | SelectEventAction
+  | ChangeFilterAction;
 
 // actions
+
+function ChangeEventLists(input: EventData[]): object {
+  return {
+    type: CHANGE_EVENT_LISTS,
+    meta: {
+      input,
+    },
+  };
+}
+
 function SelectEvent(input: EventData): object {
   return {
     type: SELECT_EVENT,
@@ -52,6 +76,7 @@ function ChangeFilter(input: string): object {
 }
 
 export const actionCreators = {
+  ChangeEventLists,
   SelectEvent,
   ChangeFilter,
 };
@@ -90,6 +115,11 @@ const initialState: EventState = {
 
 export function eventReducer(state = initialState, action: EventActionTypes): EventState {
   switch (action.type) {
+    case CHANGE_EVENT_LISTS:
+      return {
+        ...state,
+        eventLists: action.meta.input,
+      };
     case SELECT_EVENT:
       return {
         ...state,
