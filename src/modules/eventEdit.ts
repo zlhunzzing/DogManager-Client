@@ -9,8 +9,9 @@ export interface EventEditState {
   buttonImageFile: File | null;
   buttonImageFileName: string;
   detailPageUrl: string;
+  isChecked: boolean;
 }
-
+//! type
 export const CHANGE_EVENT_TITLE = 'eventEdit/CHANGE_EVENT_TITLE';
 export const CHANGE_START_DATE = 'eventEdit/CHANGE_START_DATE';
 export const CHANGE_END_DATE = 'eventEdit/CHANGE_END_DATE';
@@ -18,6 +19,7 @@ export const CHANGE_PAGE_IMAGE = 'eventEdit/CHANGE_PAGE_IMAGE';
 export const CHANGE_BANNER_IMAGE = 'eventEdit/CHANGE_BANNER_IMAGE';
 export const CHANGE_BUTTON_IMAGE = 'eventEdit/CHANGE_BUTTON_IMAGE';
 export const CHANGE_PAGE_URL = 'eventEdit/CHANGE_PAGE_URL';
+export const CHANGE_ISCHECKED = 'eventEdit/CHANGE_isChecked';
 
 interface ChangeEventTitleAction {
   type: typeof CHANGE_EVENT_TITLE;
@@ -38,10 +40,22 @@ interface ChangePageImageAction {
   type: typeof CHANGE_PAGE_IMAGE;
   meta: { input: File };
 }
+interface ChangeBannerImageAction {
+  type: typeof CHANGE_BANNER_IMAGE;
+  meta: { input: File };
+}
+interface ChangeButtonImageAction {
+  type: typeof CHANGE_BUTTON_IMAGE;
+  meta: { input: File };
+}
 
 interface ChangePageUrlAction {
   type: typeof CHANGE_PAGE_URL;
   meta: { input: string };
+}
+interface ChangeIsCheckedAction {
+  type: typeof CHANGE_ISCHECKED;
+  meta: { input: boolean };
 }
 
 export type EevntEditActionTypes =
@@ -49,8 +63,12 @@ export type EevntEditActionTypes =
   | ChangeStartDateAction
   | ChangeEndDateAction
   | ChangePageImageAction
-  | ChangePageUrlAction;
+  | ChangeBannerImageAction
+  | ChangeButtonImageAction
+  | ChangePageUrlAction
+  | ChangeIsCheckedAction;
 
+//! actions
 function changeEventTitle(input: string): object {
   return {
     type: CHANGE_EVENT_TITLE,
@@ -75,9 +93,28 @@ function changePageImage(input: File): object {
     meta: { input },
   };
 }
+function changeBannerImage(input: File): object {
+  return {
+    type: CHANGE_BANNER_IMAGE,
+    meta: { input },
+  };
+}
+function changeButtonImage(input: File): object {
+  return {
+    type: CHANGE_BUTTON_IMAGE,
+    meta: { input },
+  };
+}
+
 function changePageUrl(input: string): object {
   return {
     type: CHANGE_PAGE_URL,
+    meta: { input },
+  };
+}
+function changeIsChecked(input: boolean): object {
+  return {
+    type: CHANGE_ISCHECKED,
     meta: { input },
   };
 }
@@ -87,7 +124,10 @@ export const actionCreators = {
   changeStartData,
   changeEndDate,
   changePageImage,
+  changeBannerImage,
+  changeButtonImage,
   changePageUrl,
+  changeIsChecked,
 };
 
 const initialState: EventEditState = {
@@ -101,8 +141,9 @@ const initialState: EventEditState = {
   buttonImageFile: null,
   buttonImageFileName: '',
   detailPageUrl: '',
+  isChecked: false,
 };
-
+//! reducers
 export function eventEditReducer(
   state = initialState,
   action: EevntEditActionTypes,
@@ -129,10 +170,27 @@ export function eventEditReducer(
         pageImageFile: action.meta.input,
         pageImageFileName: action.meta.input.name,
       };
+    case CHANGE_BANNER_IMAGE:
+      return {
+        ...state,
+        bannerImageFile: action.meta.input,
+        bannerImageFileName: action.meta.input.name,
+      };
+    case CHANGE_BUTTON_IMAGE:
+      return {
+        ...state,
+        buttonImageFile: action.meta.input,
+        buttonImageFileName: action.meta.input.name,
+      };
     case CHANGE_PAGE_URL:
       return {
         ...state,
         detailPageUrl: action.meta.input,
+      };
+    case CHANGE_ISCHECKED:
+      return {
+        ...state,
+        isChecked: action.meta.input,
       };
     default:
       return state;
