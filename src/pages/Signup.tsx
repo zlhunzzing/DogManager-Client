@@ -1,7 +1,8 @@
 import React from 'react';
+import SignupContainer from '../containers/SignupContainer';
 
 function Signup() {
-  return <div>여기가 회원가입</div>;
+  return <SignupContainer />;
 }
 
 export default Signup;

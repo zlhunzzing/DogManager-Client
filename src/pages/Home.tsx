@@ -1,7 +1,8 @@
 import React from 'react';
+import HomeContainer from '../containers/HomeContainer';
 
 function Home() {
-  return <div>여기가 홈</div>;
+  return <HomeContainer />;
 }
 
 export default Home;
