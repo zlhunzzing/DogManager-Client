@@ -12,7 +12,9 @@ import TableCell from '@material-ui/core/TableCell';
 
 import EventItem from '../views/EventItem';
 
-function EventListTable({ eventLists, selectedEvent, filter }: EventState) {
+const EventListTable: React.FunctionComponent<EventState> = ({
+  eventLists,
+}: EventState) => {
   return (
     <Table>
       <TableHead>
@@ -33,7 +35,7 @@ function EventListTable({ eventLists, selectedEvent, filter }: EventState) {
       </TableBody>
     </Table>
   );
-}
+};
 
 export default connect(
   ({ event }: StoreState) => ({

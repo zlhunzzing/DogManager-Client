@@ -22,7 +22,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import { RouteProps } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,11 +46,15 @@ interface AdminMenuProps {
   AdminActions: typeof adminActions;
 }
 
-function AdminMenu({ nowMenu, AdminActions, menuDrawerIsOpen }: AdminMenuProps) {
+const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
+  nowMenu,
+  AdminActions,
+  menuDrawerIsOpen,
+}: AdminMenuProps) => {
   const classes = useStyles();
   const toggleDrawer = (open: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent,
-  ) => {
+  ): void => {
     if (
       event.type === 'keydown' &&
       ((event as React.KeyboardEvent).key === 'Tab' ||
@@ -62,7 +65,7 @@ function AdminMenu({ nowMenu, AdminActions, menuDrawerIsOpen }: AdminMenuProps) 
     AdminActions.ChangeMenuDrawer(open);
   };
 
-  const clickHandleMenuName = (menu: Menu) => (event: React.MouseEvent) => {
+  const clickHandleMenuName = (menu: Menu) => (event: React.MouseEvent): void => {
     AdminActions.ChangeNowMenu(menu['name']);
   };
 
@@ -76,7 +79,7 @@ function AdminMenu({ nowMenu, AdminActions, menuDrawerIsOpen }: AdminMenuProps) 
     { name: 'Q&A 관리', url: '/admin/support' },
   ];
 
-  const sideList = () => (
+  const sideList = (): JSX.Element => (
     <div
       className={classes.list}
       role="presentation"
@@ -94,8 +97,8 @@ function AdminMenu({ nowMenu, AdminActions, menuDrawerIsOpen }: AdminMenuProps) 
       <Divider />
       <List>
         {menuList.map((menu, index) => (
-          <Link to={menu.url}>
-            <ListItem button key={index} onClick={clickHandleMenuName(menu)}>
+          <Link to={menu.url} key={index}>
+            <ListItem button onClick={clickHandleMenuName(menu)}>
               {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
               <ListItemText primary={menu['name']} />
             </ListItem>
@@ -135,7 +138,7 @@ function AdminMenu({ nowMenu, AdminActions, menuDrawerIsOpen }: AdminMenuProps) 
       </AppBar>
     </div>
   );
-}
+};
 
 export default connect(
   ({ admin }: StoreState) => ({

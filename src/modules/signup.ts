@@ -25,7 +25,7 @@ export type SignupActionTypes = ChangeIdInputAction | ChangePwInputAction;
 
 // actions
 
-function changeIdInput(input: string) {
+function changeIdInput(input: string): object {
   return {
     type: CHANGE_ID_INPUT,
     meta: {
@@ -34,7 +34,7 @@ function changeIdInput(input: string) {
   };
 }
 
-function changePwInput(input: string) {
+function changePwInput(input: string): object {
   return {
     type: CHANGE_PW_INPUT,
     meta: {

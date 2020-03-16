@@ -1,9 +1,9 @@
 export interface EventData {
   id: number;
-  event_title: string;
-  start_date: number;
-  end_date: number;
-  detail_page_url: string;
+  eventTitle: string;
+  startDate: number;
+  endDate: number;
+  detailPageUrl: string;
 }
 
 export interface EventState {
@@ -33,7 +33,7 @@ interface ChangeFilterAction {
 export type EventActionTypes = SelectEventAction | ChangeFilterAction;
 
 // actions
-function SelectEvent(input: EventData) {
+function SelectEvent(input: EventData): object {
   return {
     type: SELECT_EVENT,
     meta: {
@@ -42,7 +42,7 @@ function SelectEvent(input: EventData) {
   };
 }
 
-function ChangeFilter(input: string) {
+function ChangeFilter(input: string): object {
   return {
     type: CHANGE_FILTER,
     meta: {
@@ -61,24 +61,24 @@ export const actionCreators = {
 const fakeData: Array<EventData> = [
   {
     id: 11,
-    event_title: '이벤트명',
-    start_date: 20200401,
-    end_date: 20200430,
-    detail_page_url: '주소',
+    eventTitle: '이벤트명',
+    startDate: 20200401,
+    endDate: 20200430,
+    detailPageUrl: '주소',
   },
   {
     id: 12,
-    event_title: '이벤트명2',
-    start_date: 20200301,
-    end_date: 20200331,
-    detail_page_url: '주소',
+    eventTitle: '이벤트명2',
+    startDate: 20200301,
+    endDate: 20200331,
+    detailPageUrl: '주소',
   },
   {
     id: 13,
-    event_title: '이벤트명3',
-    start_date: 20200201,
-    end_date: 20200301,
-    detail_page_url: '주소',
+    eventTitle: '이벤트명3',
+    startDate: 20200201,
+    endDate: 20200301,
+    detailPageUrl: '주소',
   },
 ];
 

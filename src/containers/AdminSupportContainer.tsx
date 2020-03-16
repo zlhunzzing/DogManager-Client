@@ -5,13 +5,13 @@ import AdminMenu from '../views/AdminMenu';
 
 import Button from '@material-ui/core/Button';
 
-function AdminSupportContainer() {
+const AdminSupportContainer: React.FunctionComponent = () => {
   return (
     <div>
       <AdminMenu />
       <div>여기가 고객문의 관리</div>
     </div>
   );
-}
+};
 
 export default AdminSupportContainer;
