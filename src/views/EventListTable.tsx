@@ -6,6 +6,8 @@ import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import serverurl from '../server';
 
+import moment from 'moment';
+
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
@@ -23,18 +25,41 @@ const EventListTable: React.FunctionComponent<EventListTableProps> = ({
   eventLists,
   EventActions,
 }: EventListTableProps) => {
+  // 이벤트 리스트 상태 바꿔 넣기
+  const eventCondition = (start: string, end: string): string => {
+    const now = Number(moment(new Date()).format('YYYYMMDDHHmm'));
+    const startNum = Number(start);
+    const endNum = Number(end);
+    let result = '';
+    if (endNum < now) {
+      result = '완료';
+    } else if (startNum <= now) {
+      result = '진행중';
+    } else {
+      result = '준비중';
+    }
+    return result;
+  };
+
+  // 서버에서 이벤트리스트 가져오기
+  const getEventLists = async () => {
+    const res = await axios.get(serverurl + '/api/admin/events/list');
+    const { data } = res.data;
+    data.forEach((event: any) => {
+      const condition = eventCondition(event.startDate, event.endDate);
+      event.condition = condition;
+    });
+    EventActions.ChangeEventLists(data);
+  };
+
   /*
   Similar to componentDidMount and componentDidUpdate
   함수형 컴포넌트에서 라이프사이클 함수를 사용(Hook)
   */
-
   // 이벤트 리스트 업데이트 반영하는 로직
   useEffect(() => {
-    axios.get(serverurl + '/api/admin/events/list');
-    // .then((eventlist: EventData[]): void => {
-    //   console.log('요청성공');
-    //   EventActions.ChangeEventLists(eventlist);
-    // });
+    console.log('유즈이펙트');
+    getEventLists();
   });
 
   return (
