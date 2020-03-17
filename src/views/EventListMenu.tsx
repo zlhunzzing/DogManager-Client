@@ -42,9 +42,6 @@ const EventListMenu: React.FunctionComponent = () => {
     setAge(event.target.value as string);
   };
 
-  // 새 이벤트 추가 로직
-  // 페이지 이동 -> admin/evetn-edit
-
   return (
     <div>
       <FormControl variant="outlined" className={classes.formControl}>
@@ -67,7 +64,7 @@ const EventListMenu: React.FunctionComponent = () => {
         </Select>
       </FormControl>
 
-      <Link to="/admin/event-edit">
+      <Link to="/admin/event-add">
         <Button variant="outlined" style={{ height: 56, marginRight: 10 }}>
           새 이벤트 추가
         </Button>
