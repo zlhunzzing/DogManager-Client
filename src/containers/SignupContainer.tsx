@@ -19,10 +19,6 @@ interface SignupContainerProps {
 const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
   SignupActions,
 }: SignupContainerProps) => {
-  // 로그인 버튼 눌렀을 때
-  // 서버에 로그인 요청
-  // isAdmin으로 구분해서 요청
-
   return (
     <div style={{ textAlign: 'center' }}>
       <UserMenu />

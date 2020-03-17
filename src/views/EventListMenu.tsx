@@ -28,7 +28,13 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const EventListMenu: React.FunctionComponent = () => {
+interface EventListMenuProps {
+  EventActions: typeof eventActions;
+}
+
+const EventListMenu: React.FunctionComponent<EventListMenuProps> = ({
+  EventActions,
+}: EventListMenuProps) => {
   const classes = useStyles();
   const [age, setAge] = React.useState('');
 
@@ -39,7 +45,8 @@ const EventListMenu: React.FunctionComponent = () => {
   // }, []);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>): void => {
-    setAge(event.target.value as string);
+    // setAge(event.target.value as string);
+    EventActions.ChangeFilter(event.target.value as string);
   };
 
   return (
@@ -55,12 +62,12 @@ const EventListMenu: React.FunctionComponent = () => {
           onChange={handleChange}
           labelWidth={labelWidth}
         >
-          <MenuItem value="">
+          <MenuItem value="모두">
             <em>All</em>
           </MenuItem>
-          <MenuItem value={10}>준비중</MenuItem>
-          <MenuItem value={20}>완료</MenuItem>
-          <MenuItem value={30}>진행중</MenuItem>
+          <MenuItem value="준비중">준비중</MenuItem>
+          <MenuItem value="완료">완료</MenuItem>
+          <MenuItem value="진행중">진행중</MenuItem>
         </Select>
       </FormControl>
 

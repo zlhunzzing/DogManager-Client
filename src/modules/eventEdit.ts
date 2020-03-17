@@ -8,8 +8,6 @@ export interface EventEditState {
   buttonUrl: string;
   detailPageUrl: string;
   isChecked?: boolean;
-  startDateInputValue: string;
-  endDateInputValue: string;
 }
 //! type
 export const CHANGE_EVENT_TITLE = 'eventEdit/CHANGE_EVENT_TITLE';
@@ -95,7 +93,7 @@ function changeEventTitle(input: string): object {
     meta: { input },
   };
 }
-function changeStartData(input: string): object {
+function changeStartDate(input: string): object {
   return {
     type: CHANGE_START_DATE,
     meta: { input },
@@ -148,7 +146,7 @@ function changeIsChecked(input: boolean): object {
 
 export const actionCreators = {
   changeEventTitle,
-  changeStartData,
+  changeStartDate,
   changeEndDate,
   changePageImage,
   changeBannerImage,
@@ -159,7 +157,7 @@ export const actionCreators = {
   putOldData,
 };
 
-const initialState: EventEditState = {
+export const initialState: EventEditState = {
   eventTitle: '',
   startDate: '',
   endDate: '',
@@ -169,8 +167,6 @@ const initialState: EventEditState = {
   buttonUrl: '',
   detailPageUrl: '',
   isChecked: false,
-  startDateInputValue: '',
-  endDateInputValue: '',
 };
 //! reducers
 
@@ -187,8 +183,6 @@ export function eventEditReducer(
         endDate: action.meta.input.endDate,
         buttonUrl: action.meta.input.buttonUrl,
         detailPageUrl: action.meta.input.detailPageUrl,
-        startDateInputValue: action.meta.input.startDateInputValue,
-        endDateInputValue: action.meta.input.endDateInputValue,
         isChecked: action.meta.input.isChecked,
       };
     case CHANGE_EVENT_TITLE:
