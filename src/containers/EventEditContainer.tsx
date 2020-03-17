@@ -11,12 +11,10 @@ interface EventEditContainerProps {
   eventTitle: string;
   startDate: string;
   endDate: string;
-  pageImageFile: File | null | Blob;
-  pageImageFileName: string;
-  bannerImageFile: File | null | Blob;
-  bannerImageFileName: string;
-  buttonImageFile: File | null | Blob;
-  buttonImageFileName: string;
+  pageImage: File | null | Blob;
+  bannerImage: File | null | Blob;
+  buttonImage: File | null | Blob;
+  buttonUrl: string;
   detailPageUrl: string;
   isChecked: boolean;
   EventEditActions: typeof eventEditActions;
@@ -26,12 +24,10 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   eventTitle,
   startDate,
   endDate,
-  pageImageFile,
-  pageImageFileName,
-  bannerImageFile,
-  bannerImageFileName,
-  buttonImageFile,
-  buttonImageFileName,
+  pageImage,
+  bannerImage,
+  buttonImage,
+  buttonUrl,
   detailPageUrl,
   EventEditActions,
   isChecked,
@@ -99,11 +95,18 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       EventEditActions.changeButtonImage(lowerButton[0]);
     }
   }
-  //! 이벤트설정: URL입력(하단버튼누룰시이동)
+  //! 이벤트설정: 하단버튼 URL입력(하단버튼 연결)
+  function bottonUrlChangeHnadler(event: React.FormEvent<HTMLInputElement>): void {
+    const buttonUrl = event.currentTarget.value;
+    EventEditActions.changeButtonUrl(buttonUrl);
+  }
+
+  //! 이벤트설정: URL입력(상세페이지)
   function urlChangeHnadler(event: React.FormEvent<HTMLInputElement>): void {
     const url = event.currentTarget.value;
     EventEditActions.changePageUrl(url);
   }
+
   //! 이벤트설정: 상시버튼(상시버튼 클릭시 종료시간disable됨)
   function isCheckChangeHnadler(event: React.FormEvent<HTMLInputElement>): void {
     console.log('event.currentTarget.checked: ', event.currentTarget.checked);
@@ -117,18 +120,18 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     formData.append('eventTitle', eventTitle);
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
-    if (pageImageFile !== null) {
-      formData.append('pageImageFile', pageImageFile);
+    if (pageImage !== null) {
+      formData.append('pageImageFile', pageImage);
     }
-    formData.append('pageImageFileName', pageImageFileName);
-    if (bannerImageFile !== null) {
-      formData.append('bannerImageFile', bannerImageFile);
+
+    if (bannerImage !== null) {
+      formData.append('bannerImageFile', bannerImage);
     }
-    formData.append('bannerImageFileName', bannerImageFileName);
-    if (buttonImageFile !== null) {
-      formData.append('bannerImageFile', buttonImageFile);
+
+    if (buttonImage !== null) {
+      formData.append('bannerImageFile', buttonImage);
     }
-    formData.append('buttonImageFileName', buttonImageFileName);
+    formData.append('buttonUrl', buttonUrl);
     formData.append('detailPageUrl', detailPageUrl);
 
     const config = {
@@ -213,7 +216,11 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
           ></input>
         </div>
         <div>
-          URL입력(하단버튼누룰시이동)
+          하단버튼 URL입력(하단버튼연결)
+          <input id="buttonUrl" onChange={bottonUrlChangeHnadler}></input>
+        </div>
+        <div>
+          URL입력(상세페이지이)
           <input id="detailPageUrl" onChange={urlChangeHnadler}></input>
         </div>
         <button type="submit">등록/수정</button>
@@ -227,12 +234,10 @@ export default connect(
     eventTitle: eventEdit.eventTitle,
     startDate: eventEdit.startDate,
     endDate: eventEdit.endDate,
-    pageImageFile: eventEdit.pageImageFile,
-    pageImageFileName: eventEdit.pageImageFileName,
-    bannerImageFile: eventEdit.bannerImageFile,
-    bannerImageFileName: eventEdit.bannerImageFileName,
-    buttonImageFile: eventEdit.buttonImageFile,
-    buttonImageFileName: eventEdit.buttonImageFileName,
+    pageImage: eventEdit.pageImage,
+    bannerImage: eventEdit.bannerImage,
+    buttonImage: eventEdit.buttonImage,
+    buttonUrl: eventEdit.buttonUrl,
     detailPageUrl: eventEdit.detailPageUrl,
     isChecked: eventEdit.isChecked,
   }),

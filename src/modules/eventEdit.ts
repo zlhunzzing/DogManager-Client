@@ -2,12 +2,10 @@ export interface EventEditState {
   eventTitle: string;
   startDate: string;
   endDate: string;
-  pageImageFile: File | null | Blob;
-  pageImageFileName: string;
-  bannerImageFile: File | null | Blob;
-  bannerImageFileName: string;
-  buttonImageFile: File | null | Blob;
-  buttonImageFileName: string;
+  pageImage: File | null | Blob;
+  bannerImage: File | null | Blob;
+  buttonImage: File | null | Blob;
+  buttonUrl: string;
   detailPageUrl: string;
   isChecked: boolean;
 }
@@ -18,6 +16,7 @@ export const CHANGE_END_DATE = 'eventEdit/CHANGE_END_DATE';
 export const CHANGE_PAGE_IMAGE = 'eventEdit/CHANGE_PAGE_IMAGE';
 export const CHANGE_BANNER_IMAGE = 'eventEdit/CHANGE_BANNER_IMAGE';
 export const CHANGE_BUTTON_IMAGE = 'eventEdit/CHANGE_BUTTON_IMAGE';
+export const CHANGE_BUTTON_URL = 'eventEdit/CHANGE_BUTTON_URL';
 export const CHANGE_PAGE_URL = 'eventEdit/CHANGE_PAGE_URL';
 export const CHANGE_ISCHECKED = 'eventEdit/CHANGE_isChecked';
 
@@ -48,6 +47,10 @@ interface ChangeButtonImageAction {
   type: typeof CHANGE_BUTTON_IMAGE;
   meta: { input: File };
 }
+interface ChangeButtonUrlAction {
+  type: typeof CHANGE_BUTTON_URL;
+  meta: { input: string };
+}
 
 interface ChangePageUrlAction {
   type: typeof CHANGE_PAGE_URL;
@@ -65,6 +68,7 @@ export type EevntEditActionTypes =
   | ChangePageImageAction
   | ChangeBannerImageAction
   | ChangeButtonImageAction
+  | ChangeButtonUrlAction
   | ChangePageUrlAction
   | ChangeIsCheckedAction;
 
@@ -106,6 +110,13 @@ function changeButtonImage(input: File): object {
   };
 }
 
+function changeButtonUrl(input: string): object {
+  return {
+    type: CHANGE_BUTTON_URL,
+    meta: { input },
+  };
+}
+
 function changePageUrl(input: string): object {
   return {
     type: CHANGE_PAGE_URL,
@@ -126,6 +137,7 @@ export const actionCreators = {
   changePageImage,
   changeBannerImage,
   changeButtonImage,
+  changeButtonUrl,
   changePageUrl,
   changeIsChecked,
 };
@@ -134,12 +146,10 @@ const initialState: EventEditState = {
   eventTitle: '',
   startDate: '',
   endDate: '',
-  pageImageFile: null,
-  pageImageFileName: '',
-  bannerImageFile: null,
-  bannerImageFileName: '',
-  buttonImageFile: null,
-  buttonImageFileName: '',
+  pageImage: null,
+  bannerImage: null,
+  buttonImage: null,
+  buttonUrl: '',
   detailPageUrl: '',
   isChecked: false,
 };
@@ -167,20 +177,22 @@ export function eventEditReducer(
     case CHANGE_PAGE_IMAGE:
       return {
         ...state,
-        pageImageFile: action.meta.input,
-        pageImageFileName: action.meta.input.name,
+        pageImage: action.meta.input,
       };
     case CHANGE_BANNER_IMAGE:
       return {
         ...state,
-        bannerImageFile: action.meta.input,
-        bannerImageFileName: action.meta.input.name,
+        bannerImage: action.meta.input,
       };
     case CHANGE_BUTTON_IMAGE:
       return {
         ...state,
-        buttonImageFile: action.meta.input,
-        buttonImageFileName: action.meta.input.name,
+        buttonImage: action.meta.input,
+      };
+    case CHANGE_BUTTON_URL:
+      return {
+        ...state,
+        buttonUrl: action.meta.input,
       };
     case CHANGE_PAGE_URL:
       return {
