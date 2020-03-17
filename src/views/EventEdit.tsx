@@ -7,12 +7,13 @@ interface EventEditProps {
   eventTitle: string;
   startDate: string;
   endDate: string;
-  pageImageFile: File | null | Blob;
-  pageImageFileName: string;
-  bannerImageFile: File | null | Blob;
-  bannerImageFileName: string;
-  buttonImageFile: File | null | Blob;
-  buttonImageFileName: string;
+  pageImage: File | null | Blob;
+  // pageImageFileName: string;
+  bannerImage: File | null | Blob;
+  // bannerImageFileName: string;
+  buttonImage: File | null | Blob;
+  // buttonImageFileName: string;
+  buttonUrl: string;
   detailPageUrl: string;
   isChecked: boolean;
   titleChangeHnadler(e: any): void;
@@ -29,12 +30,13 @@ const EventEdit: React.FunctionComponent<EventEditProps> = ({
   eventTitle,
   startDate,
   endDate,
-  pageImageFile,
-  pageImageFileName,
-  bannerImageFile,
-  bannerImageFileName,
-  buttonImageFile,
-  buttonImageFileName,
+  pageImage,
+  // pageImageFileName,
+  bannerImage,
+  // bannerImageFileName,
+  buttonImage,
+  // buttonImageFileName,
+  buttonUrl,
   detailPageUrl,
   isChecked,
   titleChangeHnadler,

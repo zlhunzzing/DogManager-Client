@@ -12,12 +12,13 @@ interface EventEditContainerProps {
   eventTitle: string;
   startDate: string;
   endDate: string;
-  pageImageFile: File | null | Blob;
-  pageImageFileName: string;
-  bannerImageFile: File | null | Blob;
-  bannerImageFileName: string;
-  buttonImageFile: File | null | Blob;
-  buttonImageFileName: string;
+  pageImage: File | null | Blob;
+  // pageImageFileName: string;
+  bannerImage: File | null | Blob;
+  // bannerImageFileName: string;
+  buttonImage: File | null | Blob;
+  // buttonImageFileName: string;
+  buttonUrl: string;
   detailPageUrl: string;
   isChecked: boolean;
   EventEditActions: typeof eventEditActions;
@@ -27,12 +28,13 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   eventTitle,
   startDate,
   endDate,
-  pageImageFile,
-  pageImageFileName,
-  bannerImageFile,
-  bannerImageFileName,
-  buttonImageFile,
-  buttonImageFileName,
+  pageImage,
+  // pageImageFileName,
+  bannerImage,
+  // bannerImageFileName,
+  buttonImage,
+  // buttonImageFileName,
+  buttonUrl,
   detailPageUrl,
   EventEditActions,
   isChecked,
@@ -120,17 +122,19 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
 
-    if (pageImageFile !== null) {
-      formData.append('pageImageFile', pageImageFile);
+    if (pageImage !== null) {
+      formData.append('pageImageFile', pageImage);
     }
-
-    if (bannerImageFile !== null) {
-      formData.append('bannerImageFile', bannerImageFile);
+    // formData.append('pageImageFileName', pageImageFileName);
+    if (bannerImage !== null) {
+      formData.append('bannerImageFile', bannerImage);
     }
-
-    if (buttonImageFile !== null) {
-      formData.append('buttonImageFile', buttonImageFile);
+    // formData.append('bannerImageFileName', bannerImageFileName);
+    if (buttonImage !== null) {
+      formData.append('bannerImageFile', buttonImage);
     }
+    // formData.append('buttonImageFileName', buttonImageFileName);
+    formData.append('ButtonUrl', buttonUrl);
 
     formData.append('detailPageUrl', detailPageUrl);
 
@@ -168,12 +172,13 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
         eventTitle={eventTitle}
         startDate={startDate}
         endDate={endDate}
-        pageImageFile={pageImageFile}
-        pageImageFileName={pageImageFileName}
-        bannerImageFile={bannerImageFile}
-        bannerImageFileName={bannerImageFileName}
-        buttonImageFile={buttonImageFile}
-        buttonImageFileName={buttonImageFileName}
+        pageImage={pageImage}
+        // pageImageFileName={pageImageFileName}
+        bannerImage={bannerImage}
+        // bannerImageFileName={bannerImageFileName}
+        buttonImage={buttonImage}
+        // buttonImageFileName={buttonImageFileName}
+        buttonUrl={buttonUrl}
         detailPageUrl={detailPageUrl}
         isChecked={isChecked}
         titleChangeHnadler={titleChangeHnadler}
@@ -194,12 +199,13 @@ export default connect(
     eventTitle: eventEdit.eventTitle,
     startDate: eventEdit.startDate,
     endDate: eventEdit.endDate,
-    pageImageFile: eventEdit.pageImageFile,
-    pageImageFileName: eventEdit.pageImageFileName,
-    bannerImageFile: eventEdit.bannerImageFile,
-    bannerImageFileName: eventEdit.bannerImageFileName,
-    buttonImageFile: eventEdit.buttonImageFile,
-    buttonImageFileName: eventEdit.buttonImageFileName,
+    pageImageFile: eventEdit.pageImage,
+    // pageImageFileName: eventEdit.pageImageFileName,
+    bannerImageFile: eventEdit.bannerImage,
+    // bannerImageFileName: eventEdit.bannerImageFileName,
+    buttonImageFile: eventEdit.buttonImage,
+    // buttonImageFileName: eventEdit.buttonImageFileName,
+    buttonUrl: eventEdit.buttonUrl,
     detailPageUrl: eventEdit.detailPageUrl,
     isChecked: eventEdit.isChecked,
   }),
