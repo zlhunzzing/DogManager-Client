@@ -36,6 +36,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   EventEditActions,
   isChecked,
 }: EventEditContainerProps) => {
+  console.log(eventTitle);
   //! 이벤트설정: 타이틀
   function titleChangeHnadler(event: React.FormEvent<HTMLInputElement>): void {
     const title = event.currentTarget.value;
@@ -118,15 +119,15 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
     if (pageImageFile !== null) {
-      formData.append('pageImageFile', pageImageFile);
+      formData.append('imgFiles', pageImageFile);
     }
     formData.append('pageImageFileName', pageImageFileName);
     if (bannerImageFile !== null) {
-      formData.append('bannerImageFile', bannerImageFile);
+      formData.append('imgFiles', bannerImageFile);
     }
     formData.append('bannerImageFileName', bannerImageFileName);
     if (buttonImageFile !== null) {
-      formData.append('bannerImageFile', buttonImageFile);
+      formData.append('imgFiles', buttonImageFile);
     }
     formData.append('buttonImageFileName', buttonImageFileName);
     formData.append('detailPageUrl', detailPageUrl);
@@ -137,7 +138,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       },
     };
     console.log(formData);
-    axios.post('http://localhost:3001/test', formData, config).then(res => {
+    axios.post('http://localhost:3001/', formData, config).then(res => {
       console.log(res);
     });
     alert('제출이요');

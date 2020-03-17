@@ -168,19 +168,16 @@ export function eventEditReducer(
       return {
         ...state,
         pageImageFile: action.meta.input,
-        pageImageFileName: action.meta.input.name,
       };
     case CHANGE_BANNER_IMAGE:
       return {
         ...state,
         bannerImageFile: action.meta.input,
-        bannerImageFileName: action.meta.input.name,
       };
     case CHANGE_BUTTON_IMAGE:
       return {
         ...state,
         buttonImageFile: action.meta.input,
-        buttonImageFileName: action.meta.input.name,
       };
     case CHANGE_PAGE_URL:
       return {
