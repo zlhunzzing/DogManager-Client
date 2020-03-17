@@ -69,6 +69,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   EventEditActions,
   isChecked,
 }: EventEditContainerProps) => {
+
   const classes = useStyles();
   const classes2 = useStyles2();
 
@@ -119,6 +120,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     formData.append('eventTitle', eventTitle);
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
+
     if (pageImage !== null) {
       formData.append('pageImage', pageImage);
     }
@@ -127,7 +129,10 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     }
 
     if (buttonImage !== null) {
+
       formData.append('buttonImage', buttonImage);
+
+
     }
     formData.append('buttonUrl', buttonUrl);
     formData.append('detailPageUrl', detailPageUrl);
@@ -137,12 +142,14 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
         'content-type': 'multipart/form-data',
       },
     };
+
     console.log('formData : ', formData);
     axios
       .post('http://13.209.22.112:3002/api/admin/events/entry ', formData, config)
       .then(res => {
         console.log('응담은 여기에 : ', res);
       });
+
     alert('제출이요');
   }
 

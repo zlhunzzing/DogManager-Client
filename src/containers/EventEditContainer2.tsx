@@ -121,6 +121,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     formData.append('eventTitle', eventTitle);
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
+
     if (pageImage !== null) {
       formData.append('pageImageFile', pageImage);
     }
@@ -134,6 +135,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     }
     // formData.append('buttonImageFileName', buttonImageFileName);
     formData.append('ButtonUrl', buttonUrl);
+
     formData.append('detailPageUrl', detailPageUrl);
 
     const config = {
@@ -144,7 +146,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     // const bb = formData.getAll('name');
     //  console.log('폼데이터', bb);
     axios
-      .post('http://localhost:3000/api/admin/events/entry', formData, config)
+      .post('http://localhost:3001/api/admin/events/entry', formData, config)
       .then(res => {
         console.log(res);
         alert('제출이요');
