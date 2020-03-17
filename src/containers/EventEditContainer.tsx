@@ -122,15 +122,16 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     formData.append('endDate', endDate);
 
     if (pageImage !== null) {
-      formData.append('pageImageFile', pageImage);
+      formData.append('pageImage', pageImage);
     }
-
     if (bannerImage !== null) {
-      formData.append('bannerImageFile', bannerImage);
+      formData.append('bannerImage', bannerImage);
     }
 
     if (buttonImage !== null) {
-      formData.append('bannerImageFile', buttonImage);
+
+      formData.append('buttonImage', buttonImage);
+
 
     }
     formData.append('buttonUrl', buttonUrl);
@@ -141,10 +142,14 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
         'content-type': 'multipart/form-data',
       },
     };
-    console.log(formData);
-    axios.post('http://localhost:3001/', formData, config).then(res => {
-      console.log(res);
-    });
+
+    console.log('formData : ', formData);
+    axios
+      .post('http://13.209.22.112:3002/api/admin/events/entry ', formData, config)
+      .then(res => {
+        console.log('응담은 여기에 : ', res);
+      });
+
     alert('제출이요');
   }
 
