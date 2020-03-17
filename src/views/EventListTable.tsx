@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { StoreState } from '../modules';
-import { actionCreators as eventActions, EventData } from '../modules/event';
-import { bindActionCreators } from 'redux';
-import axios from 'axios';
-import serverurl from '../server';
+
+import { EventData } from '../modules/event';
 
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -15,27 +11,17 @@ import TableCell from '@material-ui/core/TableCell';
 import EventItem from '../views/EventItem';
 
 interface EventListTableProps {
-  eventLists: EventData[];
-  EventActions: typeof eventActions;
+  eventList: EventData[];
+  changeSelectedEvent: (id: string) => void;
+  history: any;
 }
 
 const EventListTable: React.FunctionComponent<EventListTableProps> = ({
-  eventLists,
-  EventActions,
+  eventList,
+  changeSelectedEvent,
+  history,
 }: EventListTableProps) => {
-  /*
-  Similar to componentDidMount and componentDidUpdate
-  함수형 컴포넌트에서 라이프사이클 함수를 사용(Hook)
-  */
-
-  // 이벤트 리스트 업데이트 반영하는 로직
-  useEffect(() => {
-    axios.get(serverurl + '/api/admin/events/list');
-    // .then((eventlist: EventData[]): void => {
-    //   console.log('요청성공');
-    //   EventActions.ChangeEventLists(eventlist);
-    // });
-  });
+  // 이벤트 리스트 상태 바꿔 넣기
 
   return (
     <Table>
@@ -51,21 +37,20 @@ const EventListTable: React.FunctionComponent<EventListTableProps> = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {eventLists.map((event, index) => {
-          return <EventItem key={index} num={index} event={event} />;
+        {eventList.map((event, index) => {
+          return (
+            <EventItem
+              key={index}
+              num={index}
+              event={event}
+              changeSelectedEvent={changeSelectedEvent}
+              history={history}
+            />
+          );
         })}
       </TableBody>
     </Table>
   );
 };
 
-export default connect(
-  ({ event }: StoreState) => ({
-    eventLists: event.eventLists,
-    selectedEvent: event.selectedEvent,
-    filter: event.filter,
-  }),
-  dispatch => ({
-    EventActions: bindActionCreators(eventActions, dispatch),
-  }),
-)(EventListTable);
+export default EventListTable;

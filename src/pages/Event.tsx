@@ -1,16 +1,14 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router';
-import UserMenu from '../views/UserMenu';
-interface Props {
-  id: string;
+import EventContainer from '../containers/EventContainer';
+import { withRouter, RouteComponentProps } from 'react-router';
+
+interface MatchParams {
+  eventurl: string;
 }
-const Event = () => {
-  //console.log(match.params.eventurl);
-  //url로 id알아내서 상세페이지 이미지 가져와서 렌더링하기
+const Event: React.SFC<RouteComponentProps<MatchParams>> = ({ match }) => {
   return (
     <div>
-      <UserMenu />
-      <div>상세페이지 이미지</div>
+      <EventContainer url={match.params.eventurl} />
     </div>
   );
 };
