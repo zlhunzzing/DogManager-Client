@@ -3,9 +3,46 @@ import { connect } from 'react-redux';
 import { StoreState } from '../modules';
 import { actionCreators as eventEditActions } from '../modules/eventEdit';
 import { bindActionCreators } from 'redux';
-// import TextField from '@material-ui/core/TextField';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import axios from 'axios';
+//? 체크박스  material
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import { blue } from '@material-ui/core/colors';
+//?
+
+//! material - URL input
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      '& .MuiTextField-root': {
+        margin: theme.spacing(1),
+        width: 200,
+      },
+    },
+  }),
+);
+//! material- 시간날짜input
+const useStyles2 = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    textField: {
+      marginLeft: theme.spacing(2),
+      marginRight: theme.spacing(2),
+      width: 250,
+      margin: 40,
+      height: 40,
+    },
+  }),
+);
 
 interface EventEditContainerProps {
   eventTitle: string;
@@ -32,41 +69,15 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   EventEditActions,
   isChecked,
 }: EventEditContainerProps) => {
+  const classes = useStyles();
+  const classes2 = useStyles2();
+
   //! 이벤트설정: 타이틀
-  function titleChangeHnadler(event: React.FormEvent<HTMLInputElement>): void {
-    const title = event.currentTarget.value;
-    eventTitle = title;
-    EventEditActions.changeEventTitle(title);
-  }
 
   //! 이벤트설정: 시작일(데이터 형식) 202003131300 년월일시간분
-  function startDateChangeHandler(event: React.FormEvent<HTMLInputElement>): void {
-    const date = event.currentTarget.value;
-    if (date) {
-      const dateTime = date
-        .split('')
-        .join('')
-        .match(/\d+/g)
-        ?.join('');
-      if (dateTime !== undefined) {
-        EventEditActions.changeStartData(dateTime);
-      }
-    }
-  }
+
   //! 이벤트설정: 종료일(데이터 형식) 202003131300 년월일시간분
-  function endDateChangeHandler(event: React.FormEvent<HTMLInputElement>): void {
-    const date = event.currentTarget.value;
-    if (date) {
-      const dateTime = date
-        .split('')
-        .join('')
-        .match(/\d+/g)
-        ?.join('');
-      if (dateTime !== undefined) {
-        EventEditActions.changeEndDate(dateTime);
-      }
-    }
-  }
+
   //! 이벤트설정: 이미지파일업로드
   function fileChangeHandler(event: React.FormEvent<HTMLInputElement>): void {
     console.log('target: ', event.currentTarget.files);
@@ -96,22 +107,10 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     }
   }
   //! 이벤트설정: 하단버튼 URL입력(하단버튼 연결)
-  function bottonUrlChangeHnadler(event: React.FormEvent<HTMLInputElement>): void {
-    const buttonUrl = event.currentTarget.value;
-    EventEditActions.changeButtonUrl(buttonUrl);
-  }
 
   //! 이벤트설정: URL입력(상세페이지)
-  function urlChangeHnadler(event: React.FormEvent<HTMLInputElement>): void {
-    const url = event.currentTarget.value;
-    EventEditActions.changePageUrl(url);
-  }
 
   //! 이벤트설정: 상시버튼(상시버튼 클릭시 종료시간disable됨)
-  function isCheckChangeHnadler(event: React.FormEvent<HTMLInputElement>): void {
-    console.log('event.currentTarget.checked: ', event.currentTarget.checked);
-    EventEditActions.changeIsChecked(!isChecked);
-  }
 
   // ! 폼 데이터 제출
   function handleSubmitFormData(e: React.FormEvent): void {
@@ -147,83 +146,198 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   }
 
   //! props 설정후 true 와 false 으로 값을 넗어준다.
+
   let endDateInput: JSX.Element;
   if (isChecked) {
     endDateInput = (
-      <input
+      <TextField
+        id="datetime-local"
+        label="종료일자"
         type="datetime-local"
-        id="endDate"
         disabled
-        onChange={endDateChangeHandler}
-      ></input>
+        className={classes2.textField}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        onChange={(event): void => {
+          const { value } = event.target;
+          if (value) {
+            const data2 = value
+              .split('')
+              .join('')
+              .match(/\d+/g)
+              ?.join('');
+            if (data2 !== undefined) {
+              EventEditActions.changeEndDate(data2);
+            }
+          }
+        }}
+      />
     );
   } else {
     endDateInput = (
-      <input type="datetime-local" id="endDate" onChange={endDateChangeHandler}></input>
+      <TextField
+        id="datetime-local"
+        label="종료일자"
+        type="datetime-local"
+        className={classes2.textField}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        onChange={(event): void => {
+          const { value } = event.target;
+          if (value) {
+            const data2 = value
+              .split('')
+              .join('')
+              .match(/\d+/g)
+              ?.join('');
+            if (data2 !== undefined) {
+              EventEditActions.changeEndDate(data2);
+            }
+          }
+        }}
+      />
     );
   }
 
   return (
     <div>
-      <div style={{ height: 50, textAlign: 'center' }}>
+      <div
+        style={{
+          height: 50,
+          textAlign: 'center',
+          fontSize: '35px',
+          fontWeight: 'bold',
+          paddingBottom: 20,
+        }}
+      >
         <div style={{ height: '25%' }}></div>
         <div>이벤트 등록 / 수정</div>
       </div>
       <Divider />
-      {/* <form
-        style={{ margin: 50 }}
-        onSubmit={e => {
-          e.preventDefault();
-          alert('서버전송');
-        }}
-      > */}
-      <form style={{ margin: 50 }} onSubmit={handleSubmitFormData}>
-        <div style={{ marginRight: 20, float: 'left' }}>타이틀</div>
-        <input type="text" id="eventTitle" onChange={titleChangeHnadler}></input>
-        <div style={{ marginTop: 20 }}>기간설정</div>
-        <div style={{ marginTop: 5, marginLeft: 20 }}>
-          상시
-          <input
-            type="checkbox"
-            value="상시"
-            checked={isChecked}
-            onChange={isCheckChangeHnadler}
+      <form
+        style={{ margin: 20, height: 50, textAlign: 'center', paddingTop: 20 }}
+        onSubmit={handleSubmitFormData}
+      >
+        <div className={classes.root}>
+          <div>
+            <span style={{ fontWeight: 'bold', paddingRight: 20 }}>이벤트 이름</span>
+            <TextField
+              id="standard-textarea"
+              // label="타이틀"
+              placeholder="티이틀을 적어주세요"
+              style={{ paddingRight: 80 }}
+              multiline
+              onChange={(event): void => {
+                const { value } = event.target;
+                EventEditActions.changeEventTitle(value);
+              }}
+            />
+          </div>
+        </div>
+        <FormControl component="fieldset">
+          <FormLabel component="legend"></FormLabel>
+          <FormGroup aria-label="position" row>
+            <FormControlLabel
+              value="start"
+              control={<Checkbox color="primary" />}
+              style={{ paddingTop: 20, paddingRight: 20, fontWeight: 'bold' }}
+              label="상시"
+              labelPlacement="start"
+              checked={isChecked}
+              onChange={(): void => {
+                EventEditActions.changeIsChecked(!isChecked);
+              }}
+            />
+          </FormGroup>
+        </FormControl>
+        <div>
+          <span style={{ fontWeight: 'bold' }}>시작일시</span>
+          <TextField
+            id="datetime-local"
+            label="시작일자"
+            type="datetime-local"
+            className={classes2.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={(event): void => {
+              const { value } = event.target;
+              if (value) {
+                const data1 = value
+                  .split('')
+                  .join('')
+                  .match(/\d+/g)
+                  ?.join('');
+                if (data1 !== undefined) {
+                  EventEditActions.changeEndDate(data1);
+                }
+              }
+            }}
           />
         </div>
+        <span style={{ fontWeight: 'bold' }}>종료 일시</span>
+        <span>{endDateInput}</span>
         <div>
-          시작일시{' '}
-          <input
-            type="datetime-local"
-            id="startDate"
-            onChange={startDateChangeHandler}
-          ></input>
-          종료일시 {endDateInput}
-        </div>
-        <div>
-          이미지업로드
-          <input type="file" id="pageImgFile" onChange={fileChangeHandler}></input>
-        </div>
-        <div>
-          배너페이지업로드
-          <input type="file" id="bannerImgFile" onChange={bannerChangeHandler}></input>
-        </div>
-        <div>
-          하단버튼(이미지)
+          <span style={{ fontWeight: 'bold' }}>이미지 업로드</span>
           <input
             type="file"
+            style={{ margin: 20, paddingRight: 40 }}
+            id="pageImgFile"
+            onChange={fileChangeHandler}
+          ></input>
+        </div>
+        <div>
+          <span style={{ fontWeight: 'bold' }}>배너페이지 업로드</span>
+          <input
+            type="file"
+            style={{ margin: 10, paddingRight: 70 }}
+            id="bannerImgFile"
+            onChange={bannerChangeHandler}
+          ></input>
+        </div>
+        <div style={{ paddingBottom: 30 }}>
+          <span style={{ fontWeight: 'bold' }}>하단버튼</span>
+          <input
+            type="file"
+            style={{ margin: 20 }}
             id="buttonImgFile"
             onChange={lowerButtonChangeHandler}
           ></input>
         </div>
-        <div>
-          하단버튼 URL입력(하단버튼연결)
-          <input id="buttonUrl" onChange={bottonUrlChangeHnadler}></input>
+        <div className={classes.root}>
+          <div>
+            <span style={{ fontWeight: 'bold' }}> 하단버튼 URL</span>
+            <TextField
+              id="standard-textarea"
+              placeholder="버튼이미지 URL"
+              style={{ paddingRight: 50, paddingTop: 20 }}
+              multiline
+              onChange={(event): void => {
+                const { value } = event.target;
+                EventEditActions.changeButtonUrl(value);
+              }}
+            />
+          </div>
+
+          <div>
+            <span style={{ fontWeight: 'bold' }}>상세페이지 URL</span>
+            <TextField
+              id="standard-textarea"
+              placeholder="상세 연결될 URL"
+              style={{ paddingRight: 65 }}
+              multiline
+              onChange={(event): void => {
+                const { value } = event.target;
+                EventEditActions.changePageUrl(value);
+              }}
+            />
+          </div>
         </div>
-        <div>
-          URL입력(상세페이지이)
-          <input id="detailPageUrl" onChange={urlChangeHnadler}></input>
-        </div>
-        <button type="submit">등록/수정</button>
+        <button style={{ margin: 20 }} type="submit">
+          등록/수정
+        </button>
       </form>
     </div>
   );
