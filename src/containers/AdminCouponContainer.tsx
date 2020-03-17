@@ -6,7 +6,7 @@ const AdminCouponContainer: React.FunctionComponent = () => {
   return (
     <div>
       <AdminMenu />
-      <div>여기가 쿠폰등록</div>
+      <div>여기가 쿠폰등록 (Advanced) </div>
     </div>
   );
 };

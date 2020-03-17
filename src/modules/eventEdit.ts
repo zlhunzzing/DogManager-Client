@@ -2,11 +2,11 @@ export interface EventEditState {
   eventTitle: string;
   startDate: string;
   endDate: string;
-  pageImageFile: File | null;
+  pageImageFile: File | null | Blob;
   pageImageFileName: string;
-  bannerImageFile: File | null;
+  bannerImageFile: File | null | Blob;
   bannerImageFileName: string;
-  buttonImageFile: File | null;
+  buttonImageFile: File | null | Blob;
   buttonImageFileName: string;
   detailPageUrl: string;
   isChecked: boolean;
