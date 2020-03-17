@@ -7,21 +7,22 @@ export interface EventData {
   buttonImage?: string;
   bannerImage?: string;
   pageImage?: string;
+  condition?: string;
 }
 
 export interface EventState {
-  eventLists: EventData[];
-  selectedEvent: EventData | null;
+  eventList: EventData[];
+  selectedEvent: string | null;
   filter: string;
 }
 
 // type
-export const CHANGE_EVENT_LISTS = 'event/CHANGE_EVENT_LISTS';
+export const CHANGE_EVENT_LIST = 'event/CHANGE_EVENT_LIST';
 export const SELECT_EVENT = 'event/SELECT_EVENT';
 export const CHANGE_FILTER = 'event/CHANGE_FILTER';
 
-interface ChangeEventListsAction {
-  type: typeof CHANGE_EVENT_LISTS;
+interface ChangeEventListAction {
+  type: typeof CHANGE_EVENT_LIST;
   meta: {
     input: EventData[];
   };
@@ -30,7 +31,7 @@ interface ChangeEventListsAction {
 interface SelectEventAction {
   type: typeof SELECT_EVENT;
   meta: {
-    input: EventData;
+    input: string;
   };
 }
 
@@ -42,22 +43,22 @@ interface ChangeFilterAction {
 }
 
 export type EventActionTypes =
-  | ChangeEventListsAction
+  | ChangeEventListAction
   | SelectEventAction
   | ChangeFilterAction;
 
 // actions
 
-function ChangeEventLists(input: EventData[]): object {
+function ChangeEventList(input: EventData[]): object {
   return {
-    type: CHANGE_EVENT_LISTS,
+    type: CHANGE_EVENT_LIST,
     meta: {
       input,
     },
   };
 }
 
-function SelectEvent(input: EventData): object {
+function SelectEvent(input: string): object {
   return {
     type: SELECT_EVENT,
     meta: {
@@ -76,7 +77,7 @@ function ChangeFilter(input: string): object {
 }
 
 export const actionCreators = {
-  ChangeEventLists,
+  ChangeEventList,
   SelectEvent,
   ChangeFilter,
 };
@@ -108,17 +109,17 @@ const fakeData: Array<EventData> = [
 ];
 
 const initialState: EventState = {
-  eventLists: fakeData,
+  eventList: fakeData,
   selectedEvent: null,
   filter: '모두',
 };
 
 export function eventReducer(state = initialState, action: EventActionTypes): EventState {
   switch (action.type) {
-    case CHANGE_EVENT_LISTS:
+    case CHANGE_EVENT_LIST:
       return {
         ...state,
-        eventLists: action.meta.input,
+        eventList: action.meta.input,
       };
     case SELECT_EVENT:
       return {

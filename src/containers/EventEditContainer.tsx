@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
 import { actionCreators as eventEditActions } from '../modules/eventEdit';
+import { actionCreators as eventActions } from '../modules/event';
 import { bindActionCreators } from 'redux';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import axios from 'axios';
+
+import server from '../server';
+
 //? 체크박스  material
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -48,13 +52,18 @@ interface EventEditContainerProps {
   eventTitle: string;
   startDate: string;
   endDate: string;
-  pageImage: File | null | Blob;
-  bannerImage: File | null | Blob;
-  buttonImage: File | null | Blob;
+  pageImage: File | null | Blob | string;
+  bannerImage: File | null | Blob | string;
+  buttonImage: File | null | Blob | string;
   buttonUrl: string;
   detailPageUrl: string;
-  isChecked: boolean;
+  isChecked?: boolean;
+  eventId?: string;
   EventEditActions: typeof eventEditActions;
+  history: any;
+  selectedEvent: string | null;
+  startDateInputValue: string;
+  endDateInputValue: string;
 }
 //! 컴퍼넌트 작성
 const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
@@ -68,14 +77,52 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   detailPageUrl,
   EventEditActions,
   isChecked,
+  history,
+  selectedEvent,
+  startDateInputValue,
+  endDateInputValue,
 }: EventEditContainerProps) => {
+
 
   const classes = useStyles();
   const classes2 = useStyles2();
 
+
   //! 이벤트설정: 타이틀
 
   //! 이벤트설정: 시작일(데이터 형식) 202003131300 년월일시간분
+
+  function startDateChangeHandler(event: React.FormEvent<HTMLInputElement>): void {
+    const date = event.currentTarget.value;
+    if (date) {
+      const dateTime = date
+        .split('')
+        .join('')
+        .match(/\d+/g)
+        ?.join('');
+      if (dateTime !== undefined) {
+        EventEditActions.changeStartData(dateTime);
+      }
+    }
+  }
+
+  function fillDateTimeInput(stringDate: string): string {
+    if (stringDate === '') {
+      return '';
+    }
+    return (
+      stringDate.slice(0, 4) +
+      '-' +
+      stringDate.slice(4, 6) +
+      '-' +
+      stringDate.slice(6, 8) +
+      'T' +
+      stringDate.slice(8, 10) +
+      ':' +
+      stringDate.slice(10, 12)
+    );
+  }
+
 
   //! 이벤트설정: 종료일(데이터 형식) 202003131300 년월일시간분
 
@@ -113,9 +160,60 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
 
   //! 이벤트설정: 상시버튼(상시버튼 클릭시 종료시간disable됨)
 
+  // 서버에서 이벤트리스트 가져오기
+  const getEvent = async () => {
+    const serverurl = server + '/api/admin/events/entry/' + selectedEvent;
+    const res = await axios.get(serverurl);
+    console.log('요청성공');
+    console.log(res);
+    const oldData = res.data;
+    oldData.endDateInputValue = fillDateTimeInput(res.data.endDate);
+    oldData.startDateInputValue = fillDateTimeInput(res.data.startDate);
+    if (res.data.endDate === '') {
+      oldData.isChecked = true;
+    } else {
+      oldData.isChecked = false;
+    }
+    EventEditActions.putOldData(res.data);
+  };
+
+  useEffect(() => {
+    console.log('수정페이지로 들어옴');
+    if (selectedEvent !== null) {
+      getEvent();
+    }
+  }, []);
+
   // ! 폼 데이터 제출
   function handleSubmitFormData(e: React.FormEvent): void {
     e.preventDefault();
+
+    // 1. 새로 등록하는 경우
+    if (selectedEvent === null) {
+      if (
+        eventTitle === '' ||
+        startDate.length !== 12 ||
+        pageImage === null ||
+        bannerImage === null ||
+        buttonImage === null ||
+        buttonUrl === '' ||
+        detailPageUrl === ''
+      ) {
+        console.log('데이터를 다 안 채웠음');
+        return;
+      }
+      // 2. 수정하는 경우
+    } else {
+      if (
+        eventTitle === '' ||
+        startDate.length !== 12 ||
+        buttonUrl === '' ||
+        detailPageUrl === ''
+      ) {
+        console.log('데이터를 다 안 채웠음');
+      }
+    }
+
     const formData = new FormData();
     formData.append('eventTitle', eventTitle);
     formData.append('startDate', startDate);
@@ -130,8 +228,8 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
 
     if (buttonImage !== null) {
 
-      formData.append('buttonImage', buttonImage);
 
+      formData.append('buttonImage', buttonImage);
 
     }
     formData.append('buttonUrl', buttonUrl);
@@ -143,14 +241,23 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       },
     };
 
-    console.log('formData : ', formData);
-    axios
-      .post('http://13.209.22.112:3002/api/admin/events/entry ', formData, config)
-      .then(res => {
-        console.log('응담은 여기에 : ', res);
-      });
 
-    alert('제출이요');
+    // 새로 등록하는 경우
+    if (selectedEvent === null) {
+      const url = server + '/api/admin/events/entry';
+      axios.post(url, formData, config).then(res => {
+        console.log(res);
+        history.push('/admin/event-list');
+      });
+      alert('제출이요');
+    } else {
+      // 수정하는 경우
+      const url = server + '/api/admin/events/entry/' + selectedEvent;
+      axios.put(url, formData, config).then(res => {
+        console.log(res);
+      });
+    }
+
   }
 
   //! props 설정후 true 와 false 으로 값을 넗어준다.
@@ -163,6 +270,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
         label="종료일자"
         type="datetime-local"
         disabled
+
         className={classes2.textField}
         InputLabelProps={{
           shrink: true,
@@ -224,6 +332,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
         <div>이벤트 등록 / 수정</div>
       </div>
       <Divider />
+
       <form
         style={{ margin: 20, height: 50, textAlign: 'center', paddingTop: 20 }}
         onSubmit={handleSubmitFormData}
@@ -243,6 +352,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
               }}
             />
           </div>
+
         </div>
         <FormControl component="fieldset">
           <FormLabel component="legend"></FormLabel>
@@ -266,6 +376,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             id="datetime-local"
             label="시작일자"
             type="datetime-local"
+
             className={classes2.textField}
             InputLabelProps={{
               shrink: true,
@@ -284,6 +395,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
               }
             }}
           />
+
         </div>
         <span style={{ fontWeight: 'bold' }}>종료 일시</span>
         <span>{endDateInput}</span>
@@ -314,6 +426,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             onChange={lowerButtonChangeHandler}
           ></input>
         </div>
+
         <div className={classes.root}>
           <div>
             <span style={{ fontWeight: 'bold' }}> 하단버튼 URL</span>
@@ -342,6 +455,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
               }}
             />
           </div>
+
         </div>
         <button style={{ margin: 20 }} type="submit">
           등록/수정
@@ -352,7 +466,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
 };
 
 export default connect(
-  ({ eventEdit }: StoreState) => ({
+  ({ eventEdit, event }: StoreState) => ({
     eventTitle: eventEdit.eventTitle,
     startDate: eventEdit.startDate,
     endDate: eventEdit.endDate,
@@ -362,8 +476,12 @@ export default connect(
     buttonUrl: eventEdit.buttonUrl,
     detailPageUrl: eventEdit.detailPageUrl,
     isChecked: eventEdit.isChecked,
+    selectedEvent: event.selectedEvent,
+    startDateInputValue: eventEdit.startDateInputValue,
+    endDateInputValue: eventEdit.endDateInputValue,
   }),
   dispatch => ({
     EventEditActions: bindActionCreators(eventEditActions, dispatch),
+    EventActions: bindActionCreators(eventActions, dispatch),
   }),
 )(EventEditContainer);

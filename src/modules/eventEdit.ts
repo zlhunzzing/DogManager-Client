@@ -2,12 +2,14 @@ export interface EventEditState {
   eventTitle: string;
   startDate: string;
   endDate: string;
-  pageImage: File | null | Blob;
-  bannerImage: File | null | Blob;
-  buttonImage: File | null | Blob;
+  pageImage: File | null | Blob | string;
+  bannerImage: File | null | Blob | string;
+  buttonImage: File | null | Blob | string;
   buttonUrl: string;
   detailPageUrl: string;
-  isChecked: boolean;
+  isChecked?: boolean;
+  startDateInputValue: string;
+  endDateInputValue: string;
 }
 //! type
 export const CHANGE_EVENT_TITLE = 'eventEdit/CHANGE_EVENT_TITLE';
@@ -19,6 +21,12 @@ export const CHANGE_BUTTON_IMAGE = 'eventEdit/CHANGE_BUTTON_IMAGE';
 export const CHANGE_BUTTON_URL = 'eventEdit/CHANGE_BUTTON_URL';
 export const CHANGE_PAGE_URL = 'eventEdit/CHANGE_PAGE_URL';
 export const CHANGE_ISCHECKED = 'eventEdit/CHANGE_isChecked';
+export const PUT_OLD_DATA = 'eventEdit/PUT_OLD_DATA';
+
+interface PutOldDataAction {
+  type: typeof PUT_OLD_DATA;
+  meta: { input: EventEditState };
+}
 
 interface ChangeEventTitleAction {
   type: typeof CHANGE_EVENT_TITLE;
@@ -70,9 +78,17 @@ export type EevntEditActionTypes =
   | ChangeButtonImageAction
   | ChangeButtonUrlAction
   | ChangePageUrlAction
-  | ChangeIsCheckedAction;
+  | ChangeIsCheckedAction
+  | PutOldDataAction;
 
 //! actions
+function putOldData(input: EventEditState): object {
+  return {
+    type: PUT_OLD_DATA,
+    meta: { input },
+  };
+}
+
 function changeEventTitle(input: string): object {
   return {
     type: CHANGE_EVENT_TITLE,
@@ -140,6 +156,7 @@ export const actionCreators = {
   changeButtonUrl,
   changePageUrl,
   changeIsChecked,
+  putOldData,
 };
 
 const initialState: EventEditState = {
@@ -152,13 +169,28 @@ const initialState: EventEditState = {
   buttonUrl: '',
   detailPageUrl: '',
   isChecked: false,
+  startDateInputValue: '',
+  endDateInputValue: '',
 };
 //! reducers
+
 export function eventEditReducer(
   state = initialState,
   action: EevntEditActionTypes,
 ): EventEditState {
   switch (action.type) {
+    case PUT_OLD_DATA:
+      return {
+        ...state,
+        eventTitle: action.meta.input.eventTitle,
+        startDate: action.meta.input.startDate,
+        endDate: action.meta.input.endDate,
+        buttonUrl: action.meta.input.buttonUrl,
+        detailPageUrl: action.meta.input.detailPageUrl,
+        startDateInputValue: action.meta.input.startDateInputValue,
+        endDateInputValue: action.meta.input.endDateInputValue,
+        isChecked: action.meta.input.isChecked,
+      };
     case CHANGE_EVENT_TITLE:
       return {
         ...state,
