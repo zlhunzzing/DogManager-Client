@@ -39,8 +39,20 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
       <UserMenu />
       <div style={{ textAlign: 'center' }}>
         <div>이벤트 상세페이지</div>
-        <img src={nowEvent?.pageImage} />
+        <img style={{ width: '40%' }} src={nowEvent?.pageImage} />
       </div>
+
+      <img
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: '30%',
+          width: '40%',
+          height: '7%',
+          border: 'solid 1px',
+        }}
+        src={nowEvent?.buttonImage}
+      />
     </div>
   );
 };
