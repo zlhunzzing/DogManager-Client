@@ -161,7 +161,10 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   // ! 폼 데이터 제출
   function handleSubmitFormData(e: React.FormEvent): void {
     e.preventDefault();
-
+    if (startDate.length > 16 || endDate.length > 16) {
+      alert('날짜의 연도는 4자리를 넘어가지 않게 작성해주세요');
+      return;
+    }
     // 1. 새로 등록하는 경우
     if (selectedEvent === null) {
       if (
@@ -236,7 +239,6 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       });
     }
   }
-
 
   //! props 설정후 true 와 false 으로 값을 넗어준다.
   //! state 에 있는 isChecked 값이 false 면 종료시간이 활성화
