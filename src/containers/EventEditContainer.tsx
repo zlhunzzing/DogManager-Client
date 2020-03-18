@@ -237,14 +237,16 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     }
   }
 
-  //! props 설정후 true 와 false 으로 값을 넣어준다.
 
+  //! props 설정후 true 와 false 으로 값을 넗어준다.
+  //! state 에 있는 isChecked 값이 false 면 종료시간이 활성화
+  //! state 에 잇는 isChecked 값이 true 면 종료시간이 비활성화
   let endDateInput: JSX.Element;
   if (isChecked) {
     endDateInput = (
       <TextField
         id="datetime-local"
-        label="종료일자"
+        label="종료일시"
         type="datetime-local"
         disabled
         className={classes2.textField}
@@ -275,7 +277,34 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       />
     );
   }
+  //! 이미지파일업로드 미리보기
+  let pageImgInput: JSX.Element;
+  if (pageImage) {
+    const pageUrl = URL.createObjectURL(pageImage);
 
+    pageImgInput = <img style={{ width: 400, height: 250 }} src={pageUrl}></img>;
+  } else {
+    pageImgInput = <img style={{ display: 'none' }}></img>;
+  }
+
+  //! 배너페이지이미지업로드 미리보기
+  let bannerImgInput: JSX.Element;
+  if (bannerImage) {
+    const bannerUrl = URL.createObjectURL(bannerImage);
+
+    bannerImgInput = <img style={{ width: 400, height: 250 }} src={bannerUrl}></img>;
+  } else {
+    bannerImgInput = <img style={{ display: 'none' }}></img>;
+  }
+  //! 하단버튼이미지업로드 미리보기
+  let buttonImgInput: JSX.Element;
+  if (buttonImage) {
+    const buttonInputUrl = URL.createObjectURL(buttonImage);
+
+    buttonImgInput = <img style={{ width: 400, height: 250 }} src={buttonInputUrl}></img>;
+  } else {
+    buttonImgInput = <img style={{ display: 'none' }}></img>;
+  }
   return (
     <div>
       <div
@@ -362,6 +391,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             }}
           ></input>
         </div>
+        {pageImgInput}
         <div>
           <span style={{ fontWeight: 'bold' }}>배너페이지 업로드</span>
           <input
@@ -376,6 +406,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             }}
           ></input>
         </div>
+        {bannerImgInput}
         <div style={{ paddingBottom: 30 }}>
           <span style={{ fontWeight: 'bold' }}>하단버튼</span>
           <input
@@ -390,7 +421,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             }}
           ></input>
         </div>
-
+        {buttonImgInput}
         <div className={classes.root}>
           <div>
             <span style={{ fontWeight: 'bold' }}> 하단버튼 URL</span>
