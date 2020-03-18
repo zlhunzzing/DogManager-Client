@@ -20,32 +20,32 @@ interface EventListTableProps {
   history: any;
 }
 
+// 이벤트 상태 필터링 함수
+export const eventCondition = (start: string, end: string): string => {
+  const now = Number(moment(new Date()).format('YYYYMMDDHHmm'));
+  const startNum = Number(start);
+  const endNum = Number(end);
+  let result = '';
+  if (endNum === 0 && startNum <= now) {
+    result = '진행중';
+  } else if (endNum === 0 && startNum > now) {
+    result = '준비중';
+  } else if (endNum < now) {
+    result = '완료';
+  } else if (startNum <= now) {
+    result = '진행중';
+  } else {
+    result = '준비중';
+  }
+  return result;
+};
+
 const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
   eventList,
   filter,
   EventActions,
   history,
 }: EventListTableProps) => {
-  // 이벤트 상태 필터링 함수
-  const eventCondition = (start: string, end: string): string => {
-    const now = Number(moment(new Date()).format('YYYYMMDDHHmm'));
-    const startNum = Number(start);
-    const endNum = Number(end);
-    let result = '';
-    if (endNum === 0 && startNum <= now) {
-      result = '진행중';
-    } else if (endNum === 0 && startNum > now) {
-      result = '준비중';
-    } else if (endNum < now) {
-      result = '완료';
-    } else if (startNum <= now) {
-      result = '진행중';
-    } else {
-      result = '준비중';
-    }
-    return result;
-  };
-
   // 서버에서 이벤트리스트 받아서 sotre에 업데이트
   const getEventLists = async () => {
     const res = await axios.get(serverurl + '/api/admin/events/list');
