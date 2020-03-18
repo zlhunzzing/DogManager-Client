@@ -30,13 +30,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface EventListMenuProps {
   EventActions: typeof eventActions;
+  filter: string;
 }
 
 const EventListMenu: React.FunctionComponent<EventListMenuProps> = ({
   EventActions,
+  filter,
 }: EventListMenuProps) => {
   const classes = useStyles();
-  const [age, setAge] = React.useState('');
 
   const inputLabel = React.useRef<HTMLLabelElement>(null);
   const [labelWidth] = React.useState(0);
@@ -45,7 +46,6 @@ const EventListMenu: React.FunctionComponent<EventListMenuProps> = ({
   // }, []);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>): void => {
-    // setAge(event.target.value as string);
     EventActions.ChangeFilter(event.target.value as string);
   };
 
@@ -58,7 +58,7 @@ const EventListMenu: React.FunctionComponent<EventListMenuProps> = ({
         <Select
           labelId="demo-simple-select-outlined-label"
           id="demo-simple-select-outlined"
-          value={age}
+          value={filter}
           onChange={handleChange}
           labelWidth={labelWidth}
         >
