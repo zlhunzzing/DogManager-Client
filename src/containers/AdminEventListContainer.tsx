@@ -32,25 +32,21 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
     const startNum = Number(start);
     const endNum = Number(end);
     let result = '';
-    if (end === '') {
-      if (startNum <= now) {
-        result = '진행중';
-        console.log('여기');
-      } else {
-        result = '완료';
-      }
+    if (endNum === 0 && startNum <= now) {
+      result = '진행중';
+    } else if (endNum === 0 && startNum > now) {
+      result = '준비중';
+    } else if (endNum < now) {
+      result = '완료';
+    } else if (startNum <= now) {
+      result = '진행중';
     } else {
-      if (endNum < now) {
-        result = '완료';
-      } else if (startNum <= now) {
-        result = '진행중';
-      } else {
-        result = '준비중';
-      }
+      result = '준비중';
     }
     return result;
   };
-  // 서버에서 이벤트리스트 가져오기
+
+  // 서버에서 이벤트리스트 받아서 sotre에 업데이트
   const getEventLists = async () => {
     const res = await axios.get(serverurl + '/api/admin/events/list');
     const { eventList } = res.data;
@@ -59,8 +55,14 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
       event.condition = condition;
     });
     console.log(eventList);
-    // eventList 필터링 함수 추가
-    EventActions.ChangeEventList(eventList);
+    if (filter === '모두') {
+      EventActions.ChangeEventList(eventList);
+    } else {
+      const filterdList = eventList.filter((element: any) => {
+        return element.condition === filter;
+      });
+      EventActions.ChangeEventList(filterdList);
+    }
   };
 
   // store에 selectedEvent 바꾸기
@@ -72,8 +74,9 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
   // 함수형 컴포넌트에서 라이프사이클 함수를 사용(Hook)
   // 리액트 훅?
   useEffect(() => {
+    EventActions.SelectEvent('');
     getEventLists();
-  }, []);
+  }, [filter]);
 
   return (
     <div>

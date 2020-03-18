@@ -39,6 +39,7 @@ const EventItem: React.FunctionComponent<EventItemProps> = ({
     const a = id.toString();
     changeSelectedEvent(a);
     history.push('/admin/event-edit');
+    console.log(history);
     // alert('수정 페이지로 이동 할 거야');
   };
 
@@ -50,6 +51,7 @@ const EventItem: React.FunctionComponent<EventItemProps> = ({
     console.log(url);
     axios.delete(url).then(res => console.log('삭제완료', res));
     // alert(`id: ${id} / 이벤트를 정말 삭제하시겠습니까?`);
+    history.go('/admin/event-list');
   };
   return (
     <TableRow>
