@@ -225,11 +225,21 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     // 새로 등록하는 경우
     if (selectedEvent === '') {
       const url = server + '/api/admin/events/entry';
-      axios.post(url, formData, config).then(res => {
-        console.log(res);
-        history.push('/admin/event-list');
-      });
-      alert('제출이요');
+      axios
+        .post(url, formData, config)
+        .then(res => {
+          console.log(res);
+          alert('제출이요');
+          history.push('/admin/event-list');
+        })
+        .catch(err => {
+          console.log(err.response);
+          if (err.response.data === 'detailPageUrl') {
+            alert('상세 페이지 url을 수정해주세요');
+          } else if (err.response.data === 'buttonUrl') {
+            alert('버튼 url을 수정해주세요');
+          }
+        });
     } else {
       // 수정하는 경우
       const url = server + '/api/admin/events/entry/' + selectedEvent;
@@ -280,33 +290,48 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     );
   }
   //! 이미지파일업로드 미리보기
-  let pageImgInput: JSX.Element;
-  if (pageImage) {
-    const pageUrl = URL.createObjectURL(pageImage);
-
-    pageImgInput = <img style={{ width: 400, height: 250 }} src={pageUrl}></img>;
+  let pageImgInput: JSX.Element | null;
+  if (typeof pageImage === 'string') {
+    pageImgInput = null;
   } else {
-    pageImgInput = <img style={{ display: 'none' }}></img>;
+    if (pageImage) {
+      const pageUrl = URL.createObjectURL(pageImage);
+      pageImgInput = <img style={{ width: 400, height: 250 }} src={pageUrl}></img>;
+    } else {
+      pageImgInput = <img style={{ display: 'none' }}></img>;
+    }
   }
 
   //! 배너페이지이미지업로드 미리보기
-  let bannerImgInput: JSX.Element;
-  if (bannerImage) {
-    const bannerUrl = URL.createObjectURL(bannerImage);
-
-    bannerImgInput = <img style={{ width: 400, height: 250 }} src={bannerUrl}></img>;
+  let bannerImgInput: JSX.Element | null;
+  if (typeof bannerImage === 'string') {
+    bannerImgInput = null;
   } else {
-    bannerImgInput = <img style={{ display: 'none' }}></img>;
+    if (bannerImage) {
+      const bannerUrl = URL.createObjectURL(bannerImage);
+
+      bannerImgInput = <img style={{ width: 400, height: 250 }} src={bannerUrl}></img>;
+    } else {
+      bannerImgInput = <img style={{ display: 'none' }}></img>;
+    }
   }
+
   //! 하단버튼이미지업로드 미리보기
-  let buttonImgInput: JSX.Element;
-  if (buttonImage) {
-    const buttonInputUrl = URL.createObjectURL(buttonImage);
-
-    buttonImgInput = <img style={{ width: 400, height: 250 }} src={buttonInputUrl}></img>;
+  let buttonImgInput: JSX.Element | null;
+  if (typeof buttonImage === 'string') {
+    buttonImgInput = null;
   } else {
-    buttonImgInput = <img style={{ display: 'none' }}></img>;
+    if (buttonImage) {
+      const buttonInputUrl = URL.createObjectURL(buttonImage);
+
+      buttonImgInput = (
+        <img style={{ width: 400, height: 250 }} src={buttonInputUrl}></img>
+      );
+    } else {
+      buttonImgInput = <img style={{ display: 'none' }}></img>;
+    }
   }
+
   return (
     <div>
       <div
