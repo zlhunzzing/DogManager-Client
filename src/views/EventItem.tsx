@@ -28,7 +28,9 @@ const EventItem: React.FunctionComponent<EventItemProps> = ({
       alert('연결된 페이지가 없는데?');
     }
     console.log(url);
-    window.open(`http://localhost:3000/user/event${url}`);
+    window.open(
+      `http://dogandcodemate.s3-website.ap-northeast-2.amazonaws.com/user/event${url}`,
+    );
   };
 
   // 수정 버튼을 누를 때 로직

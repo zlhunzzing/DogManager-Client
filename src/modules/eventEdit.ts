@@ -183,6 +183,9 @@ export function eventEditReducer(
         endDate: action.meta.input.endDate,
         buttonUrl: action.meta.input.buttonUrl,
         detailPageUrl: action.meta.input.detailPageUrl,
+        pageImage: action.meta.input.pageImage,
+        bannerImage: action.meta.input.bannerImage,
+        buttonImage: action.meta.input.buttonImage,
         isChecked: action.meta.input.isChecked,
       };
     case CHANGE_EVENT_TITLE:

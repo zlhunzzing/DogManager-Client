@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
 import { actionCreators as eventActions, EventData } from '../modules/event';
+import { actionCreators as eventEditActions, initialState } from '../modules/eventEdit';
 import { bindActionCreators } from 'redux';
 
 import axios from 'axios';
@@ -17,6 +17,7 @@ interface EventListTableProps {
   eventList: EventData[];
   filter: string;
   EventActions: typeof eventActions;
+  EventEditActions: typeof eventEditActions;
   history: any;
 }
 
@@ -45,6 +46,7 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
   filter,
   EventActions,
   history,
+  EventEditActions,
 }: EventListTableProps) => {
   // 서버에서 이벤트리스트 받아서 sotre에 업데이트
   const getEventLists = async () => {
@@ -76,6 +78,7 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
   useEffect(() => {
     EventActions.SelectEvent('');
     getEventLists();
+    EventEditActions.putOldData(initialState);
   }, [filter]);
 
   return (
@@ -100,5 +103,6 @@ export default connect(
   }),
   dispatch => ({
     EventActions: bindActionCreators(eventActions, dispatch),
+    EventEditActions: bindActionCreators(eventEditActions, dispatch),
   }),
 )(AdminEventListContainer);

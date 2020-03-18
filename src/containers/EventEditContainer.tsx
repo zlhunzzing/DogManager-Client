@@ -166,7 +166,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       return;
     }
     // 1. 새로 등록하는 경우
-    if (selectedEvent === null) {
+    if (selectedEvent === '') {
       if (
         eventTitle === '' ||
         startDate.length !== 16 ||
