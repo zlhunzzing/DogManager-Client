@@ -1,14 +1,25 @@
 export interface SignupState {
-  idInput: string;
+  nameInput: string;
+  emailInput: string;
   pwInput: string;
+  mobileInput: string;
 }
 
 // export const TOGGLE = "todo/TOGGLE";
-export const CHANGE_ID_INPUT = 'signup/CHANGE_ID_INPUT';
+export const CHANGE_NAME_INPUT = 'signup/CHANGE_NAME_INPUT';
+export const CHANGE_EMAIL_INPUT = 'signup/CHANGE_EMAIL_INPUT';
 export const CHANGE_PW_INPUT = 'signup/CHANGE_PW_INPUT';
+export const CHANGE_MOBILE_INPUT = 'signup/CHANGE_MOBILE_INPUT';
 
-interface ChangeIdInputAction {
-  type: typeof CHANGE_ID_INPUT;
+interface ChangeNameInputAction {
+  type: typeof CHANGE_NAME_INPUT;
+  meta: {
+    input: string;
+  };
+}
+
+interface ChangeEmailInputAction {
+  type: typeof CHANGE_EMAIL_INPUT;
   meta: {
     input: string;
   };
@@ -21,13 +32,32 @@ interface ChangePwInputAction {
   };
 }
 
-export type SignupActionTypes = ChangeIdInputAction | ChangePwInputAction;
+interface ChangeMobileInputAction {
+  type: typeof CHANGE_MOBILE_INPUT;
+  meta: {
+    input: string;
+  };
+}
+
+export type SignupActionTypes =
+  | ChangeNameInputAction
+  | ChangeEmailInputAction
+  | ChangePwInputAction
+  | ChangeMobileInputAction;
 
 // actions
 
-function changeIdInput(input: string): object {
+function changeNameInput(input: string): object {
   return {
-    type: CHANGE_ID_INPUT,
+    type: CHANGE_NAME_INPUT,
+    meta: {
+      input,
+    },
+  };
+}
+function changeEmailInput(input: string): object {
+  return {
+    type: CHANGE_EMAIL_INPUT,
     meta: {
       input,
     },
@@ -42,17 +72,29 @@ function changePwInput(input: string): object {
     },
   };
 }
+function changeMobileInput(input: string): object {
+  return {
+    type: CHANGE_MOBILE_INPUT,
+    meta: {
+      input,
+    },
+  };
+}
 
 export const actionCreators = {
-  changeIdInput,
+  changeNameInput,
+  changeEmailInput,
   changePwInput,
+  changeMobileInput,
 };
 
 // reducers
 
 const initialState: SignupState = {
-  idInput: '',
+  nameInput: '',
+  emailInput: '',
   pwInput: '',
+  mobileInput: '',
 };
 
 export function signupReducer(
@@ -60,16 +102,26 @@ export function signupReducer(
   action: SignupActionTypes,
 ): SignupState {
   switch (action.type) {
-    case CHANGE_ID_INPUT:
+    case CHANGE_NAME_INPUT:
       return {
         ...state,
-        idInput: action.meta.input,
+        nameInput: action.meta.input,
+      };
+    case CHANGE_EMAIL_INPUT:
+      return {
+        ...state,
+        emailInput: action.meta.input,
       };
     case CHANGE_PW_INPUT:
-      console.log(action);
       return {
         ...state,
         pwInput: action.meta.input,
+      };
+    case CHANGE_MOBILE_INPUT:
+      console.log('signupReducer-case-CHANGE_MOBILE_INPUT:', action);
+      return {
+        ...state,
+        mobileInput: action.meta.input,
       };
     default:
       return state;
