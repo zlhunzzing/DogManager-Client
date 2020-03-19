@@ -2,6 +2,7 @@ export interface SignupState {
   nameInput: string;
   emailInput: string;
   pwInput: string;
+  rePwInput: string;
   mobileInput: string;
 }
 
@@ -9,6 +10,7 @@ export interface SignupState {
 export const CHANGE_NAME_INPUT = 'signup/CHANGE_NAME_INPUT';
 export const CHANGE_EMAIL_INPUT = 'signup/CHANGE_EMAIL_INPUT';
 export const CHANGE_PW_INPUT = 'signup/CHANGE_PW_INPUT';
+export const CHANGE_REPW_INPUT = 'signup/CHANGE_REPW_INPUT';
 export const CHANGE_MOBILE_INPUT = 'signup/CHANGE_MOBILE_INPUT';
 
 interface ChangeNameInputAction {
@@ -31,6 +33,12 @@ interface ChangePwInputAction {
     input: string;
   };
 }
+interface ChangeRePwInputAction {
+  type: typeof CHANGE_REPW_INPUT;
+  meta: {
+    input: string;
+  };
+}
 
 interface ChangeMobileInputAction {
   type: typeof CHANGE_MOBILE_INPUT;
@@ -43,6 +51,7 @@ export type SignupActionTypes =
   | ChangeNameInputAction
   | ChangeEmailInputAction
   | ChangePwInputAction
+  | ChangeRePwInputAction
   | ChangeMobileInputAction;
 
 // actions
@@ -72,6 +81,14 @@ function changePwInput(input: string): object {
     },
   };
 }
+function changeRePwInput(input: string): object {
+  return {
+    type: CHANGE_REPW_INPUT,
+    meta: {
+      input,
+    },
+  };
+}
 function changeMobileInput(input: string): object {
   return {
     type: CHANGE_MOBILE_INPUT,
@@ -85,6 +102,7 @@ export const actionCreators = {
   changeNameInput,
   changeEmailInput,
   changePwInput,
+  changeRePwInput,
   changeMobileInput,
 };
 
@@ -94,6 +112,7 @@ const initialState: SignupState = {
   nameInput: '',
   emailInput: '',
   pwInput: '',
+  rePwInput: '',
   mobileInput: '',
 };
 
@@ -116,6 +135,11 @@ export function signupReducer(
       return {
         ...state,
         pwInput: action.meta.input,
+      };
+    case CHANGE_REPW_INPUT:
+      return {
+        ...state,
+        rePwInput: action.meta.input,
       };
     case CHANGE_MOBILE_INPUT:
       console.log('signupReducer-case-CHANGE_MOBILE_INPUT:', action);
