@@ -31,7 +31,6 @@ interface SignupContainerProps {
 
 const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
   SignupActions,
-  mobileInput,
   pwInput,
   rePwInput,
 }: SignupContainerProps) => {
@@ -67,10 +66,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
     }
   }
 
-  // handleInputValueAutoHypen = key => e => {
-  //   e.target.value = this.addAutoHypen(e.target.value);
-  //   this.setState({ [key]: this.addAutoHypen(e.target.value) });
-  // };
+  //
   function checkpassword() {
     let rednerErorrPwMeg: JSX.Element | null;
     if (rePwInput) {
