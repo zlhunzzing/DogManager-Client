@@ -1,8 +1,8 @@
 import React from 'react';
 import SigninContainer from '../containers/SigninContainer';
 
-function Signin() {
+const Signin: React.FunctionComponent = () => {
   return <SigninContainer isAdmin={false} />;
-}
+};
 
 export default Signin;

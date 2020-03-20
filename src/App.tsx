@@ -13,6 +13,7 @@ import AdminEventAdd from './pages/AdminEventAdd';
 import AdminEventEdit from './pages/AdminEventEdit';
 import AdminSupport from './pages/AdminSupport';
 import AdminCoupon from './pages/AdminCoupon';
+import CouponList from './pages/CouponList';
 
 // 중첩라우팅?
 function App(): JSX.Element {
@@ -24,6 +25,7 @@ function App(): JSX.Element {
         <Route path="/user/signup" component={Signup} />
         <Route path="/user/event-list" component={EventList} />
         <Route path="/user/event/:eventurl" component={Event} />
+        <Route path="/user/coupon" component={CouponList} />
 
         <Route path="/admin/signin" component={AdminSignin} />
         <Route path="/admin/event-list" component={AdminEventList} />
