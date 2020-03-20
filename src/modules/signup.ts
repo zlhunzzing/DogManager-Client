@@ -4,6 +4,7 @@ export interface SignupState {
   pwInput: string;
   rePwInput: string;
   mobileInput: string;
+  addressInput: string;
 }
 
 // export const TOGGLE = "todo/TOGGLE";
@@ -12,6 +13,7 @@ export const CHANGE_EMAIL_INPUT = 'signup/CHANGE_EMAIL_INPUT';
 export const CHANGE_PW_INPUT = 'signup/CHANGE_PW_INPUT';
 export const CHANGE_REPW_INPUT = 'signup/CHANGE_REPW_INPUT';
 export const CHANGE_MOBILE_INPUT = 'signup/CHANGE_MOBILE_INPUT';
+export const CHANGE_ADDRESS_INPUT = 'signup/CHANGE_ADDRESS_INPUT';
 
 interface ChangeNameInputAction {
   type: typeof CHANGE_NAME_INPUT;
@@ -46,13 +48,20 @@ interface ChangeMobileInputAction {
     input: string;
   };
 }
+interface ChangeAddressInputAction {
+  type: typeof CHANGE_ADDRESS_INPUT;
+  meta: {
+    input: string;
+  };
+}
 
 export type SignupActionTypes =
   | ChangeNameInputAction
   | ChangeEmailInputAction
   | ChangePwInputAction
   | ChangeRePwInputAction
-  | ChangeMobileInputAction;
+  | ChangeMobileInputAction
+  | ChangeAddressInputAction;
 
 // actions
 
@@ -97,6 +106,14 @@ function changeMobileInput(input: string): object {
     },
   };
 }
+function changeAddressInput(input: string): object {
+  return {
+    type: CHANGE_ADDRESS_INPUT,
+    meta: {
+      input,
+    },
+  };
+}
 
 export const actionCreators = {
   changeNameInput,
@@ -104,6 +121,7 @@ export const actionCreators = {
   changePwInput,
   changeRePwInput,
   changeMobileInput,
+  changeAddressInput,
 };
 
 // reducers
@@ -114,6 +132,7 @@ const initialState: SignupState = {
   pwInput: '',
   rePwInput: '',
   mobileInput: '',
+  addressInput: '',
 };
 
 export function signupReducer(
@@ -146,6 +165,11 @@ export function signupReducer(
       return {
         ...state,
         mobileInput: action.meta.input,
+      };
+    case CHANGE_ADDRESS_INPUT:
+      return {
+        ...state,
+        addressInput: action.meta.input,
       };
     default:
       return state;

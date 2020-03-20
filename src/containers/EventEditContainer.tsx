@@ -166,6 +166,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       return;
     }
     // 1. 새로 등록하는 경우
+
     if (selectedEvent === '') {
       if (
         eventTitle === '' ||
@@ -194,8 +195,9 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     if (detailPageUrl[0] !== '/') {
       alert('url은 /로 시작해서 작성해주세요');
       return;
-    }
 
+      // 2. 수정하는 경우
+    }
     const formData = new FormData();
     makeDateTimeForm(startDate);
     formData.append('eventTitle', eventTitle);

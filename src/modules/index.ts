@@ -1,4 +1,6 @@
+//? 모듈 불러오기
 import { combineReducers } from 'redux';
+//? components 불러오기
 import { AdminState, adminReducer as admin } from './admin';
 import { EventState, eventReducer as event } from './event';
 import { SigninState, signinReducer as signin } from './signin';
