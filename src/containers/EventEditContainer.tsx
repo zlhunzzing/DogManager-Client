@@ -166,36 +166,21 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       return;
     }
     // 1. 새로 등록하는 경우
-    if (selectedEvent === '') {
-      if (
-        eventTitle === '' ||
-        startDate.length !== 16 ||
-        pageImage === null ||
-        bannerImage === null ||
-        buttonImage === null ||
-        buttonUrl === '' ||
-        detailPageUrl === ''
-      ) {
-        alert('데이터를 다 채워주세요');
-        return;
-      }
-      // 2. 수정하는 경우
-    } else {
-      if (
-        eventTitle === '' ||
-        startDate.length !== 16 ||
-        buttonUrl === '' ||
-        detailPageUrl === ''
-      ) {
-        alert('데이터를 다 채워주세요');
-        return;
-      }
-    }
-    if (buttonUrl[0] !== '/' || detailPageUrl[0] !== '/') {
-      alert('url은 /로 시작해서 작성해주세요');
-      return;
-    }
 
+    if (
+      eventTitle === '' ||
+      startDate.length !== 16 ||
+      pageImage === null ||
+      bannerImage === null ||
+      buttonImage === null ||
+      buttonUrl === '' ||
+      detailPageUrl === ''
+    ) {
+      alert('데이터를 다 채워주세요');
+      return;
+
+      // 2. 수정하는 경우
+    }
     const formData = new FormData();
     makeDateTimeForm(startDate);
     formData.append('eventTitle', eventTitle);
@@ -212,7 +197,6 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     if (buttonImage !== null) {
       formData.append('buttonImage', buttonImage);
     }
-
     formData.append('buttonUrl', buttonUrl);
     formData.append('detailPageUrl', detailPageUrl);
 
