@@ -10,11 +10,15 @@ const UserMenu: React.FunctionComponent = () => {
         <Link to="/" style={{ textDecoration: 'none' }}>
           <div style={{ float: 'left', marginLeft: 480 }}>도그메이트</div>
         </Link>
+
         <Link to="/user/event-list" style={{ textDecoration: 'none' }}>
-          <div style={{ float: 'left', marginLeft: 580, marginRight: 30 }}>Event</div>
+          <div style={{ float: 'left', marginLeft: 530, marginRight: 30 }}>Event</div>
         </Link>
         <div style={{ float: 'left', marginRight: 30 }}>QnA</div>
         <Link to="/user/signin" style={{ textDecoration: 'none' }}>
+          <Link to="/user/coupon" style={{ textDecoration: 'none' }}>
+            <div style={{ float: 'left', marginRight: 30 }}> Coupon </div>
+          </Link>
           <div style={{ float: 'left', marginRight: 30 }}>Signin</div>
         </Link>
         <Link to="/admin/signin" style={{ textDecoration: 'none' }}>

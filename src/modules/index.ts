@@ -5,7 +5,7 @@ import { SigninState, signinReducer as signin } from './signin';
 import { SignupState, signupReducer as signup } from './signup';
 import { EventEditState, eventEditReducer as eventEdit } from './eventEdit';
 import { UserEventState, userEventReducer as userEvent } from './userEvent';
-
+import { UserState, userReducer as user } from './user';
 // 페이지가 아니라 뷰 별로 나눠야 할 것 같은데...
 
 export interface StoreState {
@@ -15,6 +15,7 @@ export interface StoreState {
   signup: SignupState;
   eventEdit: EventEditState;
   userEvent: UserEventState;
+  user: UserState;
 }
 
 export default combineReducers<StoreState>({
@@ -24,4 +25,5 @@ export default combineReducers<StoreState>({
   signup,
   eventEdit,
   userEvent,
+  user,
 });
