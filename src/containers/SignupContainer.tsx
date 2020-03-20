@@ -8,9 +8,6 @@ import React from 'react';
 import { StoreState } from '../modules';
 import UserMenu from '../views/UserMenu';
 import { actionCreators as signupActions } from '../modules/signup';
-import { bindActionCreators } from 'redux';
-import TextField from '@material-ui/core/TextField';
-
 
 //? css
 import TextField from '@material-ui/core/TextField';
@@ -36,6 +33,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
   addressInput,
   history,
 }: SignupContainerProps) => {
+  // 핸드폰 하이픈 자동으로 추가되는 함수
   function autoHypenPhone(str: any): void {
     str = str.replace(/[^0-9]/g, '');
     let tmp: any = '';
@@ -68,18 +66,6 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
     }
   }
 
-  //   statusCode: 201
-
-  // 이미 존재하는 이메일이면,
-  // statusCode: 409
-  // .send("email already exist")
-
-  // function checkEmail(){
-  //   letlet rednerErorrEmailMeg: JSX.Element | null;
-  //   if()
-
-  // }
-
   // 비밀번호 중복확인
   function checkpassword() {
     let rednerErorrPwMeg: JSX.Element | null;
@@ -94,12 +80,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
     }
   }
 
-  // nameInput,
-  // emailInput,
-  // pwInput,
-  // mobileInput,
-  // addressInput
-
+  // API 함수 서버에 회원가입정보 post 요청
   async function handleSubmitSingup(e: any) {
     e.preventDefault();
     if (
@@ -132,27 +113,6 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
         alert('이미 이메일이 존재합니다.');
       }
     }
-    // const formSingupData = new FormData();
-    // formSingupData.append('name', nameInput);
-    // formSingupData.append('email', emailInput);
-    // formSingupData.append('password', pwInput);
-    // formSingupData.append('mobile', mobileInput);
-    // formSingupData.append('address', addressInput);
-    // const singupConfig = {
-    //   headers: {
-    //     'content-type': 'multipart/form-data',
-    //   },
-    // };
-    // const signupUrl = 'http://13.209.22.112:3002/api/user/signup';
-    // // const emailErorrMeg ="이미 가입된 이메일 입니다."
-    // axios.post(signupUrl, formSingupData, singupConfig).then(res => {
-    //   console.log('res: ', res);
-    //   if (res.status === 201) {
-    //     alert('회원가입이 성공했습니다.');
-    //   } else {
-    //     alert('이메일이 이미 존재합니다.');
-    //   }
-    // });
   }
   return (
     <div style={{ textAlign: 'center' }}>
@@ -186,7 +146,6 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
             }}
           />
         </div>
-        {/* <div>이미 가입된 이메일 입니다. </div> */}
         <div style={{ marginTop: 10, padding: 15 }}></div>
         <div>
           <TextField
