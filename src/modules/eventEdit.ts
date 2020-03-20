@@ -5,9 +5,9 @@ export interface EventEditState {
   pageImage: File | null | Blob | string;
   bannerImage: File | null | Blob | string;
   buttonImage: File | null | Blob | string;
-  buttonUrl: string;
   detailPageUrl: string;
   isChecked?: boolean;
+  couponCode: string;
 }
 //! type
 export const CHANGE_EVENT_TITLE = 'eventEdit/CHANGE_EVENT_TITLE';
@@ -16,7 +16,7 @@ export const CHANGE_END_DATE = 'eventEdit/CHANGE_END_DATE';
 export const CHANGE_PAGE_IMAGE = 'eventEdit/CHANGE_PAGE_IMAGE';
 export const CHANGE_BANNER_IMAGE = 'eventEdit/CHANGE_BANNER_IMAGE';
 export const CHANGE_BUTTON_IMAGE = 'eventEdit/CHANGE_BUTTON_IMAGE';
-export const CHANGE_BUTTON_URL = 'eventEdit/CHANGE_BUTTON_URL';
+export const CHANGE_COUPON_CODE = 'eventEdit/CHANGE_COUPON_CODE';
 export const CHANGE_PAGE_URL = 'eventEdit/CHANGE_PAGE_URL';
 export const CHANGE_ISCHECKED = 'eventEdit/CHANGE_isChecked';
 export const PUT_OLD_DATA = 'eventEdit/PUT_OLD_DATA';
@@ -53,8 +53,8 @@ interface ChangeButtonImageAction {
   type: typeof CHANGE_BUTTON_IMAGE;
   meta: { input: File };
 }
-interface ChangeButtonUrlAction {
-  type: typeof CHANGE_BUTTON_URL;
+interface ChangeCouponCodeAction {
+  type: typeof CHANGE_COUPON_CODE;
   meta: { input: string };
 }
 
@@ -74,7 +74,7 @@ export type EevntEditActionTypes =
   | ChangePageImageAction
   | ChangeBannerImageAction
   | ChangeButtonImageAction
-  | ChangeButtonUrlAction
+  | ChangeCouponCodeAction
   | ChangePageUrlAction
   | ChangeIsCheckedAction
   | PutOldDataAction;
@@ -124,9 +124,9 @@ function changeButtonImage(input: File): object {
   };
 }
 
-function changeButtonUrl(input: string): object {
+function changeCouponCode(input: string): object {
   return {
-    type: CHANGE_BUTTON_URL,
+    type: CHANGE_COUPON_CODE,
     meta: { input },
   };
 }
@@ -151,7 +151,7 @@ export const actionCreators = {
   changePageImage,
   changeBannerImage,
   changeButtonImage,
-  changeButtonUrl,
+  changeCouponCode,
   changePageUrl,
   changeIsChecked,
   putOldData,
@@ -164,7 +164,7 @@ export const initialState: EventEditState = {
   pageImage: null,
   bannerImage: null,
   buttonImage: null,
-  buttonUrl: '',
+  couponCode: '',
   detailPageUrl: '',
   isChecked: false,
 };
@@ -181,7 +181,7 @@ export function eventEditReducer(
         eventTitle: action.meta.input.eventTitle,
         startDate: action.meta.input.startDate,
         endDate: action.meta.input.endDate,
-        buttonUrl: action.meta.input.buttonUrl,
+        couponCode: action.meta.input.couponCode,
         detailPageUrl: action.meta.input.detailPageUrl,
         pageImage: action.meta.input.pageImage,
         bannerImage: action.meta.input.bannerImage,
@@ -218,10 +218,10 @@ export function eventEditReducer(
         ...state,
         buttonImage: action.meta.input,
       };
-    case CHANGE_BUTTON_URL:
+    case CHANGE_COUPON_CODE:
       return {
         ...state,
-        buttonUrl: action.meta.input,
+        couponCode: action.meta.input,
       };
     case CHANGE_PAGE_URL:
       return {

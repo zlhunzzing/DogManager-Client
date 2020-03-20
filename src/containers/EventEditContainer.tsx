@@ -92,7 +92,7 @@ interface EventEditContainerProps {
   pageImage: File | null | Blob | string;
   bannerImage: File | null | Blob | string;
   buttonImage: File | null | Blob | string;
-  buttonUrl: string;
+  couponCode: string;
   detailPageUrl: string;
   isChecked?: boolean;
   eventId?: string;
@@ -108,7 +108,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   pageImage,
   bannerImage,
   buttonImage,
-  buttonUrl,
+  couponCode,
   detailPageUrl,
   EventEditActions,
   isChecked,
@@ -173,7 +173,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
         pageImage === null ||
         bannerImage === null ||
         buttonImage === null ||
-        buttonUrl === '' ||
+        couponCode === '' ||
         detailPageUrl === ''
       ) {
         alert('데이터를 다 채워주세요');
@@ -184,14 +184,14 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       if (
         eventTitle === '' ||
         startDate.length !== 16 ||
-        buttonUrl === '' ||
+        couponCode === '' ||
         detailPageUrl === ''
       ) {
         alert('데이터를 다 채워주세요');
         return;
       }
     }
-    if (buttonUrl[0] !== '/' || detailPageUrl[0] !== '/') {
+    if (detailPageUrl[0] !== '/') {
       alert('url은 /로 시작해서 작성해주세요');
       return;
     }
@@ -213,7 +213,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       formData.append('buttonImage', buttonImage);
     }
 
-    formData.append('buttonUrl', buttonUrl);
+    formData.append('couponCode', couponCode);
     formData.append('detailPageUrl', detailPageUrl);
 
     const config = {
@@ -457,10 +457,10 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
               placeholder="버튼이미지 URL"
               style={{ paddingRight: 50, paddingTop: 20 }}
               multiline
-              value={buttonUrl}
+              value={couponCode}
               onChange={(event): void => {
                 const { value } = event.target;
-                EventEditActions.changeButtonUrl(value);
+                EventEditActions.changeCouponCode(value);
               }}
             />
           </div>
@@ -496,7 +496,7 @@ export default connect(
     pageImage: eventEdit.pageImage,
     bannerImage: eventEdit.bannerImage,
     buttonImage: eventEdit.buttonImage,
-    buttonUrl: eventEdit.buttonUrl,
+    couponCode: eventEdit.couponCode,
     detailPageUrl: eventEdit.detailPageUrl,
     isChecked: eventEdit.isChecked,
     selectedEvent: event.selectedEvent,
