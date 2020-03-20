@@ -8,6 +8,9 @@ import React from 'react';
 import { StoreState } from '../modules';
 import UserMenu from '../views/UserMenu';
 import { actionCreators as signupActions } from '../modules/signup';
+import { bindActionCreators } from 'redux';
+import TextField from '@material-ui/core/TextField';
+
 
 //? css
 import TextField from '@material-ui/core/TextField';

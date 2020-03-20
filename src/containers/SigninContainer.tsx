@@ -1,37 +1,55 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { debounce } from 'lodash';
+
 import UserMenu from '../views/UserMenu';
 
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
 import { actionCreators as signinActions } from '../modules/signin';
+import { actionCreators as userActions } from '../modules/user';
 import { bindActionCreators } from 'redux';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 // import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
+import axios from 'axios';
+import server from '../server';
+
 interface SigninContainerProps {
   isAdmin: boolean;
   idInput: string;
   pwInput: string;
   SigninActions: typeof signinActions;
+  UserActions: typeof userActions;
 }
 
 const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
   isAdmin,
+  idInput,
+  pwInput,
   SigninActions,
+  UserActions,
 }: SigninContainerProps) => {
-  // 로그인 버튼 눌렀을 때
-  // 서버에 로그인 요청
-  // isAdmin으로 구분해서 요청
-
   let version: string;
   if (isAdmin) {
     version = '관리자';
   } else {
     version = '고객';
   }
+
+  const handleIdInputChange = (value: string): any => {
+    SigninActions.changeIdInput(value);
+  };
+
+  const debouncedHandleIdInputChange = debounce(handleIdInputChange, 500);
+
+  const handlePwInputChange = (value: string): any => {
+    SigninActions.changePwInput(value);
+  };
+
+  const debouncedHandlePwInputChange = debounce(handlePwInputChange, 500);
 
   const signupButton = (
     <Link to="/user/signup">
@@ -41,6 +59,31 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
     </Link>
   );
 
+  async function onClickSignin(isAdmin: boolean) {
+    let serverUrl: string;
+
+    if (isAdmin) {
+      serverUrl = server + '/api/admin/signin';
+    } else {
+      serverUrl = server + '/api/user/signin';
+    }
+
+    try {
+      const res = await axios.post(serverUrl, {
+        email: idInput,
+        password: pwInput,
+      });
+      console.log(res);
+      localStorage.setItem('accessToken', res.data.token);
+      UserActions.changeIsLogin(true); // isLogin true로 바꾸기
+    } catch (error) {
+      console.log(error.response);
+    }
+    // axios.post('http://localhost:4000/test').then(res => {
+    //   console.log(res.data.toke);
+    // });
+  }
+
   const signinButton = (isAdmin: boolean): JSX.Element => {
     let url: string;
     if (isAdmin) {
@@ -49,11 +92,16 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
       url = '/';
     }
     return (
-      <Link to={url}>
-        <Button style={{ width: 100, marginRight: 10 }} variant="outlined">
-          Sign in
-        </Button>
-      </Link>
+      <Button
+        style={{ width: 100, marginRight: 10 }}
+        variant="outlined"
+        onClick={() => {
+          console.log('클릭');
+          onClickSignin(true);
+        }}
+      >
+        Sign in
+      </Button>
     );
   };
 
@@ -70,7 +118,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
           variant="outlined"
           onChange={(event): void => {
             const { value } = event.target;
-            SigninActions.changeIdInput(value);
+            debouncedHandleIdInputChange(value);
           }}
         />
       </div>
@@ -85,7 +133,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
           variant="outlined"
           onChange={(event): void => {
             const { value } = event.target;
-            SigninActions.changePwInput(value);
+            debouncedHandlePwInputChange(value);
           }}
         />
       </div>
@@ -93,9 +141,6 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
       <div>
         {isAdmin ? null : signupButton}
         {signinButton(isAdmin)}
-        {/* <Button style={{ width: 100 }} variant="outlined">
-          Sign in
-        </Button> */}
       </div>
     </div>
   );
@@ -108,5 +153,6 @@ export default connect(
   }),
   dispatch => ({
     SigninActions: bindActionCreators(signinActions, dispatch),
+    UserActions: bindActionCreators(userActions, dispatch),
   }),
 )(SigninContainer);

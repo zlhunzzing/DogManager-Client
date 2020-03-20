@@ -1,11 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { connect } from 'react-redux';
-import { StoreState } from '../modules';
-import { actionCreators as eventActions } from '../modules/event';
-import { bindActionCreators } from 'redux';
-
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -29,13 +24,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface EventListMenuProps {
-  EventActions: typeof eventActions;
   filter: string;
+  changeFilter: (filter: string) => void;
 }
 
 const EventListMenu: React.FunctionComponent<EventListMenuProps> = ({
-  EventActions,
   filter,
+  changeFilter,
 }: EventListMenuProps) => {
   const classes = useStyles();
 
@@ -45,9 +40,9 @@ const EventListMenu: React.FunctionComponent<EventListMenuProps> = ({
   //   setLabelWidth(inputLabel.current!.offsetWidth);
   // }, []);
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>): void => {
-    EventActions.ChangeFilter(event.target.value as string);
-  };
+  // const handleChange = (event: React.ChangeEvent<{ value: unknown }>): void => {
+  //   EventActions.ChangeFilter(event.target.value as string);
+  // };
 
   return (
     <div>
@@ -59,7 +54,9 @@ const EventListMenu: React.FunctionComponent<EventListMenuProps> = ({
           labelId="demo-simple-select-outlined-label"
           id="demo-simple-select-outlined"
           value={filter}
-          onChange={handleChange}
+          onChange={event => {
+            changeFilter(event.target.value as string);
+          }}
           labelWidth={labelWidth}
         >
           <MenuItem value="모두">
@@ -80,13 +77,15 @@ const EventListMenu: React.FunctionComponent<EventListMenuProps> = ({
   );
 };
 
-export default connect(
-  ({ event }: StoreState) => ({
-    // eventLists: event.eventLists,
-    // selectedEvent: event.selectedEvent,
-    filter: event.filter,
-  }),
-  dispatch => ({
-    EventActions: bindActionCreators(eventActions, dispatch),
-  }),
-)(EventListMenu);
+export default EventListMenu;
+
+// export default connect(
+//   ({ event }: StoreState) => ({
+//     // eventLists: event.eventLists,
+//     // selectedEvent: event.selectedEvent,
+//     filter: event.filter,
+//   }),
+//   dispatch => ({
+//     EventActions: bindActionCreators(eventActions, dispatch),
+//   }),
+// )(EventListMenu);
