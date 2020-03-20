@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { debounce } from 'lodash';
+
 import UserMenu from '../views/UserMenu';
 
 import { connect } from 'react-redux';
@@ -30,16 +32,24 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
   SigninActions,
   UserActions,
 }: SigninContainerProps) => {
-  // 로그인 버튼 눌렀을 때
-  // 서버에 로그인 요청
-  // isAdmin으로 구분해서 요청
-
   let version: string;
   if (isAdmin) {
     version = '관리자';
   } else {
     version = '고객';
   }
+
+  const handleIdInputChange = (value: string): any => {
+    SigninActions.changeIdInput(value);
+  };
+
+  const debouncedHandleIdInputChange = debounce(handleIdInputChange, 500);
+
+  const handlePwInputChange = (value: string): any => {
+    SigninActions.changePwInput(value);
+  };
+
+  const debouncedHandlePwInputChange = debounce(handlePwInputChange, 500);
 
   const signupButton = (
     <Link to="/user/signup">
@@ -49,25 +59,29 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
     </Link>
   );
 
-  function onClickSignin(isAdmin: boolean) {
-    // if (isAdmin) {
-    //   const serverUrl = server + '/api/user/signin';
-    //   const res = axios.post(serverUrl, {
-    //     email: idInput,
-    //     password: pwInput,
-    //   });
-    //   if (res.data.statusCode === '200') {
-    //     // 응답 헤더의 토큰을 클라이언트 로컬 스토리지에 저장
-    //     //
-    //   }
-    // } else {
-    // }
-    axios.post('http://localhost:4000/test').then(res => {
-      console.log(res.headers);
-    });
-    // 토큰이 res.headers.Authorization
-    localStorage.setItem('accessToken', '서버응답헤더에보내준토큰');
-    UserActions.changeIsLogin(isAdmin);
+  async function onClickSignin(isAdmin: boolean) {
+    let serverUrl: string;
+
+    if (isAdmin) {
+      serverUrl = server + '/api/admin/signin';
+    } else {
+      serverUrl = server + '/api/user/signin';
+    }
+
+    try {
+      const res = await axios.post(serverUrl, {
+        email: idInput,
+        password: pwInput,
+      });
+      console.log(res);
+      localStorage.setItem('accessToken', res.data.token);
+      UserActions.changeIsLogin(true); // isLogin true로 바꾸기
+    } catch (error) {
+      console.log(error.response);
+    }
+    // axios.post('http://localhost:4000/test').then(res => {
+    //   console.log(res.data.toke);
+    // });
   }
 
   const signinButton = (isAdmin: boolean): JSX.Element => {
@@ -104,7 +118,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
           variant="outlined"
           onChange={(event): void => {
             const { value } = event.target;
-            SigninActions.changeIdInput(value);
+            debouncedHandleIdInputChange(value);
           }}
         />
       </div>
@@ -119,7 +133,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
           variant="outlined"
           onChange={(event): void => {
             const { value } = event.target;
-            SigninActions.changePwInput(value);
+            debouncedHandlePwInputChange(value);
           }}
         />
       </div>
@@ -127,9 +141,6 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
       <div>
         {isAdmin ? null : signupButton}
         {signinButton(isAdmin)}
-        {/* <Button style={{ width: 100 }} variant="outlined">
-          Sign in
-        </Button> */}
       </div>
     </div>
   );

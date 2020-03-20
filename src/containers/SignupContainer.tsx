@@ -5,7 +5,7 @@ import { StoreState } from '../modules';
 import { actionCreators as signupActions } from '../modules/signup';
 import { bindActionCreators } from 'redux';
 import TextField from '@material-ui/core/TextField';
-import { Field } from 'redux-form';
+// import { Field } from 'redux-form';
 //import Button from '@material-ui/core/Button';
 //import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 

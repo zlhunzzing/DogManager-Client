@@ -72,6 +72,10 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
     EventActions.SelectEvent(id);
   };
 
+  // store에 filter 바꾸기
+  const changeFilter = (filter: string): void => {
+    EventActions.ChangeFilter(filter);
+  };
   // Similar to componentDidMount and componentDidUpdate
   // 함수형 컴포넌트에서 라이프사이클 함수를 사용(Hook)
   // 리액트 훅?
@@ -85,7 +89,7 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
     <div>
       <AdminMenu />
       <div style={{ marginTop: 10 }}></div>
-      <EventListMenu />
+      <EventListMenu filter={filter} changeFilter={changeFilter} />
       <EventListTable
         eventList={eventList}
         changeSelectedEvent={changeSelectedEvent}
