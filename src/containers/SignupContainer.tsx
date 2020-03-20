@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import React from 'react';
+import { debounce } from 'lodash';
 
 //? components 불러오기
 import { StoreState } from '../modules';
@@ -33,6 +34,38 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
   addressInput,
   history,
 }: SignupContainerProps) => {
+  //! input Hander 함수들....
+  const handlNameInputChange = (value: string): any => {
+    SignupActions.changeNameInput(value);
+  };
+  const handlEmailInputChange = (value: string): any => {
+    SignupActions.changeEmailInput(value);
+  };
+  const handlPwInputChange = (value: string): any => {
+    SignupActions.changePwInput(value);
+  };
+  const handlRePwInputChange = (value: string): any => {
+    SignupActions.changeRePwInput(value);
+  };
+
+  const handlMobileInputChange = (value: string): any => {
+    SignupActions.changeMobileInput(value);
+  };
+  const handlAddressInputChange = (value: string): any => {
+    SignupActions.changeAddressInput(value);
+  };
+
+  //! 디바운스 함수들 ..
+
+  const debouncedHandlNameInputChange = debounce(handlNameInputChange, 700);
+  const debouncedHandlEmailInputChange = debounce(handlEmailInputChange, 700);
+  const debouncedHandlPwInputChange = debounce(handlPwInputChange, 700);
+  const debouncedHandlRePwInputChange = debounce(handlRePwInputChange, 700);
+  //? 디바운스 시간을 0.7초로 하면 하이픈 add 함수랑 연결되어 있기 때문에 UI 에 보여지는 값이 늦어진다.
+  //? 그렇기 때문에 초를 작게 가져갸야 한다. //! 아예 없어도 될것같다. 이부분은.
+  const debouncedHandlMobileInputChange = debounce(handlMobileInputChange, 100);
+  const debouncedHandlAddressInputChange = debounce(handlAddressInputChange, 700);
+
   // 핸드폰 하이픈 자동으로 추가되는 함수
   function autoHypenPhone(str: any): void {
     str = str.replace(/[^0-9]/g, '');
@@ -114,6 +147,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
       }
     }
   }
+
   return (
     <div style={{ textAlign: 'center' }}>
       <UserMenu />
@@ -128,7 +162,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
             variant="outlined"
             onChange={(event): void => {
               const { value } = event.target;
-              SignupActions.changeNameInput(value);
+              debouncedHandlNameInputChange(value);
             }}
           />
         </div>
@@ -142,7 +176,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
             variant="outlined"
             onChange={(event): void => {
               const { value } = event.target;
-              SignupActions.changeEmailInput(value);
+              debouncedHandlEmailInputChange(value);
             }}
           />
         </div>
@@ -156,7 +190,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
             variant="outlined"
             onChange={(event): void => {
               const { value } = event.target;
-              SignupActions.changePwInput(value);
+              debouncedHandlPwInputChange(value);
             }}
           />
         </div>
@@ -170,7 +204,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
             variant="outlined"
             onChange={(event): void => {
               const { value } = event.target;
-              SignupActions.changeRePwInput(value);
+              debouncedHandlRePwInputChange(value);
             }}
           />
         </div>
@@ -187,7 +221,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
             onChange={(event): void => {
               const { value } = event.target;
               const inputvalue: any = autoHypenPhone(value);
-              SignupActions.changeMobileInput(inputvalue);
+              debouncedHandlMobileInputChange(inputvalue);
             }}
           />
         </div>
@@ -202,7 +236,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
             variant="outlined"
             onChange={(event): void => {
               const { value } = event.target;
-              SignupActions.changeAddressInput(value);
+              debouncedHandlAddressInputChange(value);
             }}
           />
         </div>
