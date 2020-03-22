@@ -16,10 +16,28 @@ export interface EventState {
   filter: string;
 }
 
+// 비동기 함수 처리가 들어가는 부분 액션 정의 (요청, 성공, 실패)
+export const AXIOS_EVENT_LIST_REQUEST = 'event/AXIOS_EVENT_LIST_REQUEST';
+export const AXIOS_EVENT_LIST_SUCCESS = 'event/AXIOS_EVENT_LIST_SUCCESS';
+export const AXIOS_EVENT_LIST_FAILURE = 'event/AXIOS_EVENT_LIST_FAILURE';
+
 // type
-export const CHANGE_EVENT_LIST = 'event/CHANGE_EVENT_LIST';
+export const CHANGE_EVENT_LIST = 'event/CHANGE_EVENT_LIST'; // axios 웅앵 success로 바뀔거임
 export const SELECT_EVENT = 'event/SELECT_EVENT';
 export const CHANGE_FILTER = 'event/CHANGE_FILTER';
+
+// 비동기 함수 요청 (useEffect에서 호출할 것임)
+interface AxiosEventListRequestAction {
+  type: typeof AXIOS_EVENT_LIST_REQUEST;
+}
+
+// 사가에서 request함수를 잡아서 아래의 액션을 실행하게 됨
+interface AxiosEventListSuccessAction {
+  type: typeof AXIOS_EVENT_LIST_SUCCESS;
+  meta: {
+    input: EventData[];
+  };
+}
 
 interface ChangeEventListAction {
   type: typeof CHANGE_EVENT_LIST;
@@ -43,13 +61,33 @@ interface ChangeFilterAction {
 }
 
 export type EventActionTypes =
+  | AxiosEventListRequestAction
+  | AxiosEventListSuccessAction
   | ChangeEventListAction
   | SelectEventAction
   | ChangeFilterAction;
 
 // actions
 
-function ChangeEventList(input: EventData[]): object {
+function axiosEventListRequest(): object {
+  return {
+    type: AXIOS_EVENT_LIST_REQUEST,
+    // meta: {
+    //   input,
+    // },
+  };
+}
+
+function axiosEventListSuccess(input: EventData[]): object {
+  return {
+    type: AXIOS_EVENT_LIST_SUCCESS,
+    meta: {
+      input,
+    },
+  };
+}
+
+function changeEventList(input: EventData[]): object {
   return {
     type: CHANGE_EVENT_LIST,
     meta: {
@@ -58,7 +96,7 @@ function ChangeEventList(input: EventData[]): object {
   };
 }
 
-function SelectEvent(input: string): object {
+function selectEvent(input: string): object {
   return {
     type: SELECT_EVENT,
     meta: {
@@ -67,7 +105,7 @@ function SelectEvent(input: string): object {
   };
 }
 
-function ChangeFilter(input: string): object {
+function changeFilter(input: string): object {
   return {
     type: CHANGE_FILTER,
     meta: {
@@ -77,45 +115,56 @@ function ChangeFilter(input: string): object {
 }
 
 export const actionCreators = {
-  ChangeEventList,
-  SelectEvent,
-  ChangeFilter,
+  axiosEventListRequest,
+  axiosEventListSuccess,
+  changeEventList,
+  selectEvent,
+  changeFilter,
 };
 
 // reducers
 
-const fakeData: Array<EventData> = [
-  {
-    id: 11,
-    eventTitle: '이벤트명',
-    startDate: 20200401,
-    endDate: 20200430,
-    detailPageUrl: '주소',
-  },
-  {
-    id: 12,
-    eventTitle: '이벤트명2',
-    startDate: 20200301,
-    endDate: 20200331,
-    detailPageUrl: '주소',
-  },
-  {
-    id: 13,
-    eventTitle: '이벤트명3',
-    startDate: 20200201,
-    endDate: 20200301,
-    detailPageUrl: '주소',
-  },
-];
+// const fakeData: Array<EventData> = [
+//   {
+//     id: 11,
+//     eventTitle: '이벤트명',
+//     startDate: 20200401,
+//     endDate: 20200430,
+//     detailPageUrl: '주소',
+//   },
+//   {
+//     id: 12,
+//     eventTitle: '이벤트명2',
+//     startDate: 20200301,
+//     endDate: 20200331,
+//     detailPageUrl: '주소',
+//   },
+//   {
+//     id: 13,
+//     eventTitle: '이벤트명3',
+//     startDate: 20200201,
+//     endDate: 20200301,
+//     detailPageUrl: '주소',
+//   },
+// ];
 
 const initialState: EventState = {
-  eventList: fakeData,
+  eventList: [],
   selectedEvent: null,
   filter: '모두',
 };
 
 export function eventReducer(state = initialState, action: EventActionTypes): EventState {
   switch (action.type) {
+    // case AXIOS_EVENT_LIST_REQUEST:
+    //   return {
+    //     ...state,
+    //   };
+    case AXIOS_EVENT_LIST_SUCCESS:
+      return {
+        ...state,
+        eventList: action.meta.input,
+      };
     case CHANGE_EVENT_LIST:
       return {
         ...state,
