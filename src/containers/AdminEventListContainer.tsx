@@ -58,30 +58,31 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
     });
     console.log(eventList);
     if (filter === '모두') {
-      EventActions.ChangeEventList(eventList);
+      EventActions.changeEventList(eventList);
     } else {
       const filterdList = eventList.filter((element: any) => {
         return element.condition === filter;
       });
-      EventActions.ChangeEventList(filterdList);
+      EventActions.changeEventList(filterdList);
     }
   };
 
   // store에 selectedEvent 바꾸기
   const changeSelectedEvent = (id: string): void => {
-    EventActions.SelectEvent(id);
+    EventActions.selectEvent(id);
   };
 
   // store에 filter 바꾸기
   const changeFilter = (filter: string): void => {
-    EventActions.ChangeFilter(filter);
+    EventActions.changeFilter(filter);
   };
   // Similar to componentDidMount and componentDidUpdate
   // 함수형 컴포넌트에서 라이프사이클 함수를 사용(Hook)
   // 리액트 훅?
   useEffect(() => {
-    EventActions.SelectEvent('');
-    getEventLists();
+    EventActions.axiosEventListRequest();
+    EventActions.selectEvent('');
+    // getEventLists();
     EventEditActions.putOldData(initialState);
   }, [filter]);
 
