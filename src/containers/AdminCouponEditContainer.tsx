@@ -3,6 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { debounce } from 'lodash';
 
 // 파일 불러오기
 import server from '../server';
@@ -23,14 +24,6 @@ import Button from '@material-ui/core/Button';
 //   discount:
 // }
 
-// const signupButton = (
-//   <Link to="/user/signup">
-//   <Button style={{ width: 100, marginRight: 10 }} variant="outlined">
-//     등록
-//   </Button>
-//   </Link>
-// );
-
 export interface CouponEditContainerProps {
   couponName: string;
   couponPageCode: string;
@@ -49,7 +42,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-
 const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps> = ({
   CouponEditActions,
   couponPeriod,
@@ -60,6 +52,32 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
     e.preventDefault();
     alert('성공');
   }
+
+  //! input Hander 함수들....
+  const handlCouponNameInputChange = (value: string): any => {
+    CouponEditActions.changeCouponName(value);
+  };
+  const handlCouponPageCodeInputChange = (value: string): any => {
+    CouponEditActions.changeCouponPageCode(value);
+  };
+  const handlCouponDescInputChange = (value: string): any => {
+    CouponEditActions.changeCouponDesc(value);
+  };
+  const handlCouponPeriodInputChange = (value: string): any => {
+    CouponEditActions.changeCouponPeriod(value);
+  };
+  const handlCouponDiscountInputChange = (value: string): any => {
+    CouponEditActions.changeCouponDiscount(value);
+  };
+
+  //! 디바운스 함수들 ..
+
+  const dbCouponNameInputChange = debounce(handlCouponNameInputChange, 700);
+  const dbCouponPageCodeInputChange = debounce(handlCouponPageCodeInputChange, 700);
+  const dbCouponDescInputChange = debounce(handlCouponDescInputChange, 700);
+  const dbCouponPeriodInputChange = debounce(handlCouponPeriodInputChange, 700);
+  const dbCouponDiscountInputChange = debounce(handlCouponDiscountInputChange, 700);
+
   return (
     <div>
       <div
@@ -89,7 +107,7 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
               multiline
               onChange={(event): void => {
                 const { value } = event.target;
-                CouponEditActions.changeCouponName(value);
+                dbCouponNameInputChange(value);
               }}
             />
           </div>
@@ -102,7 +120,7 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
               multiline
               onChange={(event): void => {
                 const { value } = event.target;
-                CouponEditActions.changeCouponPageCode(value);
+                dbCouponPageCodeInputChange(value);
               }}
             />
           </div>
@@ -115,7 +133,7 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
               multiline
               onChange={(event): void => {
                 const { value } = event.target;
-                CouponEditActions.changeCouponDesc(value);
+                dbCouponDescInputChange(value);
               }}
             />
           </div>
@@ -128,7 +146,7 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
               multiline
               onChange={(event): void => {
                 const { value } = event.target;
-                CouponEditActions.changeCouponPeriod(value);
+                dbCouponPeriodInputChange(value);
               }}
             />
           </div>
@@ -141,7 +159,7 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
               multiline
               onChange={(event): void => {
                 const { value } = event.target;
-                CouponEditActions.changeCouponDiscount(value);
+                dbCouponDiscountInputChange(value);
               }}
             />
           </div>
