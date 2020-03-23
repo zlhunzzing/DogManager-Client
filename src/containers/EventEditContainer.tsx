@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
 import { actionCreators as eventEditActions, initialState } from '../modules/eventEdit';
-import { actionCreators as eventActions } from '../modules/event';
+import { eventSlice } from '../modules/event';
 import { bindActionCreators } from 'redux';
 
 import axios from 'axios';
@@ -502,11 +502,11 @@ export default connect(
     couponCode: eventEdit.couponCode,
     detailPageUrl: eventEdit.detailPageUrl,
     isChecked: eventEdit.isChecked,
-    selectedEvent: event.selectedEvent,
+    selectedEvent: event.editEventId,
   }),
   dispatch => ({
     EventEditActions: bindActionCreators(eventEditActions, dispatch),
-    EventActions: bindActionCreators(eventActions, dispatch),
+    EventActions: bindActionCreators(eventSlice.actions, dispatch),
   }),
 )(EventEditContainer);
 

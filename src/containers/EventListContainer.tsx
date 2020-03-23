@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
-import { actionCreators as userEventActions } from '../modules/userEvent';
+import { eventSlice } from '../modules/event';
 import { bindActionCreators } from 'redux';
 import { EventData } from '../modules/event';
 
@@ -10,12 +10,12 @@ import axios from 'axios';
 import serverurl from '../server';
 import moment from 'moment';
 
-import { eventCondition } from './AdminEventListContainer';
+// import { eventCondition } from './AdminEventListContainer';
 import UserMenu from '../views/UserMenu';
 
 interface EventListContainerProps {
-  eventLists: EventData[];
-  UserEventActions: typeof userEventActions;
+  userEventList: EventData[];
+  EventActions: any;
 }
 
 // 날짜로 태그 만드는 함수
@@ -29,38 +29,37 @@ function makeTag(startDate: string, endDate: string): string {
 }
 
 const EventListContainer: React.FunctionComponent<EventListContainerProps> = ({
-  eventLists,
-  UserEventActions,
+  userEventList,
+  EventActions,
 }: EventListContainerProps) => {
   // 서버에서 고객용 이벤트리스트 가져오기
   const getEventLists = async () => {
-    const res = await axios.get(serverurl + '/api/user/events/list');
-    const { eventList } = res.data;
-    eventList.forEach((event: any) => {
-      const condition = eventCondition(event.startDate, event.endDate);
-      event.condition = condition;
-    });
-    let filterdList = eventList.filter((element: any) => {
-      return element.condition === '진행중';
-    });
-    if (filterdList.length < 4) {
-      filterdList = eventList.filter((element: any) => {
-        return element.condition === '진행중' || element.condition === '준비중';
-      });
-    }
-    UserEventActions.ChangeEventLists(filterdList);
+    // const res = await axios.get(serverurl + '/api/user/events/list');
+    // const { eventList } = res.data;
+    // eventList.forEach((event: any) => {
+    //   const condition = eventCondition(event.startDate, event.endDate);
+    //   event.condition = condition;
+    // });
+    // let filterdList = eventList.filter((element: any) => {
+    //   return element.condition === '진행중';
+    // });
+    // if (filterdList.length < 4) {
+    //   filterdList = eventList.filter((element: any) => {
+    //     return element.condition === '진행중' || element.condition === '준비중';
+    //   });
+    // }
+    // UserEventActions.ChangeEventLists(filterdList);
   };
 
   useEffect(() => {
-    console.log('유즈이펙트');
-    getEventLists();
+    EventActions.axiosUserEventListRequest();
   }, []);
 
   return (
     <div>
       <UserMenu />
       <div style={{ height: 50 }}></div>
-      {eventLists.map((banner, index) => {
+      {userEventList.map((banner, index) => {
         const detailPageUrl = '/user/event' + banner.detailPageUrl;
         return (
           <div style={{ textAlign: 'center', marginTop: 10 }} key={index}>
@@ -78,10 +77,10 @@ const EventListContainer: React.FunctionComponent<EventListContainerProps> = ({
 };
 
 export default connect(
-  ({ userEvent }: StoreState) => ({
-    eventLists: userEvent.eventLists,
+  ({ event }: StoreState) => ({
+    userEventList: event.userEventList,
   }),
   dispatch => ({
-    UserEventActions: bindActionCreators(userEventActions, dispatch),
+    EventActions: bindActionCreators(eventSlice.actions, dispatch),
   }),
 )(EventListContainer);

@@ -1,3 +1,54 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+import { EventData } from './event';
+
+export interface UserEventState {
+  eventLists: EventData[];
+  nowEvent: null | EventData;
+}
+
+export const initialState: UserEventState = {
+  eventLists: [],
+  nowEvent: null,
+};
+
+export const userEventSlice = createSlice({
+  name: 'userEvent',
+  initialState: initialState,
+  reducers: {
+    axiosUserEventListRequest: (state, action) => {
+      console.log('/api/user/events/list 요청');
+    },
+    axiosUserEventListSuccess: (state, action) => {
+      state.eventLists = action.payload;
+    },
+    axiosUserEventListFailure: (state, action) => {
+      console.log('/api/user/events/list 요청 실패');
+    },
+    axiosUserEventRequest: (state, action) => {
+      console.log('/api/user/events/entry/:url 요청');
+    },
+    axiosUserEventSuccess: (state, action) => {
+      state.nowEvent = action.payload;
+    },
+    axiosUserEventFailure: (state, action) => {
+      console.log('/api/user/events/entry/:url 요청 실패');
+    },
+  },
+});
+
+export const userEventReducer = userEventSlice.reducer;
+export const {
+  axiosUserEventListRequest,
+  axiosUserEventListSuccess,
+  axiosUserEventListFailure,
+  axiosUserEventRequest,
+  axiosUserEventSuccess,
+  axiosUserEventFailure,
+} = userEventSlice.actions;
+
+//////////////////////////////////////////////////////////////////////////////////////
+/*
 import { EventData } from './event';
 
 export interface UserEventState {
@@ -104,3 +155,4 @@ export function userEventReducer(
       return state;
   }
 }
+*/

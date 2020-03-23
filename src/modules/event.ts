@@ -1,3 +1,96 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+export interface EventData {
+  id: number;
+  eventTitle?: string;
+  startDate?: number | undefined;
+  endDate?: number | undefined;
+  detailPageUrl?: string;
+  buttonImage?: string;
+  bannerImage?: string;
+  pageImage?: string;
+  condition?: string;
+}
+
+export interface EventState {
+  adminEventList: EventData[];
+  userEventList: EventData[];
+  editEventId: string;
+  nowEvent: EventData | null;
+  adminFilter: string;
+}
+
+export const initialState: EventState = {
+  adminEventList: [],
+  userEventList: [],
+  editEventId: '',
+  nowEvent: null,
+  adminFilter: '모두',
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+export const eventSlice = createSlice({
+  name: 'event',
+  initialState: initialState,
+  reducers: {
+    axiosAdminEventListRequest: (state, action) => {
+      console.log('/api/admin/events/list 요청');
+    },
+    axiosAdminEventListSuccess: (state, action) => {
+      state.adminEventList = action.payload;
+    },
+    axiosAdminEventListFailure: (state, action) => {
+      console.log('/api/admin/events/list 요청 실패');
+    },
+
+    axiosUserEventListRequest: (state, action) => {
+      console.log('/api/user/events/list 요청');
+    },
+    axiosUserEventListSuccess: (state, action): void => {
+      state.userEventList = action.payload;
+    },
+    axiosUserEventListFailure: (state, action): void => {
+      console.log('/api/user/events/list 요청 실패');
+    },
+
+    axiosUserEventRequest: (state, action) => {
+      console.log('/api/user/events/entry/:url 요청');
+    },
+    axiosUserEventSuccess: (state, action) => {
+      state.nowEvent = action.payload;
+    },
+    axiosUserEventFailure: (state, action) => {
+      console.log('/api/user/events/entry/:url 요청 실패');
+    },
+
+    changeEditEventId: (state, action) => {
+      console.log('선택한 이벤트 아이디 바꾸기');
+      state.editEventId = action.payload;
+    },
+  },
+});
+
+export const eventReducer = eventSlice.reducer;
+export const {
+  axiosAdminEventListRequest,
+  axiosAdminEventListSuccess,
+  axiosAdminEventListFailure,
+
+  axiosUserEventListRequest,
+  axiosUserEventListSuccess,
+  axiosUserEventListFailure,
+
+  axiosUserEventRequest,
+  axiosUserEventSuccess,
+  axiosUserEventFailure,
+
+  changeEditEventId,
+} = eventSlice.actions;
+
+/////////////////////////////////////////////////////////////////////////////////////
+// 툴킷 사용 전 코드
+/*
 export interface EventData {
   id: number;
   eventTitle?: string;
@@ -184,3 +277,4 @@ export function eventReducer(state = initialState, action: EventActionTypes): Ev
       return state;
   }
 }
+*/

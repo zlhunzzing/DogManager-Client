@@ -12,7 +12,7 @@ import AdminEventList from './pages/AdminEventList';
 import AdminEventAdd from './pages/AdminEventAdd';
 import AdminEventEdit from './pages/AdminEventEdit';
 import AdminSupport from './pages/AdminSupport';
-import AdminCoupon from './pages/AdminCoupon';
+import AdminCouponList from './pages/AdminCouponList';
 import AdminCouponEdit from './pages/AdminCouponEdit';
 import CouponList from './pages/CouponList';
 
@@ -33,7 +33,7 @@ function App(): JSX.Element {
         <Route path="/admin/event-add" component={AdminEventAdd} />
         <Route path="/admin/event-edit" component={AdminEventEdit} />
         <Route path="/admin/support" component={AdminSupport} />
-        <Route path="/admin/coupon" component={AdminCoupon} />
+        <Route path="/admin/coupon" component={AdminCouponList} />
         <Route path="/admin/coupon-edit" component={AdminCouponEdit} />
         <Redirect path="*" to="/" />
       </Switch>

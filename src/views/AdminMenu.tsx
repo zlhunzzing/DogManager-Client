@@ -75,7 +75,7 @@ const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
   }
   const menuList: Menu[] = [
     { name: '이벤트 관리', url: '/admin/event-list' },
-    { name: '쿠폰 등록', url: '/admin/coupon' },
+    { name: '쿠폰 관리', url: '/admin/coupon' },
     { name: 'Q&A 관리', url: '/admin/support' },
   ];
 
