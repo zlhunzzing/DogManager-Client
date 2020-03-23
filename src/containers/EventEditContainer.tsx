@@ -221,6 +221,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
+        Authorization: localStorage.getItem('accessToken'), //! 계속 401 에러
       },
     };
 
