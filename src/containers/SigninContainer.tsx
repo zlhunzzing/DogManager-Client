@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { debounce } from 'lodash';
 
 import UserMenu from '../views/UserMenu';
@@ -19,6 +19,7 @@ import server from '../server';
 
 interface SigninContainerProps {
   isAdmin: boolean;
+  isLogin: boolean;
   idInput: string;
   pwInput: string;
   SigninActions: typeof signinActions;
@@ -27,11 +28,13 @@ interface SigninContainerProps {
 
 const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
   isAdmin,
+  isLogin,
   idInput,
   pwInput,
   SigninActions,
   UserActions,
 }: SigninContainerProps) => {
+  //
   let version: string;
   if (isAdmin) {
     version = '관리자';
@@ -60,15 +63,13 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
   );
 
   async function onClickSignin(isAdmin: boolean) {
-    let serverUrl: string;
-
-    if (isAdmin) {
-      serverUrl = server + '/api/admin/signin';
-    } else {
-      serverUrl = server + '/api/user/signin';
-    }
-
     try {
+      let serverUrl: string;
+      if (isAdmin) {
+        serverUrl = server + '/api/admin/signin';
+      } else {
+        serverUrl = server + '/api/user/signin';
+      }
       const res = await axios.post(serverUrl, {
         email: idInput,
         password: pwInput,
@@ -97,59 +98,67 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
         variant="outlined"
         onClick={() => {
           console.log('클릭');
-          onClickSignin(true);
+          onClickSignin(isAdmin);
         }}
       >
         Sign in
       </Button>
     );
   };
-
-  return (
-    <div style={{ textAlign: 'center' }}>
-      <UserMenu />
-      <div style={{ marginTop: 300 }}>{version}로그인</div>
-      <div style={{ marginTop: 10 }}></div>
-      <div>
-        <TextField
-          style={{ width: 400 }}
-          id="outlined-basic"
-          label="Outlined"
-          variant="outlined"
-          onChange={(event): void => {
-            const { value } = event.target;
-            debouncedHandleIdInputChange(value);
-          }}
-        />
+  if (!isLogin) {
+    return (
+      <div style={{ textAlign: 'center' }}>
+        <UserMenu />
+        <div style={{ marginTop: 300 }}>{version}로그인</div>
+        <div style={{ marginTop: 10 }}></div>
+        <div>
+          <TextField
+            style={{ width: 400 }}
+            id="outlined-basic"
+            label="Outlined"
+            variant="outlined"
+            onChange={(event): void => {
+              const { value } = event.target;
+              debouncedHandleIdInputChange(value);
+            }}
+          />
+        </div>
+        <div style={{ marginTop: 10 }}></div>
+        <div>
+          <TextField
+            style={{ width: 400 }}
+            id="outlined-password-input"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            variant="outlined"
+            onChange={(event): void => {
+              const { value } = event.target;
+              debouncedHandlePwInputChange(value);
+            }}
+          />
+        </div>
+        <div style={{ marginTop: 10 }}></div>
+        <div>
+          {isAdmin ? null : signupButton}
+          {signinButton(isAdmin)}
+        </div>
       </div>
-      <div style={{ marginTop: 10 }}></div>
-      <div>
-        <TextField
-          style={{ width: 400 }}
-          id="outlined-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          variant="outlined"
-          onChange={(event): void => {
-            const { value } = event.target;
-            debouncedHandlePwInputChange(value);
-          }}
-        />
-      </div>
-      <div style={{ marginTop: 10 }}></div>
-      <div>
-        {isAdmin ? null : signupButton}
-        {signinButton(isAdmin)}
-      </div>
-    </div>
-  );
+    );
+  } else {
+    if (isAdmin) {
+      return <Redirect to="/admin/event-list" />;
+    } else {
+      return <Redirect to="/" />;
+    }
+  }
 };
 
 export default connect(
-  ({ signin }: StoreState) => ({
+  ({ signin, user }: StoreState) => ({
     idInput: signin.idInput,
     pwInput: signin.pwInput,
+    isLogin: user.isLogin,
   }),
   dispatch => ({
     SigninActions: bindActionCreators(signinActions, dispatch),

@@ -6,13 +6,14 @@ import server from '../server';
 import { EventData } from '../modules/event';
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
-import { actionCreators as userEventActions } from '../modules/userEvent';
+import { userEventSlice } from '../modules/userEvent';
+// import { actionCreators as userEventActions } from '../modules/userEvent';
 import { bindActionCreators } from 'redux';
 
 interface EventContainerProps {
   url: string;
-  nowEvent: EventData | null;
-  UserEventActions: typeof userEventActions;
+  nowEvent?: EventData | null;
+  UserEventActions: any;
 }
 
 const EventContainer: React.FunctionComponent<EventContainerProps> = ({
@@ -20,7 +21,8 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
   UserEventActions,
   nowEvent,
 }: EventContainerProps) => {
-  console.log(nowEvent);
+  //
+
   // 서버에 이벤트 정보 요청하기
   const getUserEvent = async () => {
     const serverurl = server + '/api/user/events/entry/' + url;
@@ -42,26 +44,32 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
         <img style={{ width: '40%' }} src={nowEvent?.pageImage} />
       </div>
 
-      <img
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          left: '30%',
-          width: '40%',
-          height: '7%',
-          border: 'solid 1px',
+      <button
+        onClick={() => {
+          console.log('버튼이 눌렸다');
         }}
-        src={nowEvent?.buttonImage}
-      />
+      >
+        <img
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: '30%',
+            width: '40%',
+            height: '7%',
+            border: 'solid 1px',
+          }}
+          src={nowEvent?.buttonImage}
+        />
+      </button>
     </div>
   );
 };
 
 export default connect(
-  ({ userEvent }: StoreState) => ({
-    nowEvent: userEvent.nowEvent,
+  ({ event }: StoreState) => ({
+    nowEent: event.nowEvent,
   }),
   dispatch => ({
-    UserEventActions: bindActionCreators(userEventActions, dispatch),
+    UserEventActions: bindActionCreators(userEventSlice.actions, dispatch),
   }),
 )(EventContainer);

@@ -9,14 +9,16 @@ import { EventEditState, eventEditReducer as eventEdit } from './eventEdit';
 import { UserEventState, userEventReducer as userEvent } from './userEvent';
 import { UserState, userReducer as user } from './user';
 
+import { CouponState, couponReducer as coupon } from './coupon';
+
 export interface StoreState {
   admin: AdminState;
   event: EventState;
   signup: SignupState;
   eventEdit: EventEditState;
-  userEvent: UserEventState;
   user: UserState;
   signin: SigninState;
+  coupon: CouponState;
 }
 
 export default combineReducers<StoreState>({
@@ -24,7 +26,7 @@ export default combineReducers<StoreState>({
   event,
   signup,
   eventEdit,
-  userEvent,
   user,
   signin,
+  coupon,
 });
