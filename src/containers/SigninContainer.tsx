@@ -73,7 +73,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
         email: idInput,
         password: pwInput,
       });
-      console.log(res);
+      console.log('what-res??:', res);
       localStorage.setItem('accessToken', res.data.token);
       UserActions.changeIsLogin(true); // isLogin true로 바꾸기
     } catch (error) {

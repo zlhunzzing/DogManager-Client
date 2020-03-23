@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 
 // 파일 불러오기
-import server from '../server';
+import { adminCouponPostUrl } from '../server';
 import { StoreState } from '../modules';
 import { actionCreators as couponEditActions } from '../modules/couponEdit';
 
@@ -16,20 +16,13 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
-// {
-//   couponName:
-//   couponCode:
-//   description:
-//   period: (숫자형, 일 기준)
-//   discount:
-// }
-
 export interface CouponEditContainerProps {
   couponName: string;
   couponPageCode: string;
   couponDesc: string;
   couponPeriod: string;
   couponDiscount: string;
+  history: any;
   CouponEditActions: typeof couponEditActions;
 }
 const useStyles = makeStyles((theme: Theme) =>
@@ -44,7 +37,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps> = ({
   CouponEditActions,
+  couponName,
+  couponPageCode,
   couponPeriod,
+  couponDesc,
+  couponDiscount,
+  history,
 }: CouponEditContainerProps) => {
   const classes = useStyles();
 
@@ -78,6 +76,55 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
   const dbCouponPeriodInputChange = debounce(handlCouponPeriodInputChange, 700);
   const dbCouponDiscountInputChange = debounce(handlCouponDiscountInputChange, 700);
 
+  // API 함수 서버에 회원가입정보 post 요청
+  async function handleSubmitCouponEdit(e: React.FormEvent) {
+    e.preventDefault();
+    //? 만약 사용자가 빈칸을 하나라도 남긴다면 경고창
+    if (
+      couponName === '' ||
+      couponPageCode === '' ||
+      couponDesc === '' ||
+      couponPeriod === '' ||
+      couponDiscount === ''
+    ) {
+      alert('데이터를 다 채워주세요~');
+      return;
+      //? 만약 사용자가 쿠폰기간을 숫자로 입력하지 않는다면 경고창
+    } else if (!Number(couponPeriod)) {
+      alert('쿠폰유효기간은 숫자로 입력해주세요');
+      return;
+    }
+    const options = {
+      headers: {
+        //? 토큰을 헤더에 담는다.
+        Authorization: localStorage.getItem('accessToken'),
+        withCredentials: true,
+      },
+    };
+    try {
+      const res = await axios.post(
+        adminCouponPostUrl,
+        {
+          couponName: couponName,
+          couponCode: couponPageCode,
+          description: couponDesc,
+          period: Number(couponPeriod),
+          discount: couponDiscount,
+        },
+        options,
+      );
+      console.log('status', res.status);
+      alert('쿠폰이 등록되었습니다.');
+      history.push('/admin/coupon');
+    } catch (error) {
+      console.log('error????: ', error);
+      if (error.response.data === 'couponName already exist') {
+        alert('쿠폰이름이 이미 존재합니다.');
+      } else if (error.response.data === 'couponCode already exist') {
+        alert('쿠폰코드가  이미 존재합니다.');
+      }
+    }
+  }
   return (
     <div>
       <div
@@ -95,7 +142,7 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
       <Divider />
       <form
         style={{ margin: 20, height: 50, textAlign: 'center', paddingTop: 40 }}
-        onSubmit={handleSubmitCouponFormData}
+        onSubmit={handleSubmitCouponEdit}
       >
         <div className={classes.root}>
           <div style={{ paddingRight: 50, paddingTop: 20, margin: 10 }}>
