@@ -13,6 +13,7 @@ import AdminEventAdd from './pages/AdminEventAdd';
 import AdminEventEdit from './pages/AdminEventEdit';
 import AdminSupport from './pages/AdminSupport';
 import AdminCoupon from './pages/AdminCoupon';
+import AdminCouponEdit from './pages/AdminCouponEdit';
 import CouponList from './pages/CouponList';
 
 // 중첩라우팅?
@@ -33,6 +34,7 @@ function App(): JSX.Element {
         <Route path="/admin/event-edit" component={AdminEventEdit} />
         <Route path="/admin/support" component={AdminSupport} />
         <Route path="/admin/coupon" component={AdminCoupon} />
+        <Route path="/admin/coupon-edit" component={AdminCouponEdit} />
         <Redirect path="*" to="/" />
       </Switch>
     </BrowserRouter>
