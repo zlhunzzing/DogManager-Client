@@ -13,7 +13,7 @@ export const adminEventListUrl = server + '/api/admin/events/list';
 export const adminEventUrl = server + '/api/admin/events/entry'; // /:id
 
 export const userEventListUrl = server + '/api/user/events/list';
-export const userEventUrl = server + '/api/user/events/entry/'; //:url
+export const userEventUrl = server + '/api/user/events/entry'; //:url
 
 export const userCouponListUrl = server + '/api/user/coupon/list';
 export const userCouponPostUrl = server + '/api/user/coupon';

@@ -11,11 +11,13 @@ import { CouponData } from '../modules/coupon';
 
 interface EventListTableProps {
   couponList: CouponData[];
+  handleClickDeleteCoupon(id: number): void;
   history?: any;
 }
 
 const CouponListTable: React.FunctionComponent<EventListTableProps> = ({
   couponList,
+  handleClickDeleteCoupon,
 }: EventListTableProps) => {
   return (
     <div>
@@ -33,7 +35,14 @@ const CouponListTable: React.FunctionComponent<EventListTableProps> = ({
         </TableHead>
         <TableBody>
           {couponList.map((coupon, index) => {
-            return <CouponItem key={index} num={index} coupon={coupon} />;
+            return (
+              <CouponItem
+                key={index}
+                num={index}
+                coupon={coupon}
+                handleClickDeleteCoupon={handleClickDeleteCoupon}
+              />
+            );
           })}
         </TableBody>
       </Table>

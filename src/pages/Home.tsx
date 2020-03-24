@@ -1,8 +1,8 @@
 import React from 'react';
 import HomeContainer from '../containers/HomeContainer';
 
-function Home(): JSX.Element {
+const Home: React.FunctionComponent = () => {
   return <HomeContainer />;
-}
+};
 
 export default Home;

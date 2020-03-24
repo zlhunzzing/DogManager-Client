@@ -13,9 +13,10 @@ export interface EventData {
 }
 
 export interface EventState {
-  adminEventList: EventData[];
+  adminEventList: EventData[] | null;
   userEventList: EventData[];
   editEventId: string;
+  nowEventUrl: string;
   nowEvent: EventData | null;
   adminFilter: string;
 }
@@ -24,6 +25,7 @@ export const initialState: EventState = {
   adminEventList: [],
   userEventList: [],
   editEventId: '',
+  nowEventUrl: '',
   nowEvent: null,
   adminFilter: '모두',
 };
@@ -42,6 +44,7 @@ export const eventSlice = createSlice({
     },
     axiosAdminEventListFailure: (state, action) => {
       console.log('/api/admin/events/list 요청 실패');
+      state.adminEventList = action.payload;
     },
 
     axiosUserEventListRequest: (state, action) => {
@@ -58,10 +61,15 @@ export const eventSlice = createSlice({
       console.log('/api/user/events/entry/:url 요청');
     },
     axiosUserEventSuccess: (state, action) => {
+      console.log('/api/user/events/entry/:url 요청성공');
       state.nowEvent = action.payload;
     },
     axiosUserEventFailure: (state, action) => {
       console.log('/api/user/events/entry/:url 요청 실패');
+    },
+
+    changeNowEventUrl: (state, action) => {
+      state.nowEventUrl = action.payload;
     },
 
     changeEditEventId: (state, action) => {

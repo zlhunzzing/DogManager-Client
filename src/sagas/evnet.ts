@@ -1,4 +1,15 @@
-import { takeLatest, call, put, takeEvery, all } from 'redux-saga/effects';
+import {
+  takeLatest,
+  call,
+  put,
+  takeEvery,
+  all,
+  take,
+  fork,
+  delay,
+} from 'redux-saga/effects';
+import { select } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 
 import moment from 'moment';
 import axios from 'axios';
@@ -42,6 +53,9 @@ export const eventCondition = (start: string, end: string): string => {
 };
 
 //////////////////////////////////////////////////////////////////////////////////////
+// function forwardTo(location: any) {
+//   history.push(location);
+// }
 
 // 서버에 어드민 이벤트 리스트 요청 -> success 액션 발생 (로그인 필요)
 function* axiosAdminEventList$() {
@@ -69,9 +83,11 @@ function* axiosAdminEventList$() {
     });
     yield put({ type: axiosAdminEventListSuccess.type, payload: userEventList });
   } catch (err) {
-    // 실패 로직: 나중에 작성할 것임
+    // 실패 로직: Redirect를 해주고 싶은데 잘 안 됨
     console.log(err);
-    yield put({ type: axiosAdminEventListFailure.type, payload: [] });
+    // yield put(push('/'));
+    // yield call(forwardTo, '/');
+    //  yield put({ type: axiosAdminEventListFailure.type, payload: null });
   }
 }
 
@@ -82,7 +98,7 @@ export function* axiosAdminEventListSaga() {
 // 서버에 수정할 이벤트 상세 정보 요청 -> success 액션 발생
 
 // 서버에 유저 이벤트 리스트 요청 -> success 액션 발생
-function* axiosUserEventList$() {
+function* axiosUserEventList$(): Generator {
   try {
     console.log('saga미들웨어 진입');
     const userEventList = yield call(async () => {
@@ -101,22 +117,28 @@ export function* axiosUserEventListSaga() {
 }
 
 // 서버에 유저 이벤트 상세 정보 요청 -> success 액션 발생
-function* axiosUserEvent$() {
+function* axiosUserEvent$(): Generator {
   try {
+    const getUrl = (state: any) => state.event.nowEventUrl;
+    const url = yield select(getUrl);
     const nowEvent = yield call(async () => {
-      const res = await axios.get(userEventUrl + 'url');
+      const res = await axios.get(userEventUrl + url);
+      console.log('응답', res);
       return res.data;
     });
     yield put({ type: axiosUserEventSuccess.type, payload: nowEvent });
   } catch (err) {
     // 실패 로직: 나중에 작성할 것임
+    yield put({ type: axiosUserEventFailure.type, payload: null });
   }
 }
 
-export function* userEventSaga() {
-  yield takeEvery(axiosUserEventRequest, axiosUserEventList$);
+export function* axiosUserEventSaga(): Generator {
+  yield takeEvery(axiosUserEventRequest, axiosUserEvent$);
 }
 
-export function* eventSaga() {
-  yield all([axiosAdminEventListSaga(), axiosUserEventListSaga()]);
+//////////////////////////////////////////////////////////////////////////////////////
+
+export function* eventSaga(): Generator {
+  yield all([axiosAdminEventListSaga(), axiosUserEventListSaga(), axiosUserEventSaga()]);
 }

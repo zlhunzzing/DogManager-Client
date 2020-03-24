@@ -63,7 +63,12 @@ const EventListContainer: React.FunctionComponent<EventListContainerProps> = ({
         const detailPageUrl = '/user/event' + banner.detailPageUrl;
         return (
           <div style={{ textAlign: 'center', marginTop: 10 }} key={index}>
-            <Link to={detailPageUrl}>
+            <Link
+              to={detailPageUrl}
+              onClick={() => {
+                EventActions.changeNowEventUrl(banner.detailPageUrl);
+              }}
+            >
               <img
                 style={{ width: 500, height: 200, border: 'solid 1px' }}
                 src={banner.bannerImage}
