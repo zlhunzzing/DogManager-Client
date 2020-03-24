@@ -21,6 +21,7 @@ import server from '../server';
 interface SigninContainerProps {
   isAdmin: boolean;
   isLogin: boolean;
+  AdminIsLogin: boolean;
   idInput: string;
   pwInput: string;
   SigninActions: typeof signinActions;
@@ -31,6 +32,7 @@ interface SigninContainerProps {
 const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
   isAdmin,
   isLogin,
+  AdminIsLogin,
   idInput,
   pwInput,
   SigninActions,
@@ -113,7 +115,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
       </Button>
     );
   };
-  if (!isLogin) {
+  if (!isLogin && !AdminIsLogin) {
     return (
       <div style={{ textAlign: 'center' }}>
         <UserMenu />
@@ -153,20 +155,19 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
         </div>
       </div>
     );
+  } else if (AdminIsLogin) {
+    return <Redirect to="/admin/event-list" />;
   } else {
-    if (isAdmin) {
-      return <Redirect to="/admin/event-list" />;
-    } else {
-      return <Redirect to="/" />;
-    }
+    return <Redirect to="/" />;
   }
 };
 
 export default connect(
-  ({ signin, user }: StoreState) => ({
+  ({ signin, user, admin }: StoreState) => ({
     idInput: signin.idInput,
     pwInput: signin.pwInput,
     isLogin: user.isLogin,
+    AdminIsLogin: admin.isLogin,
   }),
   dispatch => ({
     SigninActions: bindActionCreators(signinActions, dispatch),

@@ -62,11 +62,11 @@ const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
     ) {
       return;
     }
-    AdminActions.ChangeMenuDrawer(open);
+    AdminActions.changeMenuDrawerIsOpen(open);
   };
 
   const clickHandleMenuName = (menu: Menu) => (event: React.MouseEvent): void => {
-    AdminActions.ChangeNowMenu(menu['name']);
+    AdminActions.changeNowMenu(menu['name']);
   };
 
   interface Menu {
