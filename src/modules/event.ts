@@ -89,21 +89,33 @@ export const adminEventListSelector = createSelector(
   }, // 상태 1 리턴 함수 모두
   (state: any) => {
     const adminEventList = state.event.adminEventList;
-    return adminEventList.filter((event: any) => {
-      return event.condition === '진행중';
-    });
+    if (adminEventList) {
+      return adminEventList.filter((event: any) => {
+        return event.condition === '진행중';
+      });
+    } else {
+      return [];
+    }
   }, // 상태 2 리턴 함수 '진행중'
   (state: any) => {
     const adminEventList = state.event.adminEventList;
-    return adminEventList.filter((event: any) => {
-      return event.condition === '준비중';
-    });
+    if (adminEventList) {
+      return adminEventList.filter((event: any) => {
+        return event.condition === '준비중';
+      });
+    } else {
+      return [];
+    }
   }, // 상태 3 리턴 함수 '준비중
   (state: any) => {
     const adminEventList = state.event.adminEventList;
-    return adminEventList.filter((event: any) => {
-      return event.condition === '완료';
-    });
+    if (adminEventList) {
+      return adminEventList.filter((event: any) => {
+        return event.condition === '완료';
+      });
+    } else {
+      return [];
+    }
   }, // 상태 4 리턴 함수 '완료'
   (state: any) => {
     return state.event.adminFilter;
