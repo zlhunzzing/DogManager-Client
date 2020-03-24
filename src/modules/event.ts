@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 export interface EventData {
   id: number;
@@ -36,18 +36,18 @@ export const eventSlice = createSlice({
   name: 'event',
   initialState: initialState,
   reducers: {
-    axiosAdminEventListRequest: (state, action) => {
+    axiosAdminEventListRequest: (state, action): void => {
       console.log('/api/admin/events/list 요청');
     },
-    axiosAdminEventListSuccess: (state, action) => {
+    axiosAdminEventListSuccess: (state, action): void => {
       state.adminEventList = action.payload;
     },
-    axiosAdminEventListFailure: (state, action) => {
+    axiosAdminEventListFailure: (state, action): void => {
       console.log('/api/admin/events/list 요청 실패');
       state.adminEventList = action.payload;
     },
 
-    axiosUserEventListRequest: (state, action) => {
+    axiosUserEventListRequest: (state, action): void => {
       console.log('/api/user/events/list 요청');
     },
     axiosUserEventListSuccess: (state, action): void => {
@@ -57,27 +57,79 @@ export const eventSlice = createSlice({
       console.log('/api/user/events/list 요청 실패');
     },
 
-    axiosUserEventRequest: (state, action) => {
+    axiosUserEventRequest: (state, action): void => {
       console.log('/api/user/events/entry/:url 요청');
     },
-    axiosUserEventSuccess: (state, action) => {
+    axiosUserEventSuccess: (state, action): void => {
       console.log('/api/user/events/entry/:url 요청성공');
       state.nowEvent = action.payload;
     },
-    axiosUserEventFailure: (state, action) => {
+    axiosUserEventFailure: (state, action): void => {
       console.log('/api/user/events/entry/:url 요청 실패');
     },
 
-    changeNowEventUrl: (state, action) => {
+    changeNowEventUrl: (state, action): void => {
       state.nowEventUrl = action.payload;
     },
 
-    changeEditEventId: (state, action) => {
+    changeEditEventId: (state, action): void => {
       console.log('선택한 이벤트 아이디 바꾸기');
       state.editEventId = action.payload;
     },
+
+    changeFilter: (state, action): void => {
+      state.adminFilter = action.payload;
+    },
   },
 });
+
+export const adminEventListSelector = createSelector(
+  (state: any) => {
+    return state.event.adminEventList;
+  }, // 상태 1 리턴 함수 모두
+  (state: any) => {
+    const adminEventList = state.event.adminEventList;
+    return adminEventList.filter((event: any) => {
+      return event.condition === '진행중';
+    });
+  }, // 상태 2 리턴 함수 '진행중'
+  (state: any) => {
+    const adminEventList = state.event.adminEventList;
+    return adminEventList.filter((event: any) => {
+      return event.condition === '준비중';
+    });
+  }, // 상태 3 리턴 함수 '준비중
+  (state: any) => {
+    const adminEventList = state.event.adminEventList;
+    return adminEventList.filter((event: any) => {
+      return event.condition === '완료';
+    });
+  }, // 상태 4 리턴 함수 '완료'
+  (state: any) => {
+    return state.event.adminFilter;
+  },
+  // 상태 1, 2, 3이 차례로 들어간다
+  (allEvents, ongoingEvents, preparedEvents, endEvents, adminFilter) => {
+    switch (adminFilter) {
+      case '모두':
+        return allEvents;
+
+      case '진행중':
+        return ongoingEvents;
+
+      case '준비중':
+        return preparedEvents;
+
+      case '완료':
+        return endEvents;
+
+      default:
+        return allEvents;
+    }
+  },
+);
+
+////////////////////////////////////////////////////////////////////////////////////
 
 export const eventReducer = eventSlice.reducer;
 export const {
@@ -94,6 +146,7 @@ export const {
   axiosUserEventFailure,
 
   changeEditEventId,
+  changeFilter,
 } = eventSlice.actions;
 
 /////////////////////////////////////////////////////////////////////////////////////

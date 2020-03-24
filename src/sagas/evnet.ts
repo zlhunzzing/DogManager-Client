@@ -71,14 +71,6 @@ function* axiosAdminEventList$() {
         const condition = eventCondition(event.startDate, event.endDate);
         event.condition = condition;
       });
-      //   if (filter === '모두') {
-      //     EventActions.changeEventList(eventList);
-      //   } else {
-      //     const filterdList = eventList.filter((element: any) => {
-      //       return element.condition === filter;
-      //     });
-      //     EventActions.changeEventList(filterdList);
-      //   }
       return eventList;
     });
     yield put({ type: axiosAdminEventListSuccess.type, payload: userEventList });
@@ -87,7 +79,7 @@ function* axiosAdminEventList$() {
     console.log(err);
     // yield put(push('/'));
     // yield call(forwardTo, '/');
-    //  yield put({ type: axiosAdminEventListFailure.type, payload: null });
+    yield put({ type: axiosAdminEventListFailure.type, payload: null });
   }
 }
 
