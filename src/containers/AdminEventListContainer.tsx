@@ -34,7 +34,7 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
 
   // store에 selectedEvent 바꾸기
   const changeSelectedEvent = (id: string): void => {
-    EventActions.selectEvent(id);
+    EventActions.changeEditEventId(id);
   };
 
   // store에 filter 바꾸기
@@ -44,9 +44,8 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
 
   useEffect(() => {
     EventActions.axiosAdminEventListRequest();
-    // EventActions.selectEvent('');
-    // // getEventLists();
-    // EventEditActions.putOldData(initialState);
+    EventActions.changeEditEventId('');
+    EventEditActions.putOldData(initialState);
   }, []);
 
   if (adminEventList === null) {
