@@ -5,6 +5,7 @@ import { StoreState } from '../modules';
 import { actionCreators as eventEditActions, initialState } from '../modules/eventEdit';
 import { eventSlice } from '../modules/event';
 import { bindActionCreators } from 'redux';
+import { couponSlice, CouponData } from '../modules/coupon';
 
 import axios from 'axios';
 import server from '../server';
@@ -20,6 +21,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { blue } from '@material-ui/core/colors';
+import Button from '@material-ui/core/Button';
 //?
 
 //! material - URL input
@@ -99,6 +101,8 @@ interface EventEditContainerProps {
   EventEditActions: typeof eventEditActions;
   history: any;
   selectedEvent: string | null;
+  adminCouponList: CouponData[];
+  CouponActions: any;
 }
 //! 컴퍼넌트 작성
 const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
@@ -114,10 +118,11 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   isChecked,
   history,
   selectedEvent,
+  adminCouponList,
+  CouponActions,
 }: EventEditContainerProps) => {
   const classes = useStyles();
   const classes2 = useStyles2();
-
   // 서버에서 이벤트 정보 가져오기
   const getEvent = async () => {
     const serverurl = server + '/api/admin/events/entry/' + selectedEvent;
@@ -158,6 +163,10 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     }
   }
 
+  //! axios요청함수를 사용해서 쿠폰 리스트 state에 저장하기
+  useEffect(() => {
+    CouponActions.axiosAdminCouponListRequest();
+  }, []);
   // ! 폼 데이터 제출
   function handleSubmitFormData(e: React.FormEvent): void {
     e.preventDefault();
@@ -221,7 +230,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
-        Authorization: localStorage.getItem('accessToken'), //! 계속 401 에러
+        Authorization: localStorage.getItem('accessToken'),
       },
     };
 
@@ -253,6 +262,60 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     }
   }
 
+  // state 에 가져온 쿠폰 보여주기
+  let couponInput: JSX.Element;
+  if (adminCouponList.length) {
+    couponInput = (
+      <div>
+        <label
+          style={{
+            fontWeight: 'bold',
+            paddingRight: 270,
+            paddingLeft: -6,
+            padding: -4,
+            margin: -240,
+          }}
+        >
+          쿠폰선택
+        </label>
+        <select
+          onChange={(event): void => {
+            const { value } = event.target;
+            EventEditActions.changeCouponCode(value);
+          }}
+        >
+          {' '}
+          <option value="no">쿠폰리스트</option>
+          {adminCouponList.map((coupon, index) => {
+            return (
+              <option key={index} value={'' + coupon.couponCode}>
+                {coupon.couponName}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+    );
+  } else {
+    couponInput = (
+      <div>
+        <label
+          style={{
+            fontWeight: 'bold',
+            paddingRight: 270,
+            paddingLeft: -6,
+            padding: -4,
+            margin: -240,
+          }}
+        >
+          쿠폰선택
+        </label>
+        <select>
+          <option value="no">no coupon</option>
+        </select>
+      </div>
+    );
+  }
   //! props 설정후 true 와 false 으로 값을 넗어준다.
   //! state 에 있는 isChecked 값이 false 면 종료시간이 활성화
   //! state 에 잇는 isChecked 값이 true 면 종료시간이 비활성화
@@ -452,28 +515,30 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
           ></input>
         </div>
         {buttonImgInput}
-        <div className={classes.root}>
-          <div>
+
+        {/* <div>
             <span style={{ fontWeight: 'bold' }}> 하단버튼 URL</span>
             <TextField
               id="standard-textarea"
               placeholder="버튼이미지 URL"
               style={{ paddingRight: 50, paddingTop: 20 }}
               multiline
-              value={couponCode}
               onChange={(event): void => {
                 const { value } = event.target;
                 EventEditActions.changeCouponCode(value);
               }}
             />
-          </div>
-
-          <div>
-            <span style={{ fontWeight: 'bold' }}>상세페이지 URL</span>
+          </div> */}
+        {couponInput}
+        <div className={classes.root}>
+          <div style={{ paddingTop: 40, margin: -10 }}>
+            <span style={{ fontWeight: 'bold', paddingRight: 39, margin: -21 }}>
+              상세페이지 URL
+            </span>
             <TextField
               id="standard-textarea"
               placeholder="상세 연결될 URL"
-              style={{ paddingRight: 65 }}
+              style={{ paddingRight: 80 }}
               multiline
               value={detailPageUrl}
               onChange={(event): void => {
@@ -483,16 +548,20 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             />
           </div>
         </div>
-        <button style={{ margin: 20 }} type="submit">
-          등록/수정
-        </button>
+        <Button
+          style={{ margin: 20, width: 100, marginRight: 10 }}
+          variant="outlined"
+          type="submit"
+        >
+          등록
+        </Button>
       </form>
     </div>
   );
 };
 
 export default connect(
-  ({ eventEdit, event }: StoreState) => ({
+  ({ eventEdit, event, coupon }: StoreState) => ({
     eventTitle: eventEdit.eventTitle,
     startDate: eventEdit.startDate,
     endDate: eventEdit.endDate,
@@ -503,10 +572,12 @@ export default connect(
     detailPageUrl: eventEdit.detailPageUrl,
     isChecked: eventEdit.isChecked,
     selectedEvent: event.editEventId,
+    adminCouponList: coupon.adminCouponList,
   }),
   dispatch => ({
     EventEditActions: bindActionCreators(eventEditActions, dispatch),
     EventActions: bindActionCreators(eventSlice.actions, dispatch),
+    CouponActions: bindActionCreators(couponSlice.actions, dispatch),
   }),
 )(EventEditContainer);
 
