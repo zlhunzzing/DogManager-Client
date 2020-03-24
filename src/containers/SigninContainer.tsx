@@ -6,6 +6,7 @@ import UserMenu from '../views/UserMenu';
 
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
+import { adminSlice } from '../modules/admin';
 import { actionCreators as signinActions } from '../modules/signin';
 import { actionCreators as userActions } from '../modules/user';
 import { bindActionCreators } from 'redux';
@@ -24,6 +25,7 @@ interface SigninContainerProps {
   pwInput: string;
   SigninActions: typeof signinActions;
   UserActions: typeof userActions;
+  AdminActions: any;
 }
 
 const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
@@ -33,6 +35,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
   pwInput,
   SigninActions,
   UserActions,
+  AdminActions,
 }: SigninContainerProps) => {
   //
   let version: string;
@@ -76,7 +79,12 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
       });
       console.log('what-res??:', res);
       localStorage.setItem('accessToken', res.data.token);
-      UserActions.changeIsLogin(true); // isLogin true로 바꾸기
+
+      if (isAdmin) {
+        AdminActions.changeAdminIsLogin(true);
+      } else {
+        UserActions.changeIsLogin(true); // isLogin true로 바꾸기
+      }
     } catch (error) {
       console.log(error.response);
     }
@@ -163,5 +171,6 @@ export default connect(
   dispatch => ({
     SigninActions: bindActionCreators(signinActions, dispatch),
     UserActions: bindActionCreators(userActions, dispatch),
+    AdminActions: bindActionCreators(adminSlice.actions, dispatch),
   }),
 )(SigninContainer);
