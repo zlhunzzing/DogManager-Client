@@ -9,10 +9,6 @@ import { StoreState } from '../modules';
 import { actionCreators as eventEditActions, initialState } from '../modules/eventEdit';
 import { eventSlice } from '../modules/event';
 
-import { bindActionCreators } from 'redux';
-
-import axios from 'axios';
-
 import { couponSlice, CouponData } from '../modules/coupon';
 
 import server from '../server';
@@ -28,7 +24,6 @@ import FormLabel from '@material-ui/core/FormLabel';
 import { blue } from '@material-ui/core/colors';
 
 import Button from '@material-ui/core/Button';
-
 
 //? material - URL input
 const useStyles = makeStyles((theme: Theme) =>
@@ -108,6 +103,8 @@ interface EventEditContainerProps {
   EventEditActions: typeof eventEditActions;
   history: any;
   selectedEvent: string | null;
+  CouponActions: any;
+  adminCouponList: CouponData[];
 }
 //! 컴퍼넌트 작성
 const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
@@ -123,10 +120,11 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   isChecked,
   history,
   selectedEvent,
+  CouponActions,
+  adminCouponList,
 }: EventEditContainerProps) => {
   const classes = useStyles();
   const classes2 = useStyles2();
-
 
   // 서버에서 이벤트 정보 가져오기
 
@@ -172,7 +170,6 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
         break;
     }
   }
-
 
   //? 폼 데이터 제출
 
@@ -270,7 +267,6 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     }
   }
 
-
   // state 에 가져온 쿠폰 보여주기
   function showCouponListInput(): void {
     let couponInput: any;
@@ -306,7 +302,6 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
           </select>
         </div>
       );
-
     } else {
       couponInput = (
         <div>
@@ -553,5 +548,6 @@ export default connect(
   dispatch => ({
     EventEditActions: bindActionCreators(eventEditActions, dispatch),
     EventActions: bindActionCreators(eventSlice.actions, dispatch),
+    CouponActions: bindActionCreators(couponSlice.actions, dispatch),
   }),
 )(EventEditContainer);
