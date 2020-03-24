@@ -1,20 +1,19 @@
+//! 모듈
 import React, { useEffect } from 'react';
-
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import axios from 'axios';
+
+//! 컴포넌트
 import { StoreState } from '../modules';
 import { actionCreators as eventEditActions, initialState } from '../modules/eventEdit';
 import { eventSlice } from '../modules/event';
-import { bindActionCreators } from 'redux';
 import { couponSlice, CouponData } from '../modules/coupon';
-
-import axios from 'axios';
 import server from '../server';
-
+//! Css
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
-
-//? 체크박스  material
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -22,9 +21,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { blue } from '@material-ui/core/colors';
 import Button from '@material-ui/core/Button';
-//?
-
-//! material - URL input
+//? material - URL input
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -35,8 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-
-//! material- 시간날짜input
+//? material- 시간날짜input
 const useStyles2 = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -52,6 +48,10 @@ const useStyles2 = makeStyles((theme: Theme) =>
     },
   }),
 );
+//? 할일
+//? 이미지 미리보기 함수 하나로 합치기
+//? select box material 적용하기
+//? 컴퍼넌트 나누기 form view 넣기 나누기
 
 // 날짜시간데이터 value "2020-03-18T23:00" -> DB 형식으로
 export function makeDateTimeForm(input: string): string {
@@ -355,47 +355,25 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       />
     );
   }
-  //! 이미지파일업로드 미리보기
-  let pageImgInput: JSX.Element | null;
-  if (typeof pageImage === 'string') {
-    pageImgInput = null;
-  } else {
-    if (pageImage) {
-      const pageUrl = URL.createObjectURL(pageImage);
-      pageImgInput = <img style={{ width: 400, height: 250 }} src={pageUrl}></img>;
+  //? 미리보기핸들러함수 (이미지,베너페이지,하단버튼 업로드)
+  // 인자로 file {} 받는다.
+  // 만약 값이 string 이면 이미지를 업로드를 한상태가아니기때문에 null
+  // 그게 아니면 Url.createObjectUrl 사용해서 인자로 받은 파일에 Url를 뽑아낸다.
+  // 뽑아낸 URL은 img 속성 src 값으로 만든다. 그러면 갑이 보여진다.
+  // 없을때는 disPlay:'none'
+  function handleChangePreviewImageFile(image: File | null | Blob | string): void {
+    let ret: any;
+    if (typeof image === 'string') {
+      ret = null;
     } else {
-      pageImgInput = <img style={{ display: 'none' }}></img>;
+      if (image) {
+        const pageUrl = URL.createObjectURL(image);
+        ret = <img style={{ width: 400, height: 250 }} src={pageUrl}></img>;
+      } else {
+        ret = <img style={{ display: 'none' }}></img>;
+      }
     }
-  }
-
-  //! 배너페이지이미지업로드 미리보기
-  let bannerImgInput: JSX.Element | null;
-  if (typeof bannerImage === 'string') {
-    bannerImgInput = null;
-  } else {
-    if (bannerImage) {
-      const bannerUrl = URL.createObjectURL(bannerImage);
-
-      bannerImgInput = <img style={{ width: 400, height: 250 }} src={bannerUrl}></img>;
-    } else {
-      bannerImgInput = <img style={{ display: 'none' }}></img>;
-    }
-  }
-
-  //! 하단버튼이미지업로드 미리보기
-  let buttonImgInput: JSX.Element | null;
-  if (typeof buttonImage === 'string') {
-    buttonImgInput = null;
-  } else {
-    if (buttonImage) {
-      const buttonInputUrl = URL.createObjectURL(buttonImage);
-
-      buttonImgInput = (
-        <img style={{ width: 400, height: 250 }} src={buttonInputUrl}></img>
-      );
-    } else {
-      buttonImgInput = <img style={{ display: 'none' }}></img>;
-    }
+    return ret;
   }
 
   return (
@@ -423,7 +401,6 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             <span style={{ fontWeight: 'bold', paddingRight: 20 }}>이벤트 이름</span>
             <TextField
               id="standard-textarea"
-              // label="타이틀"
               placeholder="타이틀을 적어주세요"
               style={{ paddingRight: 80 }}
               value={eventTitle}
@@ -484,7 +461,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             }}
           ></input>
         </div>
-        {pageImgInput}
+        {handleChangePreviewImageFile(pageImage)}
         <div>
           <span style={{ fontWeight: 'bold' }}>배너페이지 업로드</span>
           <input
@@ -499,7 +476,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             }}
           ></input>
         </div>
-        {bannerImgInput}
+        {handleChangePreviewImageFile(bannerImage)}
         <div style={{ paddingBottom: 30 }}>
           <span style={{ fontWeight: 'bold' }}>하단버튼</span>
           <input
@@ -514,21 +491,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             }}
           ></input>
         </div>
-        {buttonImgInput}
-
-        {/* <div>
-            <span style={{ fontWeight: 'bold' }}> 하단버튼 URL</span>
-            <TextField
-              id="standard-textarea"
-              placeholder="버튼이미지 URL"
-              style={{ paddingRight: 50, paddingTop: 20 }}
-              multiline
-              onChange={(event): void => {
-                const { value } = event.target;
-                EventEditActions.changeCouponCode(value);
-              }}
-            />
-          </div> */}
+        {handleChangePreviewImageFile(buttonImage)}
         {couponInput}
         <div className={classes.root}>
           <div style={{ paddingTop: 40, margin: -10 }}>
