@@ -2,7 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 
-const UserMenu: React.FunctionComponent = () => {
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { userSlice } from '../modules/user';
+
+interface UserMenuProps {
+  isLogin?: boolean;
+  UserActions: any;
+}
+
+const UserMenu: React.FunctionComponent<UserMenuProps> = ({
+  isLogin,
+  UserActions,
+}: UserMenuProps) => {
   return (
     <div>
       <div style={{ height: 50 }}>
@@ -18,9 +30,21 @@ const UserMenu: React.FunctionComponent = () => {
         <Link to="/user/coupon" style={{ textDecoration: 'none' }}>
           <div style={{ float: 'left', marginRight: 30 }}> Coupon </div>
         </Link>
-        <Link to="/user/signin" style={{ textDecoration: 'none' }}>
-          <div style={{ float: 'left', marginRight: 30 }}>Signin</div>
-        </Link>
+        {isLogin ? (
+          <div
+            style={{ float: 'left', marginRight: 30 }}
+            onClick={() => {
+              localStorage.removeItem('accessToken');
+              UserActions.changeIsLogin(false);
+            }}
+          >
+            Signout
+          </div>
+        ) : (
+          <Link to="/user/signin" style={{ textDecoration: 'none' }}>
+            <div style={{ float: 'left', marginRight: 30 }}>Signin</div>
+          </Link>
+        )}
         <Link to="/admin/signin" style={{ textDecoration: 'none' }}>
           <div style={{ float: 'left' }}>Admin Mode</div>
         </Link>
@@ -30,4 +54,9 @@ const UserMenu: React.FunctionComponent = () => {
   );
 };
 
-export default UserMenu;
+export default connect(
+  () => ({}),
+  dispatch => ({
+    UserActions: bindActionCreators(userSlice.actions, dispatch),
+  }),
+)(UserMenu);

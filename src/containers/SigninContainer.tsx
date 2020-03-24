@@ -72,45 +72,19 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
         password: pwInput,
       });
     } else {
+      SigninActions.axiosUserSigninRequest({
+        email: idInput,
+        password: pwInput,
+      });
     }
-
-    // try {
-    //   let serverUrl: string;
-    //   if (isAdmin) {
-    //     serverUrl = server + '/api/admin/signin';
-    //   } else {
-    //     serverUrl = server + '/api/user/signin';
-    //   }
-    //   const res = await axios.post(serverUrl, {
-    //     email: idInput,
-    //     password: pwInput,
-    //   });
-    //   console.log('what-res??:', res);
-    //   localStorage.setItem('accessToken', res.data.token);
-
-    //   if (isAdmin) {
-    //     AdminActions.changeAdminIsLogin(true);
-    //   } else {
-    //     UserActions.changeIsLogin(true); // isLogin true로 바꾸기
-    //   }
-    // } catch (error) {
-    //   console.log(error.response);
-    // }
   }
 
   const signinButton = (isAdmin: boolean): JSX.Element => {
-    let url: string;
-    if (isAdmin) {
-      url = '/admin/event-list';
-    } else {
-      url = '/';
-    }
     return (
       <Button
         style={{ width: 100, marginRight: 10 }}
         variant="outlined"
         onClick={() => {
-          console.log('클릭');
           onClickSignin(isAdmin);
         }}
       >
@@ -118,10 +92,11 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
       </Button>
     );
   };
+
   if (!isLogin) {
     return (
       <div style={{ textAlign: 'center' }}>
-        <UserMenu />
+        <UserMenu isLogin={isLogin} />
         <div style={{ marginTop: 300 }}>{version}로그인</div>
         <div style={{ marginTop: 10 }}></div>
         <div>

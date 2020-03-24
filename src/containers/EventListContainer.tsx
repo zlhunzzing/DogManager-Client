@@ -15,6 +15,7 @@ import UserMenu from '../views/UserMenu';
 interface EventListContainerProps {
   userEventList: EventData[];
   EventActions: any;
+  isLogin: boolean;
 }
 
 // 날짜로 태그 만드는 함수
@@ -30,6 +31,7 @@ function makeTag(startDate: string, endDate: string): string {
 const EventListContainer: React.FunctionComponent<EventListContainerProps> = ({
   userEventList,
   EventActions,
+  isLogin,
 }: EventListContainerProps) => {
   //
   useEffect(() => {
@@ -38,7 +40,7 @@ const EventListContainer: React.FunctionComponent<EventListContainerProps> = ({
 
   return (
     <div>
-      <UserMenu />
+      <UserMenu isLogin={isLogin} />
       <div style={{ height: 50 }}></div>
       {userEventList.map((banner, index) => {
         const detailPageUrl = '/user/event' + banner.detailPageUrl;
@@ -63,8 +65,9 @@ const EventListContainer: React.FunctionComponent<EventListContainerProps> = ({
 };
 
 export default connect(
-  ({ event }: StoreState) => ({
+  ({ event, user }: StoreState) => ({
     userEventList: event.userEventList,
+    isLogin: user.isLogin,
   }),
   dispatch => ({
     EventActions: bindActionCreators(eventSlice.actions, dispatch),

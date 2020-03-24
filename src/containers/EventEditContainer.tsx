@@ -130,7 +130,11 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
 
   const getEvent = async () => {
     const serverurl = server + '/api/admin/events/entry/' + selectedEvent;
-    const res = await axios.get(serverurl);
+    const res = await axios.get(serverurl, {
+      headers: {
+        Authorization: localStorage.getItem('accessToken'),
+      },
+    });
     EventEditActions.putOldData(res.data);
     // 체크박스 반영하면 오류나는데 왜그런지;
     if (res.data.endDate === '') {
