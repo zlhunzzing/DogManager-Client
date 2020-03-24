@@ -1,3 +1,45 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+export interface AdminState {
+  menuDrawerIsOpen: boolean;
+  isLogin: boolean;
+  nowMenu: string;
+}
+
+export const initialState: AdminState = {
+  menuDrawerIsOpen: false,
+  isLogin: false,
+  nowMenu: '이벤트 관리',
+};
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+export const adminSlice = createSlice({
+  name: 'admin',
+  initialState: initialState,
+  reducers: {
+    changeMenuDrawerIsOpen: (state, action): void => {
+      state.menuDrawerIsOpen = action.payload;
+    },
+    changeAdminIsLogin: (state, action): void => {
+      state.isLogin = action.payload;
+    },
+    changeNowMenu: (state, action): void => {
+      state.nowMenu = action.payload;
+    },
+  },
+});
+
+export const adminReducer = adminSlice.reducer;
+export const {
+  changeMenuDrawerIsOpen,
+  changeAdminIsLogin,
+  changeNowMenu,
+} = adminSlice.actions;
+
+///////////////////////////////////////////////////////////////////////////////////////
+// 툴킷 사용 전 코드
+/*
 export interface AdminState {
   menuDrawerIsOpen: boolean;
   nowMenu: string;
@@ -70,3 +112,4 @@ export function adminReducer(state = initialState, action: AdminActionTypes): Ad
       return state;
   }
 }
+*/

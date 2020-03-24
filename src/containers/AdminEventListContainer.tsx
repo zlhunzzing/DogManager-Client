@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { StoreState } from '../modules';
-import { eventSlice, EventData } from '../modules/event';
+import { eventSlice, EventData, adminEventListSelector } from '../modules/event';
 
 import { actionCreators as eventEditActions, initialState } from '../modules/eventEdit';
 import { bindActionCreators } from 'redux';
@@ -29,6 +29,9 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
   history,
   EventEditActions,
 }: EventListTableProps) => {
+  const filteredEventList = useSelector(adminEventListSelector);
+  console.log('셀렉터', filteredEventList);
+
   // store에 selectedEvent 바꾸기
   const changeSelectedEvent = (id: string): void => {
     EventActions.selectEvent(id);
@@ -46,13 +49,18 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
     // EventEditActions.putOldData(initialState);
   }, []);
 
+  if (adminEventList === null) {
+    alert('접근 권한이 없습니다.');
+    return <Redirect to="/"></Redirect>;
+  }
+
   return (
     <div>
       <AdminMenu />
       <div style={{ marginTop: 10 }}></div>
       <EventListMenu filter={adminFilter} changeFilter={changeFilter} />
       <EventListTable
-        eventList={adminEventList}
+        eventList={filteredEventList}
         changeSelectedEvent={changeSelectedEvent}
         history={history}
       />

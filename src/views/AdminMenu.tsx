@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
-import { actionCreators as adminActions } from '../modules/admin';
+import { adminSlice } from '../modules/admin';
 import { bindActionCreators } from 'redux';
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface AdminMenuProps {
   nowMenu: string;
   menuDrawerIsOpen: boolean;
-  AdminActions: typeof adminActions;
+  AdminActions: any;
 }
 
 const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
@@ -130,7 +130,14 @@ const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
             {nowMenu}
           </Typography>
           <Link to="/">
-            <Button color="inherit" className={classes.logout}>
+            <Button
+              color="inherit"
+              className={classes.logout}
+              onClick={() => {
+                localStorage.removeItem('accessToken');
+                AdminActions.changeAdminIsLogin(false);
+              }}
+            >
               로그아웃
             </Button>
           </Link>
@@ -143,9 +150,10 @@ const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
 export default connect(
   ({ admin }: StoreState) => ({
     menuDrawerIsOpen: admin.menuDrawerIsOpen,
+    isLogin: admin.isLogin,
     nowMenu: admin.nowMenu,
   }),
   dispatch => ({
-    AdminActions: bindActionCreators(adminActions, dispatch),
+    AdminActions: bindActionCreators(adminSlice.actions, dispatch),
   }),
 )(AdminMenu);

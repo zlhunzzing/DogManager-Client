@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Home from './pages/Home';
+import HomeContainer from './containers/HomeContainer';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import EventList from './pages/EventList';
@@ -21,7 +22,7 @@ function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact component={HomeContainer} />
         <Route path="/user/signin" component={Signin} />
         <Route path="/user/signup" component={Signup} />
         <Route path="/user/event-list" component={EventList} />

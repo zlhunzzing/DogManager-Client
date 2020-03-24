@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
-import { eventSlice } from '../modules/event';
+import { eventSlice, EventData } from '../modules/event';
 import { bindActionCreators } from 'redux';
-import { EventData } from '../modules/event';
 
-import axios from 'axios';
-import serverurl from '../server';
 import moment from 'moment';
 
-// import { eventCondition } from './AdminEventListContainer';
 import UserMenu from '../views/UserMenu';
+
+//////////////////////////////////////////////////////////////////////////////////////
 
 interface EventListContainerProps {
   userEventList: EventData[];
@@ -32,25 +31,7 @@ const EventListContainer: React.FunctionComponent<EventListContainerProps> = ({
   userEventList,
   EventActions,
 }: EventListContainerProps) => {
-  // 서버에서 고객용 이벤트리스트 가져오기
-  const getEventLists = async () => {
-    // const res = await axios.get(serverurl + '/api/user/events/list');
-    // const { eventList } = res.data;
-    // eventList.forEach((event: any) => {
-    //   const condition = eventCondition(event.startDate, event.endDate);
-    //   event.condition = condition;
-    // });
-    // let filterdList = eventList.filter((element: any) => {
-    //   return element.condition === '진행중';
-    // });
-    // if (filterdList.length < 4) {
-    //   filterdList = eventList.filter((element: any) => {
-    //     return element.condition === '진행중' || element.condition === '준비중';
-    //   });
-    // }
-    // UserEventActions.ChangeEventLists(filterdList);
-  };
-
+  //
   useEffect(() => {
     EventActions.axiosUserEventListRequest();
   }, []);

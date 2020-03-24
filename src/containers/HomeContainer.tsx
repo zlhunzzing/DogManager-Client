@@ -1,14 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import UserMenu from '../views/UserMenu';
 
-import Button from '@material-ui/core/Button';
-
 const HomeContainer: React.FunctionComponent = () => {
-  // 로그인 버튼 누를 때
-
-  // 관리자 모드 누를 때
   return (
     <div>
       <UserMenu />
