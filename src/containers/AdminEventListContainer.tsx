@@ -59,7 +59,7 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
       <div style={{ marginTop: 10 }}></div>
       <EventListMenu filter={adminFilter} changeFilter={changeFilter} />
       <EventListTable
-        eventList={filteredEventList}
+        eventList={filteredEventList ? filteredEventList : []}
         changeSelectedEvent={changeSelectedEvent}
         history={history}
       />
