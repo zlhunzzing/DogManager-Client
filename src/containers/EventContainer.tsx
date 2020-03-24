@@ -1,75 +1,73 @@
 import React, { useEffect } from 'react';
 
 import UserMenu from '../views/UserMenu';
-import axios from 'axios';
-import server from '../server';
-import { EventData } from '../modules/event';
+
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
-import { userEventSlice } from '../modules/userEvent';
-// import { actionCreators as userEventActions } from '../modules/userEvent';
+import { eventSlice, EventData } from '../modules/event';
+import { couponSlice } from '../modules/coupon';
 import { bindActionCreators } from 'redux';
 
+//////////////////////////////////////////////////////////////////////////////////////
+
 interface EventContainerProps {
-  url: string;
-  nowEvent?: EventData | null;
-  UserEventActions: any;
+  nowEvent: EventData | null;
+  EventActions: any;
+  CouponActions: any;
+  isLogin: boolean;
 }
 
 const EventContainer: React.FunctionComponent<EventContainerProps> = ({
-  url,
-  UserEventActions,
   nowEvent,
+  EventActions,
+  CouponActions,
+  isLogin,
 }: EventContainerProps) => {
   //
-
-  // 서버에 이벤트 정보 요청하기
-  const getUserEvent = async () => {
-    const serverurl = server + '/api/user/events/entry/' + url;
-    const res = await axios.get(serverurl);
-    UserEventActions.ChangeNowEvent(res.data);
-  };
-
-  // 이벤트 리스트 업데이트 반영하는 로직
   useEffect(() => {
-    console.log('이벤트상세페이지업데이트');
-    getUserEvent();
+    EventActions.axiosUserEventRequest();
   }, []);
 
   return (
     <div>
       <UserMenu />
       <div style={{ textAlign: 'center' }}>
-        <div>이벤트 상세페이지</div>
-        <img style={{ width: '40%' }} src={nowEvent?.pageImage} />
+        {nowEvent ? <img style={{ width: '40%' }} src={nowEvent.pageImage} /> : null}
       </div>
-
-      <button
-        onClick={() => {
-          console.log('버튼이 눌렸다');
-        }}
-      >
-        <img
-          style={{
-            position: 'fixed',
-            bottom: 0,
-            left: '30%',
-            width: '40%',
-            height: '7%',
-            border: 'solid 1px',
+      {nowEvent ? (
+        <button
+          onClick={() => {
+            if (isLogin) {
+              CouponActions.axiosUserCouponPostRequest();
+            } else {
+              alert('로그인이 필요합니다.');
+            }
           }}
-          src={nowEvent?.buttonImage}
-        />
-      </button>
+        >
+          <img
+            style={{
+              position: 'fixed',
+              bottom: 0,
+              left: '30%',
+              width: '40%',
+              height: '7%',
+              border: 'solid 1px',
+            }}
+            src={nowEvent.buttonImage}
+          />
+        </button>
+      ) : null}
     </div>
   );
 };
 
 export default connect(
-  ({ event }: StoreState) => ({
-    nowEent: event.nowEvent,
+  ({ event, user }: StoreState) => ({
+    nowEvent: event.nowEvent,
+    isLogin: user.isLogin,
   }),
   dispatch => ({
-    UserEventActions: bindActionCreators(userEventSlice.actions, dispatch),
+    EventActions: bindActionCreators(eventSlice.actions, dispatch),
+    CouponActions: bindActionCreators(couponSlice.actions, dispatch),
   }),
 )(EventContainer);

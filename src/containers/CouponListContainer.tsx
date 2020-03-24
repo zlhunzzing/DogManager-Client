@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { StoreState } from '../modules';
-import { CouponData } from '../modules/coupon';
+import { CouponData, couponSlice } from '../modules/coupon';
 
 import UserMenu from '../views/UserMenu';
 import { Redirect } from 'react-router-dom';
@@ -10,18 +11,21 @@ import { Redirect } from 'react-router-dom';
 interface CouponListContainerProps {
   isLogin: boolean;
   userCouponList?: CouponData[];
+  CouponActions: any;
 }
 
 const CouponListContainer: React.FunctionComponent<CouponListContainerProps> = ({
   isLogin,
   userCouponList,
+  CouponActions,
 }: CouponListContainerProps) => {
   //
+
   useEffect(() => {
     if (isLogin) {
-      //서버요청
+      CouponActions.axiosUserCouponListRequest();
     }
-  });
+  }, []);
   if (isLogin) {
     return (
       <div>
@@ -60,5 +64,7 @@ export default connect(
     isLogin: user.isLogin,
     userCouponList: coupon.userCouponList,
   }),
-  dispatch => ({}),
+  dispatch => ({
+    CouponActions: bindActionCreators(couponSlice.actions, dispatch),
+  }),
 )(CouponListContainer);

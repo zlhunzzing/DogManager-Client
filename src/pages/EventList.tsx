@@ -1,8 +1,8 @@
 import React from 'react';
 import EventListContainer from '../containers/EventListContainer';
 
-function EventList(): JSX.Element {
+const EventList: React.FunctionComponent = () => {
   return <EventListContainer />;
-}
+};
 
 export default EventList;

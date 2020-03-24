@@ -11,7 +11,7 @@ import TableCell from '@material-ui/core/TableCell';
 import EventItem from '../views/EventItem';
 
 interface EventListTableProps {
-  eventList: EventData[];
+  eventList: EventData[] | null;
   changeSelectedEvent: (id: string) => void;
   history: any;
 }
@@ -37,17 +37,19 @@ const EventListTable: React.FunctionComponent<EventListTableProps> = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {eventList.map((event, index) => {
-          return (
-            <EventItem
-              key={index}
-              num={index}
-              event={event}
-              changeSelectedEvent={changeSelectedEvent}
-              history={history}
-            />
-          );
-        })}
+        {eventList
+          ? eventList.map((event, index) => {
+              return (
+                <EventItem
+                  key={index}
+                  num={index}
+                  event={event}
+                  changeSelectedEvent={changeSelectedEvent}
+                  history={history}
+                />
+              );
+            })
+          : null}
       </TableBody>
     </Table>
   );

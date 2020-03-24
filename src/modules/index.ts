@@ -14,22 +14,22 @@ import { CouponState, couponReducer as coupon } from './coupon';
 
 export interface StoreState {
   admin: AdminState;
-  event: EventState;
-  signup: SignupState;
-  eventEdit: EventEditState;
   user: UserState;
+  signup: SignupState;
   signin: SigninState;
+  event: EventState;
+  eventEdit: EventEditState;
   coupon: CouponState;
   couponEdit: CouponEditState;
 }
 
 export default combineReducers<StoreState>({
   admin,
-  event,
-  signup,
-  eventEdit,
   user,
+  signup,
   signin,
+  event,
+  eventEdit,
   coupon,
   couponEdit,
 });

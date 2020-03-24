@@ -23,10 +23,13 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
   CouponActions,
 }: AdminCouponListContainerContainerProps) => {
   //
-
   useEffect(() => {
     CouponActions.axiosAdminCouponListRequest();
   }, []);
+
+  function handleClickDeleteCoupon(id: number) {
+    CouponActions.axiosAdminCouponDeleteRequest(id);
+  }
 
   return (
     <div>
@@ -39,7 +42,10 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
           </Button>
         </Link>
       </div>
-      <CouponListTable couponList={adminCouponList} />
+      <CouponListTable
+        couponList={adminCouponList}
+        handleClickDeleteCoupon={handleClickDeleteCoupon}
+      />
     </div>
   );
 };

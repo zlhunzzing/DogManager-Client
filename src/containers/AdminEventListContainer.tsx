@@ -10,11 +10,12 @@ import { bindActionCreators } from 'redux';
 import AdminMenu from '../views/AdminMenu';
 import EventListMenu from '../views/EventListMenu';
 import EventListTable from '../views/EventListTable';
+import { Redirect } from 'react-router-dom';
 
 //////////////////////////////////////////////////////////////////////////////////////
 
 interface EventListTableProps {
-  adminEventList: EventData[];
+  adminEventList: EventData[] | null;
   adminFilter: string;
   EventActions: any;
   EventEditActions: typeof eventEditActions;
@@ -28,25 +29,6 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
   history,
   EventEditActions,
 }: EventListTableProps) => {
-  // 서버에서 이벤트리스트 받아서 sotre에 업데이트
-  // const getEventLists = async () => {
-  //   const res = await axios.get(serverurl + '/api/admin/events/list');
-  //   const { eventList } = res.data;
-  //   eventList.forEach((event: any) => {
-  //     const condition = eventCondition(event.startDate, event.endDate);
-  //     event.condition = condition;
-  //   });
-  //   console.log(eventList);
-  //   if (filter === '모두') {
-  //     EventActions.changeEventList(eventList);
-  //   } else {
-  //     const filterdList = eventList.filter((element: any) => {
-  //       return element.condition === filter;
-  //     });
-  //     EventActions.changeEventList(filterdList);
-  //   }
-  // };
-
   // store에 selectedEvent 바꾸기
   const changeSelectedEvent = (id: string): void => {
     EventActions.selectEvent(id);
@@ -56,12 +38,9 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
   const changeFilter = (filter: string): void => {
     EventActions.changeFilter(filter);
   };
-  // Similar to componentDidMount and componentDidUpdate
-  // 함수형 컴포넌트에서 라이프사이클 함수를 사용(Hook)
-  // 리액트 훅?
+
   useEffect(() => {
     EventActions.axiosAdminEventListRequest();
-    // EventActions.axiosEventListRequest();
     // EventActions.selectEvent('');
     // // getEventLists();
     // EventEditActions.putOldData(initialState);
