@@ -21,6 +21,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { blue } from '@material-ui/core/colors';
 import Button from '@material-ui/core/Button';
+
 //? material - URL input
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,11 +50,9 @@ const useStyles2 = makeStyles((theme: Theme) =>
   }),
 );
 //? 할일
-//? 이미지 미리보기 함수 하나로 합치기
-//? select box material 적용하기
 //? 컴퍼넌트 나누기 form view 넣기 나누기
 
-// 날짜시간데이터 value "2020-03-18T23:00" -> DB 형식으로
+//? 날짜시간데이터 value "2020-03-18T23:00" -> DB 형식으로
 export function makeDateTimeForm(input: string): string {
   if (input === '') {
     return '';
@@ -69,7 +68,7 @@ export function makeDateTimeForm(input: string): string {
   return ss;
 }
 
-// 날짜시간데이터 DB 형식 -> value
+//? 날짜시간데이터 DB 형식 -> value
 export function fillDateTimeInput(stringDate: string): string {
   if (stringDate === '') {
     return '';
@@ -123,12 +122,12 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
 }: EventEditContainerProps) => {
   const classes = useStyles();
   const classes2 = useStyles2();
-  // 서버에서 이벤트 정보 가져오기
+
+  //? 서버에서 이벤트 정보 가져오기
   const getEvent = async () => {
     const serverurl = server + '/api/admin/events/entry/' + selectedEvent;
     const res = await axios.get(serverurl);
     EventEditActions.putOldData(res.data);
-    console.log(res.data.endDate);
     // 체크박스 반영하면 오류나는데 왜그런지;
     if (res.data.endDate === '') {
       EventEditActions.changeIsChecked(true);
@@ -139,16 +138,21 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     EventEditActions.changeEndDate(fillDateTimeInput(res.data.endDate));
   };
 
-  // 리액트 훅?
+  //? 리액트 훅
+  // 모든 함수들이 작동이 끝나면 useEffect 시작
+  // 1. getEvent() 서버에서 이벤트 정보 가져오기
+  // 2. state -> selectedEvent 채워져 있다면  기존에 데이터들을 가져온다.
+  // 3. coupon등록되어잇는 list 들을 모두 가져오기 위해 request from coupon.ts(toolkit)함수를 사용한다.
   useEffect(() => {
     if (selectedEvent !== '') {
       getEvent();
     } else {
       EventEditActions.putOldData(initialState);
     }
+    CouponActions.axiosAdminCouponListRequest();
   }, []);
 
-  // 이미지 업로드 함수
+  //? 이미지 업로드 함수
   function handleChangeImageFile(image: File, name: string): void {
     switch (name) {
       case 'pageImage':
@@ -163,11 +167,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     }
   }
 
-  //! axios요청함수를 사용해서 쿠폰 리스트 state에 저장하기
-  useEffect(() => {
-    CouponActions.axiosAdminCouponListRequest();
-  }, []);
-  // ! 폼 데이터 제출
+  //? 폼 데이터 제출
   function handleSubmitFormData(e: React.FormEvent): void {
     e.preventDefault();
     if (startDate.length > 16 || endDate.length > 16) {
@@ -263,97 +263,104 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   }
 
   // state 에 가져온 쿠폰 보여주기
-  let couponInput: JSX.Element;
-  if (adminCouponList.length) {
-    couponInput = (
-      <div>
-        <label
-          style={{
-            fontWeight: 'bold',
-            paddingRight: 270,
-            paddingLeft: -6,
-            padding: -4,
-            margin: -240,
+  function showCouponListInput(): void {
+    let couponInput: any;
+    if (adminCouponList.length) {
+      couponInput = (
+        <div>
+          <label
+            style={{
+              fontWeight: 'bold',
+              paddingRight: 270,
+              paddingLeft: -6,
+              padding: -4,
+              margin: -240,
+            }}
+          >
+            쿠폰선택
+          </label>
+          <select
+            onChange={(event): void => {
+              const { value } = event.target;
+              EventEditActions.changeCouponCode(value);
+            }}
+          >
+            {' '}
+            <option value="no">쿠폰리스트</option>
+            {adminCouponList.map((coupon, index) => {
+              return (
+                <option key={index} value={'' + coupon.couponCode}>
+                  {coupon.couponName}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      );
+    } else {
+      couponInput = (
+        <div>
+          <label
+            style={{
+              fontWeight: 'bold',
+              paddingRight: 270,
+              paddingLeft: -6,
+              padding: -4,
+              margin: -240,
+            }}
+          >
+            쿠폰선택
+          </label>
+          <select>
+            <option value="no">no coupon</option>
+          </select>
+        </div>
+      );
+    }
+    return couponInput;
+  }
+
+  //? props 설정후 true 와 false 으로 값을 넗어준다.
+  // state 에 있는 isChecked 값이 false 면 종료시간이 활성화
+  // state 에 잇는 isChecked 값이 true 면 종료시간이 비활성화
+  function showEndDate() {
+    let endDateInput: any;
+    if (isChecked) {
+      endDateInput = (
+        <TextField
+          id="datetime-local"
+          label="종료일시"
+          type="datetime-local"
+          disabled
+          className={classes2.textField}
+          InputLabelProps={{
+            shrink: true,
           }}
-        >
-          쿠폰선택
-        </label>
-        <select
           onChange={(event): void => {
             const { value } = event.target;
-            EventEditActions.changeCouponCode(value);
+            EventEditActions.changeEndDate(value);
           }}
-        >
-          {' '}
-          <option value="no">쿠폰리스트</option>
-          {adminCouponList.map((coupon, index) => {
-            return (
-              <option key={index} value={'' + coupon.couponCode}>
-                {coupon.couponName}
-              </option>
-            );
-          })}
-        </select>
-      </div>
-    );
-  } else {
-    couponInput = (
-      <div>
-        <label
-          style={{
-            fontWeight: 'bold',
-            paddingRight: 270,
-            paddingLeft: -6,
-            padding: -4,
-            margin: -240,
+        />
+      );
+    } else {
+      endDateInput = (
+        <TextField
+          id="datetime-local"
+          label="종료일자"
+          type="datetime-local"
+          className={classes2.textField}
+          InputLabelProps={{
+            shrink: true,
           }}
-        >
-          쿠폰선택
-        </label>
-        <select>
-          <option value="no">no coupon</option>
-        </select>
-      </div>
-    );
-  }
-  //! props 설정후 true 와 false 으로 값을 넗어준다.
-  //! state 에 있는 isChecked 값이 false 면 종료시간이 활성화
-  //! state 에 잇는 isChecked 값이 true 면 종료시간이 비활성화
-  let endDateInput: JSX.Element;
-  if (isChecked) {
-    endDateInput = (
-      <TextField
-        id="datetime-local"
-        label="종료일시"
-        type="datetime-local"
-        disabled
-        className={classes2.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        onChange={(event): void => {
-          const { value } = event.target;
-          EventEditActions.changeEndDate(value);
-        }}
-      />
-    );
-  } else {
-    endDateInput = (
-      <TextField
-        id="datetime-local"
-        label="종료일자"
-        type="datetime-local"
-        className={classes2.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        value={endDate}
-        onChange={(event): void => {
-          const { value } = event.target;
-          EventEditActions.changeEndDate(value);
-        }}
-      />
-    );
+          value={endDate}
+          onChange={(event): void => {
+            const { value } = event.target;
+            EventEditActions.changeEndDate(value);
+          }}
+        />
+      );
+    }
+    return endDateInput;
   }
   //? 미리보기핸들러함수 (이미지,베너페이지,하단버튼 업로드)
   // 인자로 file {} 받는다.
@@ -375,7 +382,6 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     }
     return ret;
   }
-
   return (
     <div>
       <div
@@ -446,7 +452,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
           />
         </div>
         <span style={{ fontWeight: 'bold' }}>종료 일시</span>
-        <span>{endDateInput}</span>
+        <span>{showEndDate()}</span>
         <div>
           <span style={{ fontWeight: 'bold' }}>이미지 업로드</span>
           <input
@@ -492,7 +498,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
           ></input>
         </div>
         {handleChangePreviewImageFile(buttonImage)}
-        {couponInput}
+        {showCouponListInput()}
         <div className={classes.root}>
           <div style={{ paddingTop: 40, margin: -10 }}>
             <span style={{ fontWeight: 'bold', paddingRight: 39, margin: -21 }}>
@@ -543,43 +549,3 @@ export default connect(
     CouponActions: bindActionCreators(couponSlice.actions, dispatch),
   }),
 )(EventEditContainer);
-
-// function startDateChangeHandler(event: React.FormEvent<HTMLInputElement>): void {
-//   const date = event.currentTarget.value;
-//   if (date) {
-//     const dateTime = date
-//       .split('')
-//       .join('')
-//       .match(/\d+/g)
-//       ?.join('');
-//     if (dateTime !== undefined) {
-//       EventEditActions.changeStartDate(dateTime);
-//     }
-//   }
-// }
-
-// //! 이벤트설정: 이미지파일업로드
-// function fileChangeHandler(event: React.FormEvent<HTMLInputElement>): void {
-//   console.log('target: ', event.currentTarget.files);
-//   const imageFile = event.currentTarget.files;
-//   if (imageFile) {
-//     EventEditActions.changePageImage(imageFile[0]);
-//   }
-// }
-
-// //! 이벤트설정: 배너페이지이미지업로드
-// function bannerChangeHandler(event: React.FormEvent<HTMLInputElement>): void {
-//   console.log('target: ', event.currentTarget.files);
-//   const banner = event.currentTarget.files;
-//   if (banner) {
-//     EventEditActions.changeBannerImage(banner[0]);
-//   }
-// }
-// //! 이벤트설정: 하단버튼이미지업로드
-// function lowerButtonChangeHandler(event: React.FormEvent<HTMLInputElement>): void {
-//   console.log('target: ', event.currentTarget.files);
-//   const lowerButton = event.currentTarget.files;
-//   if (lowerButton) {
-//     EventEditActions.changeButtonImage(lowerButton[0]);
-//   }
-// }
