@@ -6,7 +6,6 @@ import { EventState, eventReducer as event } from './event';
 import { SigninState, signinReducer as signin } from './signin';
 import { SignupState, signupReducer as signup } from './signup';
 import { EventEditState, eventEditReducer as eventEdit } from './eventEdit';
-import { UserEventState, userEventReducer as userEvent } from './userEvent';
 import { UserState, userReducer as user } from './user';
 import { CouponEditState, couponEditReducer as couponEdit } from './couponEdit';
 

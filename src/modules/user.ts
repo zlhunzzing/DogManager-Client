@@ -1,3 +1,29 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+export interface UserState {
+  isLogin: boolean;
+}
+
+export const initialState: UserState = {
+  isLogin: false,
+};
+
+export const userSlice = createSlice({
+  name: 'user',
+  initialState: initialState,
+  reducers: {
+    changeIsLogin: (state, action): void => {
+      state.isLogin = action.payload;
+    },
+  },
+});
+
+export const userReducer = userSlice.reducer;
+export const { changeIsLogin } = userSlice.actions;
+
+//////////////////////////////////////////////////////////////////////////////////////
+// 툴킷 적용 전 코드
+/*
 export interface UserState {
   isLogin: boolean;
 }
@@ -45,3 +71,4 @@ export function userReducer(state = initialState, action: UserActionTypes): User
       return state;
   }
 }
+*/

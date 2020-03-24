@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
-import Home from './pages/Home';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { userSlice } from './modules/user';
+
 import HomeContainer from './containers/HomeContainer';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import EventList from './pages/EventList';
 import Event from './pages/Event';
+import CouponList from './pages/CouponList';
 
 import AdminSignin from './pages/AdminSignin';
 import AdminEventList from './pages/AdminEventList';
@@ -15,10 +19,18 @@ import AdminEventEdit from './pages/AdminEventEdit';
 import AdminSupport from './pages/AdminSupport';
 import AdminCouponList from './pages/AdminCouponList';
 import AdminCouponEdit from './pages/AdminCouponEdit';
-import CouponList from './pages/CouponList';
 
-// 중첩라우팅?
-function App(): JSX.Element {
+interface AppProps {
+  UserActions: any;
+}
+
+const App: React.FunctionComponent<AppProps> = ({ UserActions }: AppProps) => {
+  useEffect(() => {
+    if (localStorage.getItem('accessToken')) {
+      UserActions.changeIsLogin(true);
+    }
+  });
+
   return (
     <BrowserRouter>
       <Switch>
@@ -40,6 +52,11 @@ function App(): JSX.Element {
       </Switch>
     </BrowserRouter>
   );
-}
+};
 
-export default App;
+export default connect(
+  () => ({}),
+  dispatch => ({
+    UserActions: bindActionCreators(userSlice.actions, dispatch),
+  }),
+)(App);

@@ -8,7 +8,13 @@ import axios from 'axios';
 import { StoreState } from '../modules';
 import { actionCreators as eventEditActions, initialState } from '../modules/eventEdit';
 import { eventSlice } from '../modules/event';
+
+import { bindActionCreators } from 'redux';
+
+import axios from 'axios';
+
 import { couponSlice, CouponData } from '../modules/coupon';
+
 import server from '../server';
 //! Css
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -20,7 +26,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { blue } from '@material-ui/core/colors';
+
 import Button from '@material-ui/core/Button';
+
 
 //? material - URL input
 const useStyles = makeStyles((theme: Theme) =>
@@ -100,8 +108,6 @@ interface EventEditContainerProps {
   EventEditActions: typeof eventEditActions;
   history: any;
   selectedEvent: string | null;
-  adminCouponList: CouponData[];
-  CouponActions: any;
 }
 //! 컴퍼넌트 작성
 const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
@@ -117,13 +123,13 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
   isChecked,
   history,
   selectedEvent,
-  adminCouponList,
-  CouponActions,
 }: EventEditContainerProps) => {
   const classes = useStyles();
   const classes2 = useStyles2();
 
-  //? 서버에서 이벤트 정보 가져오기
+
+  // 서버에서 이벤트 정보 가져오기
+
   const getEvent = async () => {
     const serverurl = server + '/api/admin/events/entry/' + selectedEvent;
     const res = await axios.get(serverurl);
@@ -167,7 +173,9 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     }
   }
 
+
   //? 폼 데이터 제출
+
   function handleSubmitFormData(e: React.FormEvent): void {
     e.preventDefault();
     if (startDate.length > 16 || endDate.length > 16) {
@@ -230,7 +238,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
-        Authorization: localStorage.getItem('accessToken'),
+        Authorization: localStorage.getItem('accessToken'), //! 계속 401 에러
       },
     };
 
@@ -261,6 +269,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       });
     }
   }
+
 
   // state 에 가져온 쿠폰 보여주기
   function showCouponListInput(): void {
@@ -297,6 +306,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
           </select>
         </div>
       );
+
     } else {
       couponInput = (
         <div>
@@ -497,6 +507,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             }}
           ></input>
         </div>
+
         {handleChangePreviewImageFile(buttonImage)}
         {showCouponListInput()}
         <div className={classes.root}>
@@ -507,7 +518,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             <TextField
               id="standard-textarea"
               placeholder="상세 연결될 URL"
-              style={{ paddingRight: 80 }}
+              style={{ paddingRight: 65 }}
               multiline
               value={detailPageUrl}
               onChange={(event): void => {
@@ -517,13 +528,9 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             />
           </div>
         </div>
-        <Button
-          style={{ margin: 20, width: 100, marginRight: 10 }}
-          variant="outlined"
-          type="submit"
-        >
-          등록
-        </Button>
+        <button style={{ margin: 20 }} type="submit">
+          등록/수정
+        </button>
       </form>
     </div>
   );
@@ -546,6 +553,5 @@ export default connect(
   dispatch => ({
     EventEditActions: bindActionCreators(eventEditActions, dispatch),
     EventActions: bindActionCreators(eventSlice.actions, dispatch),
-    CouponActions: bindActionCreators(couponSlice.actions, dispatch),
   }),
 )(EventEditContainer);
