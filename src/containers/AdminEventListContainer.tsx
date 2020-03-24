@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import { connect, useSelector } from 'react-redux';
 import { StoreState } from '../modules';
+import { bindActionCreators } from 'redux';
 import { eventSlice, EventData, adminEventListSelector } from '../modules/event';
 
 import { actionCreators as eventEditActions, initialState } from '../modules/eventEdit';
-import { bindActionCreators } from 'redux';
 
 import AdminMenu from '../views/AdminMenu';
 import EventListMenu from '../views/EventListMenu';
 import EventListTable from '../views/EventListTable';
-import { Redirect } from 'react-router-dom';
 
 //////////////////////////////////////////////////////////////////////////////////////
 

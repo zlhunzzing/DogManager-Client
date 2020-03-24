@@ -107,7 +107,7 @@ export const adminEventListSelector = createSelector(
   }, // 상태 4 리턴 함수 '완료'
   (state: any) => {
     return state.event.adminFilter;
-  },
+  }, // 상태 필터링 필터
   // 상태 1, 2, 3이 차례로 들어간다
   (allEvents, ongoingEvents, preparedEvents, endEvents, adminFilter) => {
     switch (adminFilter) {

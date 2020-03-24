@@ -1,4 +1,49 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+export interface SigninState {
+  idInput: string;
+  pwInput: string;
+}
+
+export const initialState: SigninState = {
+  idInput: '',
+  pwInput: '',
+};
+
+export const signinSlice = createSlice({
+  name: 'signin',
+  initialState: initialState,
+  reducers: {
+    axiosAdminSigninRequest: (state, action): void => {
+      console.log('POST /api/admin/signin 요청');
+    },
+    axiosUserSigninRequest: (state, action): void => {
+      console.log('POST /api/user/signin 요청');
+    },
+
+    changeIdInput: (state, action): void => {
+      state.idInput = action.payload;
+    },
+    changePwInput: (state, action): void => {
+      state.pwInput = action.payload;
+    },
+  },
+});
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+export const signinReducer = signinSlice.reducer;
+export const {
+  axiosAdminSigninRequest,
+  axiosUserSigninRequest,
+
+  changeIdInput,
+  changePwInput,
+} = signinSlice.actions;
+
+//////////////////////////////////////////////////////////////////////////////////////
 // 리덕스 툴킷 적용 전 코드
+/*
 export interface SigninState {
   idInput: string;
   pwInput: string;
@@ -76,3 +121,4 @@ export function signinReducer(
       return state;
   }
 }
+*/

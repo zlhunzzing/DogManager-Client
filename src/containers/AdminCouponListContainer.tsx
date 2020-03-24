@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { couponSlice, CouponData } from '../modules/coupon';
-import { bindActionCreators } from 'redux';
 import { StoreState } from '../modules';
+import { bindActionCreators } from 'redux';
+import { couponSlice, CouponData } from '../modules/coupon';
 
 import AdminMenu from '../views/AdminMenu';
 import CouponListTable from '../views/CouponListTable';
@@ -27,7 +27,7 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
     CouponActions.axiosAdminCouponListRequest();
   }, []);
 
-  function handleClickDeleteCoupon(id: number) {
+  function handleClickDeleteCoupon(id: number): void {
     CouponActions.axiosAdminCouponDeleteRequest(id);
   }
 
@@ -49,8 +49,6 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
     </div>
   );
 };
-
-//export default AdminCouponContainer;
 
 export default connect(
   ({ coupon }: StoreState) => ({

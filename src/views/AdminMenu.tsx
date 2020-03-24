@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
-import { adminSlice } from '../modules/admin';
 import { bindActionCreators } from 'redux';
+import { userSlice } from '../modules/user';
+import { adminSlice } from '../modules/admin';
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
@@ -43,11 +45,13 @@ const useStyles = makeStyles((theme: Theme) =>
 interface AdminMenuProps {
   nowMenu: string;
   menuDrawerIsOpen: boolean;
+  UserActions: any;
   AdminActions: any;
 }
 
 const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
   nowMenu,
+  UserActions,
   AdminActions,
   menuDrawerIsOpen,
 }: AdminMenuProps) => {
@@ -62,11 +66,11 @@ const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
     ) {
       return;
     }
-    AdminActions.ChangeMenuDrawer(open);
+    AdminActions.changeMenuDrawerIsOpen(open);
   };
 
   const clickHandleMenuName = (menu: Menu) => (event: React.MouseEvent): void => {
-    AdminActions.ChangeNowMenu(menu['name']);
+    AdminActions.changeNowMenu(menu['name']);
   };
 
   interface Menu {
@@ -135,7 +139,7 @@ const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
               className={classes.logout}
               onClick={() => {
                 localStorage.removeItem('accessToken');
-                AdminActions.changeAdminIsLogin(false);
+                UserActions.changeIsLogin(false);
               }}
             >
               로그아웃
@@ -150,10 +154,10 @@ const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
 export default connect(
   ({ admin }: StoreState) => ({
     menuDrawerIsOpen: admin.menuDrawerIsOpen,
-    isLogin: admin.isLogin,
     nowMenu: admin.nowMenu,
   }),
   dispatch => ({
     AdminActions: bindActionCreators(adminSlice.actions, dispatch),
+    UserActions: bindActionCreators(userSlice.actions, dispatch),
   }),
 )(AdminMenu);

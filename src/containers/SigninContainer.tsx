@@ -7,8 +7,8 @@ import UserMenu from '../views/UserMenu';
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
 import { adminSlice } from '../modules/admin';
-import { actionCreators as signinActions } from '../modules/signin';
-import { actionCreators as userActions } from '../modules/user';
+import { signinSlice } from '../modules/signin';
+import { userSlice } from '../modules/user';
 import { bindActionCreators } from 'redux';
 
 import TextField from '@material-ui/core/TextField';
@@ -23,8 +23,8 @@ interface SigninContainerProps {
   isLogin: boolean;
   idInput: string;
   pwInput: string;
-  SigninActions: typeof signinActions;
-  UserActions: typeof userActions;
+  SigninActions: any;
+  UserActions: any;
   AdminActions: any;
 }
 
@@ -65,32 +65,37 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
     </Link>
   );
 
-  async function onClickSignin(isAdmin: boolean) {
-    try {
-      let serverUrl: string;
-      if (isAdmin) {
-        serverUrl = server + '/api/admin/signin';
-      } else {
-        serverUrl = server + '/api/user/signin';
-      }
-      const res = await axios.post(serverUrl, {
+  function onClickSignin(isAdmin: boolean) {
+    if (isAdmin) {
+      SigninActions.axiosAdminSigninRequest({
         email: idInput,
         password: pwInput,
       });
-      console.log('what-res??:', res);
-      localStorage.setItem('accessToken', res.data.token);
-
-      if (isAdmin) {
-        AdminActions.changeAdminIsLogin(true);
-      } else {
-        UserActions.changeIsLogin(true); // isLogin true로 바꾸기
-      }
-    } catch (error) {
-      console.log(error.response);
+    } else {
     }
-    // axios.post('http://localhost:4000/test').then(res => {
-    //   console.log(res.data.toke);
-    // });
+
+    // try {
+    //   let serverUrl: string;
+    //   if (isAdmin) {
+    //     serverUrl = server + '/api/admin/signin';
+    //   } else {
+    //     serverUrl = server + '/api/user/signin';
+    //   }
+    //   const res = await axios.post(serverUrl, {
+    //     email: idInput,
+    //     password: pwInput,
+    //   });
+    //   console.log('what-res??:', res);
+    //   localStorage.setItem('accessToken', res.data.token);
+
+    //   if (isAdmin) {
+    //     AdminActions.changeAdminIsLogin(true);
+    //   } else {
+    //     UserActions.changeIsLogin(true); // isLogin true로 바꾸기
+    //   }
+    // } catch (error) {
+    //   console.log(error.response);
+    // }
   }
 
   const signinButton = (isAdmin: boolean): JSX.Element => {
@@ -169,8 +174,8 @@ export default connect(
     isLogin: user.isLogin,
   }),
   dispatch => ({
-    SigninActions: bindActionCreators(signinActions, dispatch),
-    UserActions: bindActionCreators(userActions, dispatch),
+    SigninActions: bindActionCreators(signinSlice.actions, dispatch),
+    UserActions: bindActionCreators(userSlice.actions, dispatch),
     AdminActions: bindActionCreators(adminSlice.actions, dispatch),
   }),
 )(SigninContainer);

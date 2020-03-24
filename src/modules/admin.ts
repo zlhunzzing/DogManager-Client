@@ -2,13 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export interface AdminState {
   menuDrawerIsOpen: boolean;
-  isLogin: boolean;
   nowMenu: string;
 }
 
 export const initialState: AdminState = {
   menuDrawerIsOpen: false,
-  isLogin: false,
   nowMenu: '이벤트 관리',
 };
 
@@ -21,9 +19,6 @@ export const adminSlice = createSlice({
     changeMenuDrawerIsOpen: (state, action): void => {
       state.menuDrawerIsOpen = action.payload;
     },
-    changeAdminIsLogin: (state, action): void => {
-      state.isLogin = action.payload;
-    },
     changeNowMenu: (state, action): void => {
       state.nowMenu = action.payload;
     },
@@ -31,11 +26,7 @@ export const adminSlice = createSlice({
 });
 
 export const adminReducer = adminSlice.reducer;
-export const {
-  changeMenuDrawerIsOpen,
-  changeAdminIsLogin,
-  changeNowMenu,
-} = adminSlice.actions;
+export const { changeMenuDrawerIsOpen, changeNowMenu } = adminSlice.actions;
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // 툴킷 사용 전 코드
