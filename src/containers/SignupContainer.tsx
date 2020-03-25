@@ -129,7 +129,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
 
     try {
       const res = await axios.post(
-        'http://13.209.22.112:3002/api/user/signup',
+        'http://13.125.249.151:3002/api/user/signup',
         {
           name: nameInput,
           email: emailInput,
