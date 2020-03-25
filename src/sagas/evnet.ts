@@ -118,8 +118,14 @@ function* axiosUserEventList$(): Generator {
     console.log('saga미들웨어 진입');
     const userEventList = yield call(async () => {
       const res = await axios.get(userEventListUrl);
-      return res.data.eventList;
+      const { eventList } = res.data;
+      eventList.forEach((event: any) => {
+        const condition = eventCondition(event.startDate, event.endDate);
+        event.condition = condition;
+      });
+      return eventList;
     });
+
     yield put({ type: axiosUserEventListSuccess.type, payload: userEventList });
   } catch (err) {
     console.log(err.response);

@@ -3,8 +3,8 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 export interface EventData {
   id: number;
   eventTitle?: string;
-  startDate?: number | undefined;
-  endDate?: number | undefined;
+  startDate?: string | undefined;
+  endDate?: string | undefined;
   detailPageUrl?: string;
   buttonImage?: string;
   bannerImage?: string;
