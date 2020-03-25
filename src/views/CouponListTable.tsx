@@ -9,16 +9,17 @@ import TableCell from '@material-ui/core/TableCell';
 import CouponItem from './CouponItem';
 import { CouponData } from '../modules/coupon';
 
-interface EventListTableProps {
+interface CouponListTableProps {
   couponList: CouponData[];
-  handleClickDeleteCoupon(id: number): void;
+  handleClickDeleteCoupon(id: number, history: any): void;
   history?: any;
 }
 
-const CouponListTable: React.FunctionComponent<EventListTableProps> = ({
+const CouponListTable: React.FunctionComponent<CouponListTableProps> = ({
   couponList,
   handleClickDeleteCoupon,
-}: EventListTableProps) => {
+  history,
+}: CouponListTableProps) => {
   return (
     <div>
       <Table>
@@ -41,6 +42,7 @@ const CouponListTable: React.FunctionComponent<EventListTableProps> = ({
                 num={index}
                 coupon={coupon}
                 handleClickDeleteCoupon={handleClickDeleteCoupon}
+                history={history}
               />
             );
           })}

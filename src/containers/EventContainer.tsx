@@ -15,6 +15,7 @@ interface EventContainerProps {
   EventActions: any;
   CouponActions: any;
   isLogin: boolean;
+  match: any;
 }
 
 const EventContainer: React.FunctionComponent<EventContainerProps> = ({
@@ -22,10 +23,12 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
   EventActions,
   CouponActions,
   isLogin,
+  match,
 }: EventContainerProps) => {
   //
+
   useEffect(() => {
-    EventActions.axiosUserEventRequest();
+    EventActions.axiosUserEventRequest(match.params.eventurl);
   }, []);
 
   return (

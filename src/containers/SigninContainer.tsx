@@ -6,17 +6,13 @@ import UserMenu from '../views/UserMenu';
 
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
-import { adminSlice } from '../modules/admin';
-import { signinSlice } from '../modules/signin';
-import { userSlice } from '../modules/user';
 import { bindActionCreators } from 'redux';
+import { signinSlice } from '../modules/signin';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-// import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-import axios from 'axios';
-import server from '../server';
+///////////////////////////////////////////////////////////////////////////////////////
 
 interface SigninContainerProps {
   isAdmin: boolean;
@@ -24,8 +20,6 @@ interface SigninContainerProps {
   idInput: string;
   pwInput: string;
   SigninActions: any;
-  UserActions: any;
-  AdminActions: any;
 }
 
 const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
@@ -34,16 +28,8 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
   idInput,
   pwInput,
   SigninActions,
-  UserActions,
-  AdminActions,
 }: SigninContainerProps) => {
   //
-  let version: string;
-  if (isAdmin) {
-    version = '관리자';
-  } else {
-    version = '고객';
-  }
 
   const handleIdInputChange = (value: string): any => {
     SigninActions.changeIdInput(value);
@@ -65,7 +51,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
     </Link>
   );
 
-  function onClickSignin(isAdmin: boolean) {
+  function onClickSignin(isAdmin: boolean): void {
     if (isAdmin) {
       SigninActions.axiosAdminSigninRequest({
         email: idInput,
@@ -97,7 +83,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
     return (
       <div style={{ textAlign: 'center' }}>
         <UserMenu isLogin={isLogin} />
-        <div style={{ marginTop: 300 }}>{version}로그인</div>
+        <div style={{ marginTop: 300 }}>{isAdmin ? '관리자' : '고객'} 로그인</div>
         <div style={{ marginTop: 10 }}></div>
         <div>
           <TextField
@@ -142,14 +128,12 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
 };
 
 export default connect(
-  ({ signin, user, admin }: StoreState) => ({
+  ({ signin, user }: StoreState) => ({
     idInput: signin.idInput,
     pwInput: signin.pwInput,
     isLogin: user.isLogin,
   }),
   dispatch => ({
     SigninActions: bindActionCreators(signinSlice.actions, dispatch),
-    UserActions: bindActionCreators(userSlice.actions, dispatch),
-    AdminActions: bindActionCreators(adminSlice.actions, dispatch),
   }),
 )(SigninContainer);

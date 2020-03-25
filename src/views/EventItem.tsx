@@ -4,14 +4,18 @@ import { EventData } from '../modules/event';
 import axios from 'axios';
 import serverurl from '../server';
 
+import { useStyles, getModalStyle } from './CouponItem';
+
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import Modal from '@material-ui/core/Modal';
 
 interface EventItemProps {
   event: EventData;
   num: number;
   changeSelectedEvent: (id: string) => void;
   history: any;
+  deleteEvent: (id: number, history: any) => void;
 }
 
 const EventItem: React.FunctionComponent<EventItemProps> = ({
@@ -19,6 +23,7 @@ const EventItem: React.FunctionComponent<EventItemProps> = ({
   event,
   changeSelectedEvent,
   history,
+  deleteEvent,
 }: EventItemProps) => {
   // 보기 버튼을 누를 때 로직
   const handleClickView = (url: string | undefined): void => {
@@ -27,7 +32,7 @@ const EventItem: React.FunctionComponent<EventItemProps> = ({
     if (url === undefined) {
       alert('연결된 페이지가 없는데?');
     }
-    console.log(url);
+    // console.log(url);
     window.open(
       `http://dogandcodemate.s3-website.ap-northeast-2.amazonaws.com/user/event${url}`,
     );
@@ -42,19 +47,21 @@ const EventItem: React.FunctionComponent<EventItemProps> = ({
     changeSelectedEvent(a);
     history.push('/admin/event-edit');
     console.log(history);
-    // alert('수정 페이지로 이동 할 거야');
   };
 
-  // 삭제 버튼을 누를 때
-  const handleClickDelete = (id: number): void => {
-    // 서버에 이벤트 삭제 요청
-    console.log(serverurl, id);
-    const url = `${serverurl}/api/admin/events/entry/${id}`;
-    console.log(url);
-    axios.delete(url).then(res => console.log('삭제완료', res));
-    // alert(`id: ${id} / 이벤트를 정말 삭제하시겠습니까?`);
-    history.go('/admin/event-list');
+  const classes = useStyles();
+  // getModalStyle is not a pure function, we roll the style only on the first render
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <TableRow>
       <TableCell>{num}</TableCell>
@@ -70,7 +77,27 @@ const EventItem: React.FunctionComponent<EventItemProps> = ({
         <button onClick={handleClickEdit.bind(null, event.id)}>수정</button>
       </TableCell>
       <TableCell>
-        <button onClick={handleClickDelete.bind(null, event.id)}>삭제</button>
+        <button onClick={handleOpen}>삭제</button>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={open}
+          onClose={handleClose}
+        >
+          <div style={modalStyle} className={classes.paper}>
+            <h2 id="simple-modal-title">이벤트 삭제</h2>
+            <p id="simple-modal-description">정말 삭제하시겠습니까?</p>
+            <button
+              onClick={() => {
+                deleteEvent(event.id, history);
+                handleClose();
+              }}
+            >
+              삭제
+            </button>
+            <button onClick={handleClose}>닫기</button>
+          </div>
+        </Modal>
       </TableCell>
     </TableRow>
   );

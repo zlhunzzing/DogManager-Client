@@ -1,9 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import AdminMenu from '../views/AdminMenu';
-
-import Button from '@material-ui/core/Button';
 
 const AdminSupportContainer: React.FunctionComponent = () => {
   return (

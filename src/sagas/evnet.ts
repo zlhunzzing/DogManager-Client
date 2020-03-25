@@ -1,29 +1,21 @@
-import {
-  takeLatest,
-  call,
-  put,
-  takeEvery,
-  all,
-  take,
-  fork,
-  delay,
-} from 'redux-saga/effects';
+import { call, put, takeEvery, all } from 'redux-saga/effects';
 import { select } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+// import { push } from 'react-router-redux';
 
 import moment from 'moment';
 import axios from 'axios';
-import { adminEventListUrl, userEventListUrl, userEventUrl } from '../server';
-
-/*
-export const userEventListUrl = server + '/api/user/events/list';
-export const userEventUrl = server + '/api/user/events/entry/'; //:url
-*/
+import {
+  adminEventListUrl,
+  adminEventUrl,
+  userEventListUrl,
+  userEventUrl,
+} from '../server';
 
 import {
   axiosAdminEventListRequest,
   axiosAdminEventListSuccess,
   axiosAdminEventListFailure,
+  axiosAdminEventDeleteRequest,
   axiosUserEventListRequest,
   axiosUserEventListSuccess,
   axiosUserEventListFailure,
@@ -51,6 +43,16 @@ export const eventCondition = (start: string, end: string): string => {
   }
   return result;
 };
+
+// 이벤트 태그 만드는 함수 (미완성 / 유저 이벤트 리스트에 사용)
+function makeTag(startDate: string, endDate: string): string {
+  let tag: string;
+  const now = Number(moment(new Date()).format('YYYYMMDDHHmm'));
+  if (endDate === '' && startDate) {
+    tag = '상시';
+  }
+  return endDate;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////
 // function forwardTo(location: any) {
@@ -89,6 +91,27 @@ export function* axiosAdminEventListSaga() {
 
 // 서버에 수정할 이벤트 상세 정보 요청 -> success 액션 발생
 
+// 어드민 이벤트 삭제 요청 (로그인 필요)
+function* axiosAdminEventDelete$(action: any) {
+  try {
+    const result = yield call(async () => {
+      return await axios.delete(adminEventUrl + `/${action.payload.id}`, {
+        headers: {
+          Authorization: localStorage.getItem('accessToken'),
+        },
+      });
+    });
+    if (result.status === 200) {
+      alert('삭제완료');
+      action.payload.history.go('/admin/event-list');
+    }
+  } catch (err) {}
+}
+
+export function* axiosAdminEventDeleteSaga() {
+  yield takeEvery(axiosAdminEventDeleteRequest, axiosAdminEventDelete$);
+}
+
 // 서버에 유저 이벤트 리스트 요청 -> success 액션 발생
 function* axiosUserEventList$(): Generator {
   try {
@@ -109,12 +132,10 @@ export function* axiosUserEventListSaga() {
 }
 
 // 서버에 유저 이벤트 상세 정보 요청 -> success 액션 발생
-function* axiosUserEvent$(): Generator {
+function* axiosUserEvent$(action: any): Generator {
   try {
-    const getUrl = (state: any) => state.event.nowEventUrl;
-    const url = yield select(getUrl);
     const nowEvent = yield call(async () => {
-      const res = await axios.get(userEventUrl + url);
+      const res = await axios.get(userEventUrl + `/${action.payload}`);
       console.log('응답', res);
       return res.data;
     });
@@ -132,5 +153,10 @@ export function* axiosUserEventSaga(): Generator {
 //////////////////////////////////////////////////////////////////////////////////////
 
 export function* eventSaga(): Generator {
-  yield all([axiosAdminEventListSaga(), axiosUserEventListSaga(), axiosUserEventSaga()]);
+  yield all([
+    axiosAdminEventListSaga(),
+    axiosUserEventListSaga(),
+    axiosUserEventSaga(),
+    axiosAdminEventDeleteSaga(),
+  ]);
 }

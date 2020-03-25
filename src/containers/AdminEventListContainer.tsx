@@ -32,14 +32,19 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
   const filteredEventList = useSelector(adminEventListSelector);
   console.log('셀렉터', filteredEventList);
 
-  // store에 selectedEvent 바꾸기
+  // store에 editEventId 바꾸기
   const changeSelectedEvent = (id: string): void => {
     EventActions.changeEditEventId(id);
   };
 
-  // store에 filter 바꾸기
+  // store에 adminFilter 바꾸기
   const changeFilter = (filter: string): void => {
     EventActions.changeFilter(filter);
+  };
+
+  // 삭제 요청 보내는 액션
+  const deleteEvent = (id: number, history: any): void => {
+    EventActions.axiosAdminEventDeleteRequest({ id: id, history: history });
   };
 
   useEffect(() => {
@@ -61,6 +66,7 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
       <EventListTable
         eventList={filteredEventList ? filteredEventList : []}
         changeSelectedEvent={changeSelectedEvent}
+        deleteEvent={deleteEvent}
         history={history}
       />
     </div>

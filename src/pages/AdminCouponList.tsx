@@ -1,10 +1,12 @@
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
+
 import AdminCouponListContainer from '../containers/AdminCouponListContainer';
 
-function AdminCouponList() {
+function AdminCouponList({ history }: RouteComponentProps) {
   return (
     <div>
-      <AdminCouponListContainer />
+      <AdminCouponListContainer history={history} />
     </div>
   );
 }

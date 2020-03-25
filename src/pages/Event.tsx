@@ -1,9 +1,10 @@
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
 import EventContainer from '../containers/EventContainer';
 
-const Event: React.FunctionComponent = () => {
-  return <EventContainer />;
-};
+function Event({ match }: RouteComponentProps) {
+  return <EventContainer match={match} />;
+}
 
 export default Event;
 
