@@ -93,6 +93,12 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
     } else if (!Number(couponPeriod)) {
       alert('쿠폰유효기간은 숫자로 입력해주세요');
       return;
+    } else if (Number(couponDiscount) > 100) {
+      alert('할인율은 100보다 작아야 합니다.');
+      return;
+    } else if (!Number(couponDiscount)) {
+      alert('할인율은 숫자로만 입력해주세요');
+      return;
     }
     const options = {
       headers: {
