@@ -52,7 +52,7 @@ function* axiosAdminCouponDelete$(action: any) {
     console.log(action.payload);
 
     const result = yield call(async () => {
-      const res = await axios.delete(adminCouponPostUrl + `/${action.payload}`, {
+      const res = await axios.delete(adminCouponPostUrl + `/${action.payload.id}`, {
         headers: {
           Authorization: localStorage.getItem('accessToken'),
         },
@@ -61,6 +61,7 @@ function* axiosAdminCouponDelete$(action: any) {
     });
     if (result.status === 200) {
       alert('삭제완료');
+      action.payload.history.go('/admin/coupon');
     }
   } catch (err) {}
 }

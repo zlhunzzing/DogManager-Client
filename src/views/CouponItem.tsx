@@ -8,7 +8,7 @@ import Modal from '@material-ui/core/Modal';
 
 import { CouponData } from '../modules/coupon';
 
-function getModalStyle() {
+export function getModalStyle() {
   return {
     top: '50%',
     left: '50%',
@@ -16,7 +16,7 @@ function getModalStyle() {
   };
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       position: 'absolute',
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface CouponItemProps {
   num: number;
   coupon: CouponData;
-  handleClickDeleteCoupon(id: number): void;
+  handleClickDeleteCoupon(id: number, history: any): void;
   history?: any;
 }
 
@@ -42,6 +42,7 @@ const CouponItem: React.FunctionComponent<CouponItemProps> = ({
   num,
   coupon,
   handleClickDeleteCoupon,
+  history,
 }: CouponItemProps) => {
   //
 
@@ -81,7 +82,7 @@ const CouponItem: React.FunctionComponent<CouponItemProps> = ({
             <p id="simple-modal-description">정말 삭제하시겠습니까?</p>
             <button
               onClick={() => {
-                handleClickDeleteCoupon(coupon.id);
+                handleClickDeleteCoupon(coupon.id, history);
                 handleClose();
               }}
             >

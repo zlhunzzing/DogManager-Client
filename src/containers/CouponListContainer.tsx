@@ -8,6 +8,8 @@ import { CouponData, couponSlice } from '../modules/coupon';
 import UserMenu from '../views/UserMenu';
 import { Redirect } from 'react-router-dom';
 
+//////////////////////////////////////////////////////////////////////////////////////
+
 interface CouponListContainerProps {
   isLogin: boolean;
   userCouponList?: CouponData[];
@@ -26,6 +28,7 @@ const CouponListContainer: React.FunctionComponent<CouponListContainerProps> = (
       CouponActions.axiosUserCouponListRequest();
     }
   }, []);
+
   if (isLogin) {
     return (
       <div>

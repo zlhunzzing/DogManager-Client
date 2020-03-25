@@ -68,6 +68,10 @@ export const eventSlice = createSlice({
       console.log('/api/user/events/entry/:url 요청 실패');
     },
 
+    axiosAdminEventDeleteRequest: (state, action): void => {
+      console.log('이벤트 삭제 요청');
+    },
+
     changeNowEventUrl: (state, action): void => {
       state.nowEventUrl = action.payload;
     },
@@ -156,6 +160,8 @@ export const {
   axiosUserEventRequest,
   axiosUserEventSuccess,
   axiosUserEventFailure,
+
+  axiosAdminEventDeleteRequest,
 
   changeEditEventId,
   changeFilter,

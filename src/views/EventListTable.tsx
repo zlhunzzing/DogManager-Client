@@ -14,12 +14,14 @@ interface EventListTableProps {
   eventList: EventData[] | null;
   changeSelectedEvent: (id: string) => void;
   history: any;
+  deleteEvent: (id: number, history: any) => void;
 }
 
 const EventListTable: React.FunctionComponent<EventListTableProps> = ({
   eventList,
   changeSelectedEvent,
   history,
+  deleteEvent,
 }: EventListTableProps) => {
   // 이벤트 리스트 상태 바꿔 넣기
 
@@ -46,6 +48,7 @@ const EventListTable: React.FunctionComponent<EventListTableProps> = ({
                   event={event}
                   changeSelectedEvent={changeSelectedEvent}
                   history={history}
+                  deleteEvent={deleteEvent}
                 />
               );
             })

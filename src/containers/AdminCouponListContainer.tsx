@@ -16,19 +16,21 @@ import Button from '@material-ui/core/Button';
 interface AdminCouponListContainerContainerProps {
   adminCouponList: CouponData[];
   CouponActions: any;
+  history: any;
 }
 
 const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainerContainerProps> = ({
   adminCouponList,
   CouponActions,
+  history,
 }: AdminCouponListContainerContainerProps) => {
   //
   useEffect(() => {
     CouponActions.axiosAdminCouponListRequest();
   }, []);
 
-  function handleClickDeleteCoupon(id: number): void {
-    CouponActions.axiosAdminCouponDeleteRequest(id);
+  function handleClickDeleteCoupon(id: number, history: any): void {
+    CouponActions.axiosAdminCouponDeleteRequest({ id: id, history: history });
   }
 
   return (
@@ -43,6 +45,7 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
         </Link>
       </div>
       <CouponListTable
+        history={history}
         couponList={adminCouponList}
         handleClickDeleteCoupon={handleClickDeleteCoupon}
       />

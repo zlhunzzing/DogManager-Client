@@ -6,8 +6,6 @@ import { StoreState } from '../modules';
 import { eventSlice, EventData } from '../modules/event';
 import { bindActionCreators } from 'redux';
 
-import moment from 'moment';
-
 import UserMenu from '../views/UserMenu';
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -16,16 +14,6 @@ interface EventListContainerProps {
   userEventList: EventData[];
   EventActions: any;
   isLogin: boolean;
-}
-
-// 날짜로 태그 만드는 함수
-function makeTag(startDate: string, endDate: string): string {
-  let tag: string;
-  const now = Number(moment(new Date()).format('YYYYMMDDHHmm'));
-  if (endDate === '' && startDate) {
-    tag = '상시';
-  }
-  return endDate;
 }
 
 const EventListContainer: React.FunctionComponent<EventListContainerProps> = ({
@@ -46,12 +34,7 @@ const EventListContainer: React.FunctionComponent<EventListContainerProps> = ({
         const detailPageUrl = '/user/event' + banner.detailPageUrl;
         return (
           <div style={{ textAlign: 'center', marginTop: 10 }} key={index}>
-            <Link
-              to={detailPageUrl}
-              onClick={() => {
-                EventActions.changeNowEventUrl(banner.detailPageUrl);
-              }}
-            >
+            <Link to={detailPageUrl}>
               <img
                 style={{ width: 500, height: 200, border: 'solid 1px' }}
                 src={banner.bannerImage}

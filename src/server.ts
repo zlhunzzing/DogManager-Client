@@ -1,5 +1,5 @@
 // const server = 'http://localhost:4000';
-const server = 'http://13.209.22.112:3002';
+const server = 'http://13.125.249.151:3002';
 
 export default server;
 
