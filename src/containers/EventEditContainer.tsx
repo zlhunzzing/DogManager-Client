@@ -145,7 +145,6 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     EventEditActions.changeStartDate(fillDateTimeInput(res.data.startDate));
     EventEditActions.changeEndDate(fillDateTimeInput(res.data.endDate));
   };
-
   //? 리액트 훅
   // 모든 함수들이 작동이 끝나면 useEffect 시작
   // 1. getEvent() 서버에서 이벤트 정보 가져오기
@@ -265,7 +264,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
       // 수정하는 경우
       const url = server + '/api/admin/events/entry/' + selectedEvent;
       axios.put(url, formData, config).then(res => {
-        console.log(res);
+        console.log('수정: ', res);
         history.push('/admin/event-list');
       });
     }
@@ -297,6 +296,13 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
             {' '}
             <option value="no">쿠폰리스트</option>
             {adminCouponList.map((coupon, index) => {
+              if (coupon.couponCode === couponCode) {
+                return (
+                  <option selected={true} key={index} value={'' + coupon.couponCode}>
+                    {coupon.couponName}
+                  </option>
+                );
+              }
               return (
                 <option key={index} value={'' + coupon.couponCode}>
                   {coupon.couponName}
