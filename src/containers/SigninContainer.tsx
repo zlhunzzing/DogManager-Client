@@ -58,7 +58,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
   const debouncedHandlePwInputChange = debounce(handlePwInputChange, 500);
 
   const signupButton = (
-    <Link to="/user/signup">
+    <Link to="/user/signup" style={{ color: 'inherit', textDecoration: 'inherit' }}>
       <Button style={{ width: 100, marginRight: 10 }} variant="outlined">
         Sign up
       </Button>
@@ -103,7 +103,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
           <TextField
             style={{ width: 400 }}
             id="outlined-basic"
-            label="Outlined"
+            label="Login"
             variant="outlined"
             onChange={(event): void => {
               const { value } = event.target;
