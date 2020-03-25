@@ -32,7 +32,7 @@ const UserMenu: React.FunctionComponent<UserMenuProps> = ({
         </Link>
         {isLogin ? (
           <div
-            style={{ float: 'left', marginRight: 30 }}
+            style={{ float: 'left', marginRight: 30, cursor: 'pointer' }}
             onClick={() => {
               localStorage.removeItem('accessToken');
               UserActions.changeIsLogin(false);

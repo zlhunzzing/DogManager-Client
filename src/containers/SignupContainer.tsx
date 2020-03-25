@@ -12,6 +12,7 @@ import { actionCreators as signupActions } from '../modules/signup';
 
 //? css
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 interface SignupContainerProps {
   nameInput: string;
@@ -129,7 +130,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
 
     try {
       const res = await axios.post(
-        'http://13.209.22.112:3002/api/user/signup',
+        'http://13.125.249.151:3002/api/user/signup',
         {
           name: nameInput,
           email: emailInput,
@@ -240,7 +241,13 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
             }}
           />
         </div>
-        <button type="submit">Log In</button>
+        <Button
+          style={{ width: 100, marginRight: 10, marginTop: 20 }}
+          variant="outlined"
+          type="submit"
+        >
+          완료
+        </Button>
       </form>
     </div>
   );
