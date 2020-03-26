@@ -18,6 +18,7 @@ const enhancer = composeEnhancers(
   applyMiddleware(sagaMiddleware /*other middleware*/),
   /* other store enhancers if any */
 );
+
 export default function configureStore(): Store<StoreState> {
   const store = createStore(modules, enhancer);
   sagaMiddleware.run(rootSaga);
