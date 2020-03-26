@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import UserMenu from '../views/UserMenu';
+import CommentListBox from '../views/CommentListBox';
 
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
@@ -34,32 +35,35 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
   return (
     <div>
       <UserMenu />
-      <div style={{ textAlign: 'center' }}>
-        {nowEvent ? <img style={{ width: '40%' }} src={nowEvent.pageImage} /> : null}
+      <div>
+        {nowEvent ? (
+          <img style={{ marginLeft: '30%', width: '40%' }} src={nowEvent.pageImage} />
+        ) : null}
+        {nowEvent ? (
+          <button
+            style={{
+              // position: 'fixed',
+              // bottom: 0,
+              marginLeft: '30%',
+              width: '40%',
+              height: '70px',
+              border: 'solid 1px',
+              background: `url(${nowEvent.buttonImage}) no-repeat`,
+              backgroundSize: '100%',
+            }}
+            onClick={() => {
+              if (isLogin) {
+                CouponActions.axiosUserCouponPostRequest();
+              } else {
+                alert('로그인이 필요합니다.');
+              }
+            }}
+          >
+            {/* <img src={nowEvent.buttonImage} /> */}
+          </button>
+        ) : null}
       </div>
-      {nowEvent ? (
-        <button
-          style={{
-            position: 'fixed',
-            bottom: 0,
-            left: '30%',
-            width: '40%',
-            height: '7%',
-            border: 'solid 1px',
-            background: `url(${nowEvent.buttonImage}) no-repeat`,
-            backgroundSize: '100%',
-          }}
-          onClick={() => {
-            if (isLogin) {
-              CouponActions.axiosUserCouponPostRequest();
-            } else {
-              alert('로그인이 필요합니다.');
-            }
-          }}
-        >
-          {/* <img src={nowEvent.buttonImage} /> */}
-        </button>
-      ) : null}
+      <CommentListBox isLogin={true}></CommentListBox>
     </div>
   );
 };
