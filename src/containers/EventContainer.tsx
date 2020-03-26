@@ -39,6 +39,16 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
       </div>
       {nowEvent ? (
         <button
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: '30%',
+            width: '40%',
+            height: '7%',
+            border: 'solid 1px',
+            background: `url(${nowEvent.buttonImage}) no-repeat`,
+            backgroundSize: '100%',
+          }}
           onClick={() => {
             if (isLogin) {
               CouponActions.axiosUserCouponPostRequest();
@@ -47,17 +57,7 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
             }
           }}
         >
-          <img
-            style={{
-              position: 'fixed',
-              bottom: 0,
-              left: '30%',
-              width: '40%',
-              height: '7%',
-              border: 'solid 1px',
-            }}
-            src={nowEvent.buttonImage}
-          />
+          {/* <img src={nowEvent.buttonImage} /> */}
         </button>
       ) : null}
     </div>
