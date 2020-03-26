@@ -10,6 +10,7 @@ export interface EventData {
   bannerImage?: string;
   pageImage?: string;
   condition?: string;
+  commentList?: [];
 }
 
 export interface EventState {

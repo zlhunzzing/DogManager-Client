@@ -10,7 +10,7 @@ import {
   changePwInput,
 } from '../modules/signin';
 
-import { changeIsLogin } from '../modules/user';
+import { changeIsLogin, changeUserId } from '../modules/user';
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -48,6 +48,7 @@ function* axiosUserSignin$(action: any) {
       yield put({ type: changeIdInput.type, payload: '' });
       yield put({ type: changePwInput.type, payload: '' });
       yield put({ type: changeIsLogin.type, payload: true });
+      // yield put({ type: changeUserId.type, payload: res.data.userId });
     }
   } catch (err) {
     alert('이메일 또는 비밀번호가 맞지 않습니다.');

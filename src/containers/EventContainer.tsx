@@ -16,6 +16,7 @@ interface EventContainerProps {
   EventActions: any;
   CouponActions: any;
   isLogin: boolean;
+  userId: number | null;
   match: any;
 }
 
@@ -24,6 +25,7 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
   EventActions,
   CouponActions,
   isLogin,
+  userId,
   match,
 }: EventContainerProps) => {
   //
@@ -63,7 +65,11 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
           </button>
         ) : null}
       </div>
-      <CommentListBox isLogin={true}></CommentListBox>
+      <CommentListBox
+        isLogin={true}
+        commentList={nowEvent?.commentList}
+        userId={userId}
+      ></CommentListBox>
     </div>
   );
 };
@@ -72,6 +78,7 @@ export default connect(
   ({ event, user }: StoreState) => ({
     nowEvent: event.nowEvent,
     isLogin: user.isLogin,
+    userId: user.userId,
   }),
   dispatch => ({
     EventActions: bindActionCreators(eventSlice.actions, dispatch),

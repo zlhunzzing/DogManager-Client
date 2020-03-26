@@ -17,22 +17,13 @@ const CommentInput: React.FunctionComponent<CommentInputProps> = ({
       <div
         style={{ width: '40%', height: '150px', marginLeft: '30%', position: 'relative' }}
       >
-        {/* <input
-          type="text"
-          style={{
-            width: '80%',
-            height: '80%',
-            paddingLeft: '20px',
-            paddingRight: '20px',
-          }}
-        ></input> */}
         <TextField
           id="outlined-full-width"
           //   label="Label"
           style={{ margin: 0 }}
           placeholder="여러분의 소중한 댓글을 입력해주세요."
           //   helperText="Full width!"
-          inputProps={{ maxlength: 130 }}
+          inputProps={{ maxLength: 130 }}
           fullWidth
           margin="normal"
           multiline
