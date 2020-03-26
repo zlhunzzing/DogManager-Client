@@ -43,15 +43,28 @@ const CouponViewListTable: React.FunctionComponent<couponViewProps> = ({
   //     expiredAt: 20200329,
   //     isDeleted: 1,
   //   },
+
+  function convertToStr() {
+    let word: any;
+    if (coupon.isDeleted === 0) {
+      word = '사용가능';
+    } else if (coupon.isDeleted === 1) {
+      word = '사용완료';
+    } else if (coupon.isDeleted === 2) {
+      word = '취소됨';
+    }
+    return word;
+  }
   return (
     <TableRow>
       <TableCell>{coupon.userName}</TableCell>
       <TableCell>{coupon.userEmail}</TableCell>
       <TableCell>
         <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-            쿠폰이름
-          </InputLabel>
+          <InputLabel
+            ref={inputLabel}
+            id="demo-simple-select-outlined-label"
+          ></InputLabel>
           <Select
             labelId="demo-simple-select-outlined-label"
             id="demo-simple-select-outlined"
@@ -65,7 +78,7 @@ const CouponViewListTable: React.FunctionComponent<couponViewProps> = ({
       <TableCell>{coupon.couponCode}</TableCell>
       <TableCell>{coupon.assignedAt}</TableCell>
       <TableCell>{coupon.expiredAt}</TableCell>
-      <TableCell>{coupon.isDeleted}</TableCell>
+      <TableCell>{convertToStr()}</TableCell>
     </TableRow>
   );
 };
