@@ -19,6 +19,7 @@ import AdminEventEdit from './pages/AdminEventEdit';
 import AdminSupport from './pages/AdminSupport';
 import AdminCouponList from './pages/AdminCouponList';
 import AdminCouponEdit from './pages/AdminCouponEdit';
+import AdminCouponView from './pages/AdminCouponView';
 
 interface AppProps {
   UserActions: any;
@@ -48,6 +49,7 @@ const App: React.FunctionComponent<AppProps> = ({ UserActions }: AppProps) => {
         <Route path="/admin/support" component={AdminSupport} />
         <Route path="/admin/coupon" component={AdminCouponList} />
         <Route path="/admin/coupon-edit" component={AdminCouponEdit} />
+        <Route path="/admin/coupon-view" component={AdminCouponView} />
         <Redirect path="*" to="/" />
       </Switch>
     </BrowserRouter>
