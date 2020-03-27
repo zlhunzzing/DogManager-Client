@@ -36,6 +36,7 @@ const UserMenu: React.FunctionComponent<UserMenuProps> = ({
             onClick={() => {
               localStorage.removeItem('accessToken');
               UserActions.changeIsLogin(false);
+              UserActions.changeUserId(null);
             }}
           >
             Signout

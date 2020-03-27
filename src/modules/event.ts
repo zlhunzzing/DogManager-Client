@@ -19,7 +19,7 @@ export interface EventState {
   userEventList: EventData[];
   editEventId: string;
   nowEventUrl: string;
-  nowEvent: EventData | null;
+  nowEvent: EventData;
   adminFilter: string;
 }
 
@@ -28,7 +28,7 @@ export const initialState: EventState = {
   userEventList: [],
   editEventId: '',
   nowEventUrl: '',
-  nowEvent: null,
+  nowEvent: { id: -1 },
   adminFilter: '모두',
 };
 
@@ -85,6 +85,10 @@ export const eventSlice = createSlice({
 
     changeFilter: (state, action): void => {
       state.adminFilter = action.payload;
+    },
+
+    changeNowEventCommentList: (state, action): void => {
+      state.nowEvent.commentList = action.payload;
     },
   },
 });
@@ -167,6 +171,7 @@ export const {
 
   changeEditEventId,
   changeFilter,
+  changeNowEventCommentList,
 } = eventSlice.actions;
 
 /////////////////////////////////////////////////////////////////////////////////////
