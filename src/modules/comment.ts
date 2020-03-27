@@ -11,12 +11,12 @@ export interface CommentType {
 
 export interface CommentState {
   commentInput: string;
-  commentList: CommentType[];
+  likeComments: number[];
 }
 
 export const initialState: CommentState = {
   commentInput: '',
-  commentList: [],
+  likeComments: [],
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////
