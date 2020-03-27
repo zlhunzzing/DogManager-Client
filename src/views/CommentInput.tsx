@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+import { debounce } from 'lodash';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -7,11 +9,27 @@ import Button from '@material-ui/core/Button';
 
 interface CommentInputProps {
   isLogin: boolean;
+  handleChangeCommentInput(value: string): void;
+  CommentActions: any;
+  eventId: number | undefined;
 }
 
 const CommentInput: React.FunctionComponent<CommentInputProps> = ({
   isLogin,
+  handleChangeCommentInput,
+  CommentActions,
+  eventId,
 }: CommentInputProps) => {
+  const [commentInput, setCommentInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+
+  const HandleChangeCommentInput = (value: string): any => {
+    CommentActions.changeCommentInput(value);
+    setIsTyping(false);
+  };
+
+  const debouncedHandleChangeCommentInput = debounce(HandleChangeCommentInput, 500);
+
   if (isLogin) {
     return (
       <div
@@ -33,11 +51,25 @@ const CommentInput: React.FunctionComponent<CommentInputProps> = ({
             shrink: true,
           }}
           variant="outlined"
+          onChange={event => {
+            setIsTyping(true);
+            const { value } = event.target;
+            debouncedHandleChangeCommentInput(value);
+          }}
         />
 
         <Button
           variant="outlined"
           style={{ position: 'absolute', right: '0px', bottom: '10px' }}
+          onClick={() => {
+            if (isTyping) {
+              console.log(isTyping);
+              console.log('타이핑중');
+            } else {
+              console.log(isTyping);
+              CommentActions.axiosCommentPostRequest(eventId);
+            }
+          }}
         >
           Comment
         </Button>

@@ -22,6 +22,7 @@ import {
   axiosUserEventRequest,
   axiosUserEventSuccess,
   axiosUserEventFailure,
+  EventData,
 } from '../modules/event';
 
 // 이벤트 상태 필터링 함수
@@ -143,7 +144,9 @@ function* axiosUserEvent$(action: any): Generator {
     const nowEvent = yield call(async () => {
       const res = await axios.get(userEventUrl + `/${action.payload}`);
       console.log('이벤트 상세페이지 응답', res);
-      return res.data;
+      const event = res.data;
+      event.commentList = event.commentList.reverse();
+      return event;
     });
     yield put({ type: axiosUserEventSuccess.type, payload: nowEvent });
   } catch (err) {

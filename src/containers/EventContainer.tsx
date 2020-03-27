@@ -1,87 +1,80 @@
 import React, { useEffect } from 'react';
 
-import UserMenu from '../views/UserMenu';
-import CommentListBox from '../views/CommentListBox';
-
 import { connect } from 'react-redux';
 import { StoreState } from '../modules';
+import { bindActionCreators } from 'redux';
+
 import { eventSlice, EventData } from '../modules/event';
 import { couponSlice } from '../modules/coupon';
-import { bindActionCreators } from 'redux';
+import { commentSlice } from '../modules/comment';
+
+import UserMenu from '../views/UserMenu';
+import DetailEvent from '../views/DetailEvent';
+import CommentListBox from '../views/CommentListBox';
 
 //////////////////////////////////////////////////////////////////////////////////////
 
 interface EventContainerProps {
-  nowEvent: EventData | null;
-  EventActions: any;
-  CouponActions: any;
+  nowEvent?: EventData | null;
   isLogin: boolean;
   userId: number | null;
   match: any;
+  EventActions: any;
+  CouponActions: any;
+  CommentActions: any;
+  userThumbsList: [];
 }
 
 const EventContainer: React.FunctionComponent<EventContainerProps> = ({
   nowEvent,
-  EventActions,
-  CouponActions,
   isLogin,
   userId,
   match,
+  EventActions,
+  CouponActions,
+  CommentActions,
+  userThumbsList,
 }: EventContainerProps) => {
   //
 
   useEffect(() => {
     EventActions.axiosUserEventRequest(match.params.eventurl);
+    if (isLogin) {
+      CommentActions.axiosCommentThumbListRequest(match.params.eventurl);
+    }
   }, []);
+
+  function handleChangeCommentInput(value: string): void {
+    CommentActions.changeCommentInput(value);
+  }
 
   return (
     <div>
       <UserMenu />
-      <div>
-        {nowEvent ? (
-          <img style={{ marginLeft: '30%', width: '40%' }} src={nowEvent.pageImage} />
-        ) : null}
-        {nowEvent ? (
-          <button
-            style={{
-              // position: 'fixed',
-              // bottom: 0,
-              marginLeft: '30%',
-              width: '40%',
-              height: '70px',
-              border: 'solid 1px',
-              background: `url(${nowEvent.buttonImage}) no-repeat`,
-              backgroundSize: '100%',
-            }}
-            onClick={() => {
-              if (isLogin) {
-                CouponActions.axiosUserCouponPostRequest();
-              } else {
-                alert('로그인이 필요합니다.');
-              }
-            }}
-          >
-            {/* <img src={nowEvent.buttonImage} /> */}
-          </button>
-        ) : null}
-      </div>
+      <DetailEvent nowEvent={nowEvent} isLogin={isLogin} CouponActions={CouponActions} />
       <CommentListBox
-        isLogin={true}
+        isLogin={isLogin}
         commentList={nowEvent?.commentList}
+        eventId={nowEvent?.id}
         userId={userId}
+        userThumbsList={userThumbsList}
+        handleChangeCommentInput={handleChangeCommentInput}
+        CommentActions={CommentActions}
       ></CommentListBox>
     </div>
   );
 };
 
 export default connect(
-  ({ event, user }: StoreState) => ({
+  ({ event, user, comment }: StoreState) => ({
     nowEvent: event.nowEvent,
     isLogin: user.isLogin,
     userId: user.userId,
+    userThumbsList: comment.userThumbsList,
   }),
   dispatch => ({
     EventActions: bindActionCreators(eventSlice.actions, dispatch),
     CouponActions: bindActionCreators(couponSlice.actions, dispatch),
+    CommentActions: bindActionCreators(commentSlice.actions, dispatch),
   }),
 )(EventContainer);

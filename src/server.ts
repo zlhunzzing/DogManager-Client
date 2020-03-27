@@ -19,3 +19,9 @@ export const userCouponListUrl = server + '/api/user/coupon/list';
 export const userCouponPostUrl = server + '/api/user/coupon';
 export const adminCounponListUrl = server + '/api/admin/coupon/list';
 export const adminCouponPostUrl = server + '/api/admin/coupon';
+
+// POST & PUT & DELETE
+export const userCommentUrl = server + '/api/user/comment/entry'; // /:commentId
+// POST & DELETE
+export const userCommentThumbUrl = server + '/api/user/comment/entry/thumb'; // /:commentId
+export const userCommentThumbListUrl = server + '/api/user/thumb/list'; // /:eventUrl
