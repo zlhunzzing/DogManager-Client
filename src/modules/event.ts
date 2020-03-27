@@ -1,4 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { CommentType } from './comment';
 
 export interface EventData {
   id: number;
@@ -10,6 +11,7 @@ export interface EventData {
   bannerImage?: string;
   pageImage?: string;
   condition?: string;
+  commentList?: CommentType[];
 }
 
 export interface EventState {

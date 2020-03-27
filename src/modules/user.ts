@@ -2,10 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export interface UserState {
   isLogin: boolean;
+  userId: number | null;
 }
 
 export const initialState: UserState = {
   isLogin: false,
+  userId: null,
 };
 
 export const userSlice = createSlice({
@@ -15,11 +17,14 @@ export const userSlice = createSlice({
     changeIsLogin: (state, action): void => {
       state.isLogin = action.payload;
     },
+    changeUserId: (state, action): void => {
+      state.userId = action.payload;
+    },
   },
 });
 
 export const userReducer = userSlice.reducer;
-export const { changeIsLogin } = userSlice.actions;
+export const { changeIsLogin, changeUserId } = userSlice.actions;
 
 //////////////////////////////////////////////////////////////////////////////////////
 // 툴킷 적용 전 코드

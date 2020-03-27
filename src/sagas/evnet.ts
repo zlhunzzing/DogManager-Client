@@ -142,7 +142,7 @@ function* axiosUserEvent$(action: any): Generator {
   try {
     const nowEvent = yield call(async () => {
       const res = await axios.get(userEventUrl + `/${action.payload}`);
-      console.log('응답', res);
+      console.log('이벤트 상세페이지 응답', res);
       return res.data;
     });
     yield put({ type: axiosUserEventSuccess.type, payload: nowEvent });
