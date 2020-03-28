@@ -9,14 +9,12 @@ import Button from '@material-ui/core/Button';
 
 interface CommentInputProps {
   isLogin: boolean;
-  handleChangeCommentInput(value: string): void;
   CommentActions: any;
   eventId: number | undefined;
 }
 
 const CommentInput: React.FunctionComponent<CommentInputProps> = ({
   isLogin,
-  handleChangeCommentInput,
   CommentActions,
   eventId,
 }: CommentInputProps) => {

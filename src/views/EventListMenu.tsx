@@ -4,12 +4,10 @@ import { Link } from 'react-router-dom';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-// import FormHelperText from '@material-ui/core/FormHelperText';
+
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-// import TextField from '@material-ui/core/TextField';
-// import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -36,13 +34,6 @@ const EventListMenu: React.FunctionComponent<EventListMenuProps> = ({
 
   const inputLabel = React.useRef<HTMLLabelElement>(null);
   const [labelWidth] = React.useState(0);
-  // React.useEffect(() => {
-  //   setLabelWidth(inputLabel.current!.offsetWidth);
-  // }, []);
-
-  // const handleChange = (event: React.ChangeEvent<{ value: unknown }>): void => {
-  //   EventActions.ChangeFilter(event.target.value as string);
-  // };
 
   return (
     <div>
@@ -78,14 +69,3 @@ const EventListMenu: React.FunctionComponent<EventListMenuProps> = ({
 };
 
 export default EventListMenu;
-
-// export default connect(
-//   ({ event }: StoreState) => ({
-//     // eventLists: event.eventLists,
-//     // selectedEvent: event.selectedEvent,
-//     filter: event.filter,
-//   }),
-//   dispatch => ({
-//     EventActions: bindActionCreators(eventActions, dispatch),
-//   }),
-// )(EventListMenu);
