@@ -12,7 +12,6 @@ interface CommentListBoxProps {
   eventId: number | undefined;
   userId?: number | null;
   userThumbsList: any[];
-  handleChangeCommentInput(value: string): void;
   CommentActions: any;
 }
 
@@ -22,7 +21,6 @@ const CommentListBox: React.FunctionComponent<CommentListBoxProps> = ({
   userId,
   eventId,
   userThumbsList,
-  handleChangeCommentInput,
   CommentActions,
 }: CommentListBoxProps) => {
   // 코멘트 뿌릴 함수
@@ -63,12 +61,7 @@ const CommentListBox: React.FunctionComponent<CommentListBoxProps> = ({
   return (
     <div>
       <div style={{ height: '10px' }}></div>
-      <CommentInput
-        isLogin={isLogin}
-        handleChangeCommentInput={handleChangeCommentInput}
-        CommentActions={CommentActions}
-        eventId={eventId}
-      />
+      <CommentInput isLogin={isLogin} CommentActions={CommentActions} eventId={eventId} />
       <div>
         {commentList
           ? commentList.map(comment => {
@@ -95,13 +88,25 @@ const CommentListBox: React.FunctionComponent<CommentListBoxProps> = ({
                   );
                 }
               } else {
-                return (
-                  <Comment
-                    CommentActions={CommentActions}
-                    comment={comment}
-                    isLogin={isLogin}
-                  ></Comment>
-                );
+                if (userThumbsList.indexOf(comment.id) !== -1) {
+                  return (
+                    <Comment
+                      CommentActions={CommentActions}
+                      comment={comment}
+                      isLogin={isLogin}
+                      isLiked={true}
+                    ></Comment>
+                  );
+                } else {
+                  return (
+                    <Comment
+                      CommentActions={CommentActions}
+                      comment={comment}
+                      isLogin={isLogin}
+                      isLiked={false}
+                    ></Comment>
+                  );
+                }
               }
             })
           : null}

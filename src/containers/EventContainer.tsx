@@ -44,13 +44,9 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
     }
   }, []);
 
-  function handleChangeCommentInput(value: string): void {
-    CommentActions.changeCommentInput(value);
-  }
-
   return (
     <div>
-      <UserMenu />
+      <UserMenu isLogin={isLogin} />
       <DetailEvent nowEvent={nowEvent} isLogin={isLogin} CouponActions={CouponActions} />
       <CommentListBox
         isLogin={isLogin}
@@ -58,7 +54,6 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
         eventId={nowEvent?.id}
         userId={userId}
         userThumbsList={userThumbsList}
-        handleChangeCommentInput={handleChangeCommentInput}
         CommentActions={CommentActions}
       ></CommentListBox>
     </div>

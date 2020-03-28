@@ -42,7 +42,7 @@ function* axiosUserCommentPost$(action: any): Generator {
         },
       );
       console.log(res.data);
-      return res.data.commentList.reverse();
+      return res.data.commentList;
     });
     console.log(newCommentList);
     yield put({ type: changeNowEventCommentList.type, payload: newCommentList });
@@ -57,22 +57,23 @@ export function* axiosUserCommentPostSaga(): Generator {
 
 // 2. 이벤트 댓글 수정 요청 (로그인 필요)------------------------------------------------
 
-function* axiosUserCommentPut$(): Generator {
+function* axiosUserCommentPut$(action: any): Generator {
   try {
-    const modifiedComment = yield call(async () => {
-      const res = await axios.put(
-        userCommentUrl + '/commentId',
-        { content: '', eventId: '' },
-        {
-          headers: {
-            Authorization: localStorage.getItem('accessToken'),
-          },
-        },
-      );
-      console.log(res.data);
-      return res.data;
-    });
-    // yield put(,newCommentList)
+    console.log('수정', action.payload);
+    // const newCommentList = yield call(async () => {
+    //   const res = await axios.put(
+    //     userCommentUrl + '/commentId',
+    //     { content: '', eventId: '' },
+    //     {
+    //       headers: {
+    //         Authorization: localStorage.getItem('accessToken'),
+    //       },
+    //     },
+    //   );
+    //   console.log(res.data);
+    //   return res.data.commentList;
+    // });
+    // yield put({ type: changeNowEventCommentList.type, payload: newCommentList });
   } catch (err) {
     // 수정 실패
   }
@@ -93,7 +94,7 @@ function* axiosUserCommentDelete$(action: any): Generator {
         },
       });
       console.log(res.data);
-      return res.data.commentList.reverse();
+      return res.data.commentList;
     });
 
     yield put({ type: changeNowEventCommentList.type, payload: newCommentList });
@@ -110,7 +111,7 @@ export function* axiosUserCommentDeleteSaga(): Generator {
 
 function* axiosUserCommentThumbPost$(action: any): Generator {
   try {
-    const newCommentList = yield call(async () => {
+    const newCommentLists: any = yield call(async () => {
       const res = await axios.post(
         userCommentThumbUrl + `/${action.payload}`,
         {},
@@ -121,9 +122,19 @@ function* axiosUserCommentThumbPost$(action: any): Generator {
         },
       );
       console.log(res.data);
-      return res.data.commentList;
+      return res.data;
     });
-    yield put({ type: changeNowEventCommentList.type, payload: newCommentList });
+
+    const { commentList, userThumbsList } = newCommentLists;
+
+    yield put({
+      type: changeNowEventCommentList.type,
+      payload: commentList,
+    });
+    yield put({
+      type: changeUserThumbList.type,
+      payload: userThumbsList,
+    });
   } catch (err) {
     //삭제 실패?
   }
@@ -137,16 +148,21 @@ export function* axiosUserCommentThumbPostSaga(): Generator {
 
 function* axiosUserCommentThumbDelete$(action: any): Generator {
   try {
-    const newCommentList = yield call(async () => {
+    const newCommentLists: any = yield call(async () => {
       const res = await axios.delete(userCommentThumbUrl + `/${action.payload}`, {
         headers: {
           Authorization: localStorage.getItem('accessToken'),
         },
       });
       console.log(res.data);
-      return res.data.commentList;
+      return res.data;
     });
-    yield put({ type: changeNowEventCommentList.type, payload: newCommentList });
+    const { commentList, userThumbsList } = newCommentLists;
+    yield put({ type: changeNowEventCommentList.type, payload: commentList });
+    yield put({
+      type: changeUserThumbList.type,
+      payload: userThumbsList,
+    });
   } catch (err) {
     //삭제 실패?
   }
