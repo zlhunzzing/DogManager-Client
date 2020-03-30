@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, combineReducers } from 'redux';
 import { userSlice } from './modules/user';
 
 import HomeContainer from './containers/HomeContainer';
@@ -20,16 +20,26 @@ import AdminSupport from './pages/AdminSupport';
 import AdminCouponList from './pages/AdminCouponList';
 import AdminCouponEdit from './pages/AdminCouponEdit';
 import AdminCouponView from './pages/AdminCouponView';
-
+import axios from 'axios';
 interface AppProps {
   UserActions: any;
 }
 
 const App: React.FunctionComponent<AppProps> = ({ UserActions }: AppProps) => {
   useEffect(() => {
-    if (localStorage.getItem('accessToken')) {
-      UserActions.changeIsLogin(true);
-    }
+    axios
+      .get('http://13.125.249.151:3002/api/user/userId', {
+        headers: {
+          Authorization: localStorage.getItem('accessToken'),
+        },
+      })
+      .then(res => {
+        console.log('여기');
+        UserActions.changeUserId(res.data.id);
+      });
+    // if (localStorage.getItem('accessToken')) {
+    //   UserActions.changeIsLogin(true);
+    // }
   });
 
   return (
