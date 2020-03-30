@@ -3,83 +3,48 @@
 import React from 'react';
 
 //! 컴포넌트
-import { FakeCouponData } from '../containers/AdminCouponViewContainer';
+
+import { CouponViewData } from '../modules/coupon';
+import CouponViewItem from './CouponViewItem';
+//!
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 //!
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    formControl: {
-      minWidth: 90,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-  }),
-);
-interface couponViewProps {
-  coupon: FakeCouponData;
+//!
+
+// interface couponViewProps {
+//   coupon: FakeCouponData;
+// }
+
+interface CouponViewListTableProps {
+  couponViewList: CouponViewData[];
 }
 
-const CouponViewListTable: React.FunctionComponent<couponViewProps> = ({
-  coupon,
-}: couponViewProps) => {
-  const classes = useStyles();
-  const inputLabel = React.useRef<HTMLLabelElement>(null);
-  const [labelWidth] = React.useState(0);
-  console.log('coupon:', coupon);
-  //   {
-  //     userName: 'john1',
-  //     userEmail: 'john1jungemail.com',
-  //     couponName: 'helloworld1',
-  //     couponCode: '12322312',
-  //     assignedAt: 20200324,
-  //     expiredAt: 20200329,
-  //     isDeleted: 1,
-  //   },
-
-  function convertToStr() {
-    let word: any;
-    if (coupon.isDeleted === 0) {
-      word = '사용가능';
-    } else if (coupon.isDeleted === 1) {
-      word = '사용완료';
-    } else if (coupon.isDeleted === 2) {
-      word = '취소됨';
-    }
-    return word;
-  }
+const CouponViewListTable: React.FunctionComponent<CouponViewListTableProps> = ({
+  couponViewList,
+}: CouponViewListTableProps) => {
   return (
-    <TableRow>
-      <TableCell>{coupon.userName}</TableCell>
-      <TableCell>{coupon.userEmail}</TableCell>
-      <TableCell>
-        <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel
-            ref={inputLabel}
-            id="demo-simple-select-outlined-label"
-          ></InputLabel>
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="demo-simple-select-outlined"
-            value="hello"
-            labelWidth={labelWidth}
-          >
-            <MenuItem value="준비중">{coupon.couponName}</MenuItem>
-          </Select>
-        </FormControl>
-      </TableCell>
-      <TableCell>{coupon.couponCode}</TableCell>
-      <TableCell>{coupon.assignedAt}</TableCell>
-      <TableCell>{coupon.expiredAt}</TableCell>
-      <TableCell>{convertToStr()}</TableCell>
-    </TableRow>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>유저 이름</TableCell>
+          <TableCell>유져 이메일</TableCell>
+          <TableCell>쿠폰 코드</TableCell>
+          <TableCell>쿠폰 발급일</TableCell>
+          <TableCell>쿠폰 만료일</TableCell>
+          <TableCell>상태</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {couponViewList.map((coupon, index) => {
+          return <CouponViewItem key={index} coupon={coupon} />;
+        })}
+      </TableBody>
+    </Table>
   );
 };
 

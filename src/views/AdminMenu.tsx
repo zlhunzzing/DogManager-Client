@@ -81,6 +81,7 @@ const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
     { name: '이벤트 관리', url: '/admin/event-list' },
     { name: '쿠폰 관리', url: '/admin/coupon' },
     { name: 'Q&A 관리', url: '/admin/support' },
+    { name: '유저쿠폰 현황', url: '/admin/coupon-view' },
   ];
 
   const sideList = (): JSX.Element => (

@@ -32,6 +32,7 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
   function handleClickDeleteCoupon(id: number, history: any): void {
     CouponActions.axiosAdminCouponDeleteRequest({ id: id, history: history });
   }
+  console.log('adminCouponList????:', adminCouponList);
 
   return (
     <div>

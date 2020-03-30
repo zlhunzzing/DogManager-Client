@@ -1,109 +1,88 @@
 //! 모듈
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-
+import { StoreState } from '../modules';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 //! 컴포넌트
 import AdminMenu from '../views/AdminMenu';
 import CouponViewListTable from '../views/CouponViewListTable';
+import { couponSlice, CouponViewData } from '../modules/coupon';
+import server from '../server';
 
 //! CSS
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
 
-export interface FakeCouponData {
-  userName: string;
-  userEmail: string;
-  couponName: string;
-  couponCode: string;
-  assignedAt: number;
-  expiredAt: number;
-  isDeleted: number;
+interface AdminCouponViewContainerprops {
+  adminCouponViewList: CouponViewData[] | null;
+  adminCouponFilter: string;
+  adminCouponFilter2: string;
+  CouponActions: any;
 }
 
-const fakeCouponData: FakeCouponData[] = [
-  {
-    userName: 'john1',
-    userEmail: 'john1jungemail.com',
-    couponName: '쿠폰1',
-    couponCode: '12322312',
-    assignedAt: 20200324,
-    expiredAt: 20200329,
-    isDeleted: 1,
-  },
-  {
-    userName: 'john1',
-    userEmail: 'john1jungemail.com',
-    couponName: '쿠폰2',
-    couponCode: '12322312',
-    assignedAt: 20200324,
-    expiredAt: 20200329,
-    isDeleted: 2,
-  },
-  {
-    userName: 'john3',
-    userEmail: 'john3jungemail.com',
-    couponName: 'helloworld3',
-    couponCode: '12322312',
-    assignedAt: 20200324,
-    expiredAt: 20200329,
-    isDeleted: 2,
-  },
-  {
-    userName: 'john4',
-    userEmail: 'john4jungemail.com',
-    couponName: 'helloworld4',
-    couponCode: '12322312',
-    assignedAt: 20200324,
-    expiredAt: 20200329,
-    isDeleted: 1,
-  },
-  {
-    userName: 'john5',
-    userEmail: 'john5jungemail.com',
-    couponName: 'helloworld5',
-    couponCode: '12322312',
-    assignedAt: 20200324,
-    expiredAt: 20200329,
-    isDeleted: 0,
-  },
-];
+const AdminCouponViewContainer: React.FunctionComponent<AdminCouponViewContainerprops> = ({
+  adminCouponViewList,
+  adminCouponFilter,
+  CouponActions,
+  adminCouponFilter2,
+}: AdminCouponViewContainerprops) => {
+  //! 쿠폰필터링
+  let filteredCouponList;
+  if (adminCouponFilter === '') {
+    filteredCouponList = adminCouponViewList;
+  } else {
+    filteredCouponList = adminCouponViewList?.filter(ele => {
+      return ele.userEmail === adminCouponFilter;
+    });
+  }
 
-const AdminCouponViewContainer: React.FunctionComponent = () => {
-  //   statusCode: 200
+  const changeCouponFilter = (filter: string): void => {
+    CouponActions.changeCouponFilter(filter);
+  };
+  const changeCouponFilter2 = (filter: string): void => {
+    CouponActions.changeCouponFilter2(filter);
+  };
+  useEffect(() => {
+    CouponActions.axiosAdminCouponViewListRequest();
+  }, []);
+  console.log('adminCouponViewList:', adminCouponViewList);
 
-  //   isDeleted 상태:
-  //   0 : 사용가능
-  //   1 : 사용완료
-  //   2 : 취소됨(기간만료, 쿠폰삭제 등)
-  //   console.log(fakeCouponData);
+  function changed(e: any): void {
+    e.preventDefault();
+    changeCouponFilter(adminCouponFilter2);
+  }
+
   return (
     <div>
       <AdminMenu />
-      <div style={{ marginTop: 60 }}>something</div>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>유저 이름</TableCell>
-            <TableCell>유져 이메일</TableCell>
-            <TableCell>쿠폰 이름</TableCell>
-            <TableCell>쿠폰 코드</TableCell>
-            <TableCell>쿠폰 발급일</TableCell>
-            <TableCell>쿠폰 만료일</TableCell>
-            <TableCell>상태</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {fakeCouponData.map((coupon, index) => {
-            return <CouponViewListTable key={index} coupon={coupon} />;
-          })}
-        </TableBody>
-      </Table>
+      <div style={{ marginTop: 20 }}> 사용자의 이메일을 입력해주세요</div>
+
+      <form onSubmit={changed}>
+        <input
+          style={{ margin: 30, width: 400, height: 30, fontSize: 20 }}
+          type="email"
+          onChange={(event): void => {
+            const { value } = event.target;
+            changeCouponFilter2(value);
+          }}
+        ></input>
+        <button type="submit" style={{ padding: 12 }}>
+          검색
+        </button>
+      </form>
+      <CouponViewListTable
+        couponViewList={filteredCouponList ? filteredCouponList : []}
+      />
     </div>
   );
 };
 
-export default AdminCouponViewContainer;
+export default connect(
+  ({ coupon }: StoreState) => ({
+    adminCouponViewList: coupon.adminCouponViewList,
+    adminCouponFilter: coupon.adminCouponFilter,
+    adminCouponFilter2: coupon.adminCouponFilter2,
+  }),
+  dispatch => ({
+    CouponActions: bindActionCreators(couponSlice.actions, dispatch),
+  }),
+)(AdminCouponViewContainer);
