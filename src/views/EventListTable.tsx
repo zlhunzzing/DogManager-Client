@@ -14,6 +14,8 @@ interface EventListTableProps {
   eventList: EventData[] | null;
   changeSelectedEvent: (id: string) => void;
   history: any;
+  currentPage: number;
+  perPage: number;
   deleteEvent: (id: number, history: any) => void;
 }
 
@@ -22,8 +24,27 @@ const EventListTable: React.FunctionComponent<EventListTableProps> = ({
   changeSelectedEvent,
   history,
   deleteEvent,
+  currentPage,
+  perPage,
 }: EventListTableProps) => {
   // 이벤트 리스트 상태 바꿔 넣기
+
+  const eventItems = [];
+  for (let i = perPage * (currentPage - 1); i < perPage * currentPage; i++) {
+    if (eventList && eventList[i] !== undefined) {
+      eventItems.push(
+        <EventItem
+          key={i}
+          num={i}
+          event={eventList[i]}
+          changeSelectedEvent={changeSelectedEvent}
+          history={history}
+          deleteEvent={deleteEvent}
+        />,
+      );
+    }
+  }
+  console.log(eventItems);
 
   return (
     <Table>
@@ -39,7 +60,8 @@ const EventListTable: React.FunctionComponent<EventListTableProps> = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {eventList
+        {eventItems}
+        {/* {eventList
           ? eventList.map((event, index) => {
               return (
                 <EventItem
@@ -52,7 +74,7 @@ const EventListTable: React.FunctionComponent<EventListTableProps> = ({
                 />
               );
             })
-          : null}
+          : null} */}
       </TableBody>
     </Table>
   );

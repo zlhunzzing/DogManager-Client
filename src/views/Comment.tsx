@@ -11,6 +11,7 @@ interface CommentProps {
   isLogin: boolean;
   isLiked?: boolean;
   CommentActions: any;
+  eventId?: number | undefined;
 }
 
 const Comment: React.FunctionComponent<CommentProps> = ({
@@ -18,10 +19,11 @@ const Comment: React.FunctionComponent<CommentProps> = ({
   isMine,
   isLogin,
   isLiked,
+  eventId,
   CommentActions,
 }: CommentProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [commentInput, setComment] = useState(comment.content);
+  const [commentInput, setComment] = useState('');
 
   const commentTime = `${comment.createdAt.slice(0, 4)}.${comment.createdAt.slice(
     4,
@@ -50,7 +52,7 @@ const Comment: React.FunctionComponent<CommentProps> = ({
           InputLabelProps={{
             shrink: true,
           }}
-          value={commentInput}
+          defaultValue={comment.content}
           onChange={event => {
             setComment(event.target.value);
           }}
@@ -104,11 +106,14 @@ const Comment: React.FunctionComponent<CommentProps> = ({
           <button
             onClick={() => {
               setIsEditing(false);
-              setComment(comment.content);
-              CommentActions.axiosCommentPutRequest({
-                content: commentInput,
-                eventId: comment.id,
-              });
+              if (commentInput === '') {
+              } else {
+                CommentActions.axiosCommentPutRequest({
+                  content: commentInput,
+                  eventId: eventId,
+                  commentId: comment.id,
+                });
+              }
             }}
           >
             완료

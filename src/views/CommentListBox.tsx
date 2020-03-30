@@ -23,41 +23,6 @@ const CommentListBox: React.FunctionComponent<CommentListBoxProps> = ({
   userThumbsList,
   CommentActions,
 }: CommentListBoxProps) => {
-  // 코멘트 뿌릴 함수
-  if (commentList !== undefined) {
-    commentList.map(comment => {
-      if (comment.userId === userId) {
-        if (comment.id) {
-          return (
-            <Comment
-              CommentActions={CommentActions}
-              isMine={true}
-              comment={comment}
-              isLogin={isLogin}
-            ></Comment>
-          );
-        } else {
-          return (
-            <Comment
-              CommentActions={CommentActions}
-              isMine={true}
-              comment={comment}
-              isLogin={isLogin}
-            ></Comment>
-          );
-        }
-      } else {
-        return (
-          <Comment
-            CommentActions={CommentActions}
-            comment={comment}
-            isLogin={isLogin}
-          ></Comment>
-        );
-      }
-    });
-  }
-
   return (
     <div>
       <div style={{ height: '10px' }}></div>
@@ -72,6 +37,7 @@ const CommentListBox: React.FunctionComponent<CommentListBoxProps> = ({
                       CommentActions={CommentActions}
                       isMine={true}
                       comment={comment}
+                      eventId={eventId}
                       isLogin={isLogin}
                       isLiked={true}
                     ></Comment>
@@ -81,6 +47,7 @@ const CommentListBox: React.FunctionComponent<CommentListBoxProps> = ({
                     <Comment
                       CommentActions={CommentActions}
                       isMine={true}
+                      eventId={eventId}
                       comment={comment}
                       isLogin={isLogin}
                       isLiked={false}
