@@ -6,6 +6,7 @@ import {
   adminCounponListUrl,
   userCouponPostUrl,
   adminCouponPostUrl,
+  adminCounponViewListUrl,
 } from '../server';
 
 import moment from 'moment';
@@ -20,11 +21,36 @@ import {
   axiosUserCouponListFailure,
   axiosUserCouponPostRequest,
   axiosAdminCouponDeleteRequest,
+  axiosAdminCouponViewListRequest,
+  axiosAdminCouponViewListSuccess,
+  axiosAdminCouponViewListFailure,
 } from '../modules/coupon';
 import { EventData } from '../modules/event';
 
 /////////////////////////////////////////////////////////////////////////////////////
-
+// 어드민 쿠폰 뷰 리스트 요청
+function* axiosAdminCouponViewList$() {
+  try {
+    const adminCouponViewList = yield call(async () => {
+      const res = await axios.get(adminCounponViewListUrl, {
+        headers: {
+          Authorization: localStorage.getItem('accessToken'),
+        },
+      });
+      console.log('res.data: ', res.data);
+      return res.data.couponList;
+    });
+    yield put({
+      type: axiosAdminCouponViewListSuccess.type,
+      payload: adminCouponViewList,
+    });
+  } catch (err) {
+    yield put({ type: axiosAdminCouponViewListFailure.type, payload: [] });
+  }
+}
+export function* axiosAdminCouponViewListSaga() {
+  yield takeEvery(axiosAdminCouponViewListRequest, axiosAdminCouponViewList$);
+}
 // 어드민 쿠폰 리스트 요청
 function* axiosAdminCouponList$() {
   try {
@@ -158,5 +184,6 @@ export function* couponSaga() {
     axiosAdminCouponDeleteSaga(),
     axiosUserCouponListSaga(),
     axiosUserCouponPostSaga(),
+    axiosAdminCouponViewListSaga(),
   ]);
 }

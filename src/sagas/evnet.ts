@@ -69,8 +69,10 @@ function* axiosAdminEventList$() {
         },
       });
       const { eventList } = res.data;
+
       eventList.forEach((event: any) => {
         const condition = eventCondition(event.startDate, event.endDate);
+        console.log('eventList???', condition);
         event.condition = condition;
       });
       return eventList;

@@ -20,6 +20,7 @@ const CouponListTable: React.FunctionComponent<CouponListTableProps> = ({
   handleClickDeleteCoupon,
   history,
 }: CouponListTableProps) => {
+  console.log('couponList:', couponList);
   return (
     <div>
       <Table>
@@ -35,17 +36,19 @@ const CouponListTable: React.FunctionComponent<CouponListTableProps> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {couponList.map((coupon, index) => {
-            return (
-              <CouponItem
-                key={index}
-                num={index}
-                coupon={coupon}
-                handleClickDeleteCoupon={handleClickDeleteCoupon}
-                history={history}
-              />
-            );
-          })}
+          {couponList
+            ? couponList.map((coupon, index) => {
+                return (
+                  <CouponItem
+                    key={index}
+                    num={index}
+                    coupon={coupon}
+                    handleClickDeleteCoupon={handleClickDeleteCoupon}
+                    history={history}
+                  />
+                );
+              })
+            : null}
         </TableBody>
       </Table>
     </div>

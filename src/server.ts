@@ -18,4 +18,5 @@ export const userEventUrl = server + '/api/user/events/entry'; //:url
 export const userCouponListUrl = server + '/api/user/coupon/list';
 export const userCouponPostUrl = server + '/api/user/coupon';
 export const adminCounponListUrl = server + '/api/admin/coupon/list';
+export const adminCounponViewListUrl = server + '/api/admin/user/coupon/list';
 export const adminCouponPostUrl = server + '/api/admin/coupon';
