@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { connect, useSelector } from 'react-redux';
@@ -11,6 +11,7 @@ import { actionCreators as eventEditActions, initialState } from '../modules/eve
 import AdminMenu from '../views/AdminMenu';
 import EventListMenu from '../views/EventListMenu';
 import EventListTable from '../views/EventListTable';
+import PageBar from '../views/PageBar';
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -30,7 +31,13 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
   EventEditActions,
 }: EventListTableProps) => {
   const filteredEventList = useSelector(adminEventListSelector);
-  console.log('셀렉터', filteredEventList);
+  // console.log('셀렉터', filteredEventList);
+  const [currentPage, setCurrentPage] = React.useState(1);
+
+  //
+  const changePage = (page: number): void => {
+    setCurrentPage(page);
+  };
 
   // store에 editEventId 바꾸기
   const changeSelectedEvent = (id: string): void => {
@@ -40,6 +47,7 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
   // store에 adminFilter 바꾸기
   const changeFilter = (filter: string): void => {
     EventActions.changeFilter(filter);
+    setCurrentPage(1);
   };
 
   // 삭제 요청 보내는 액션
@@ -68,6 +76,13 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
         changeSelectedEvent={changeSelectedEvent}
         deleteEvent={deleteEvent}
         history={history}
+        currentPage={currentPage}
+        perPage={2}
+      />
+      <PageBar
+        pages={Math.floor(filteredEventList.length / 2 + 1)}
+        currentPage={currentPage}
+        changePage={changePage}
       />
     </div>
   );

@@ -60,20 +60,20 @@ export function* axiosUserCommentPostSaga(): Generator {
 function* axiosUserCommentPut$(action: any): Generator {
   try {
     console.log('수정', action.payload);
-    // const newCommentList = yield call(async () => {
-    //   const res = await axios.put(
-    //     userCommentUrl + '/commentId',
-    //     { content: '', eventId: '' },
-    //     {
-    //       headers: {
-    //         Authorization: localStorage.getItem('accessToken'),
-    //       },
-    //     },
-    //   );
-    //   console.log(res.data);
-    //   return res.data.commentList;
-    // });
-    // yield put({ type: changeNowEventCommentList.type, payload: newCommentList });
+    const newCommentList = yield call(async () => {
+      const res = await axios.put(
+        userCommentUrl + `/${action.payload.commentId}`,
+        { content: action.payload.content, eventId: action.payload.eventId },
+        {
+          headers: {
+            Authorization: localStorage.getItem('accessToken'),
+          },
+        },
+      );
+      console.log(res.data);
+      return res.data.commentList;
+    });
+    yield put({ type: changeNowEventCommentList.type, payload: newCommentList });
   } catch (err) {
     // 수정 실패
   }

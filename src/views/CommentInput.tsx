@@ -18,8 +18,8 @@ const CommentInput: React.FunctionComponent<CommentInputProps> = ({
   CommentActions,
   eventId,
 }: CommentInputProps) => {
-  const [commentInput, setCommentInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [comment, setComment] = useState('');
 
   const HandleChangeCommentInput = (value: string): any => {
     CommentActions.changeCommentInput(value);
@@ -45,14 +45,15 @@ const CommentInput: React.FunctionComponent<CommentInputProps> = ({
           multiline
           rows={3}
           rowsMax={3}
+          value={comment}
           InputLabelProps={{
             shrink: true,
           }}
           variant="outlined"
           onChange={event => {
             setIsTyping(true);
-            const { value } = event.target;
-            debouncedHandleChangeCommentInput(value);
+            setComment(event.target.value);
+            debouncedHandleChangeCommentInput(event.target.value);
           }}
         />
 
