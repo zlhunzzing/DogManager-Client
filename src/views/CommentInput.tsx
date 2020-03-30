@@ -67,6 +67,7 @@ const CommentInput: React.FunctionComponent<CommentInputProps> = ({
             } else {
               console.log(isTyping);
               CommentActions.axiosCommentPostRequest(eventId);
+              setComment('');
             }
           }}
         >
