@@ -8,7 +8,7 @@ import axios from 'axios';
 import { StoreState } from '../modules';
 import { actionCreators as eventEditActions, initialState } from '../modules/eventEdit';
 import { eventSlice } from '../modules/event';
-
+import EventEditView from '../views/EventEditView';
 import { couponSlice, CouponData } from '../modules/coupon';
 
 import server from '../server';
@@ -22,7 +22,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { blue } from '@material-ui/core/colors';
-
 import Button from '@material-ui/core/Button';
 
 //? material - URL input
@@ -238,7 +237,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
-        Authorization: localStorage.getItem('accessToken'), //! 계속 401 에러
+        Authorization: localStorage.getItem('accessToken'),
       },
     };
 
@@ -397,6 +396,18 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     }
     return ret;
   }
+  function changedTitle(e: any): void {
+    EventEditActions.changeEventTitle(e);
+  }
+  function changedChecked(e: boolean): void {
+    EventEditActions.changeIsChecked(e);
+  }
+  function changedStartData(e: any): void {
+    EventEditActions.changeStartDate(e);
+  }
+  function changedUrl(e: any): void {
+    EventEditActions.changePageUrl(e);
+  }
   return (
     <div>
       <div
@@ -412,131 +423,24 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
         <div>이벤트 {selectedEvent === '' ? '등록' : '수정'}</div>
       </div>
       <Divider />
-
-      <form
-        style={{ margin: 20, height: 50, textAlign: 'center', paddingTop: 20 }}
-        onSubmit={handleSubmitFormData}
-      >
-        <div className={classes.root}>
-          <div>
-            <span style={{ fontWeight: 'bold', paddingRight: 20 }}>이벤트 이름</span>
-            <TextField
-              id="standard-textarea"
-              placeholder="타이틀을 적어주세요"
-              style={{ paddingRight: 80 }}
-              value={eventTitle}
-              multiline
-              onChange={(event): void => {
-                const { value } = event.target;
-                EventEditActions.changeEventTitle(value);
-              }}
-            />
-          </div>
-        </div>
-        <FormControl component="fieldset">
-          <FormLabel component="legend"></FormLabel>
-          <FormGroup aria-label="position" row>
-            <FormControlLabel
-              value="start"
-              control={<Checkbox color="primary" />}
-              style={{ paddingTop: 20, paddingRight: 20, fontWeight: 'bold' }}
-              label="상시"
-              labelPlacement="start"
-              checked={isChecked}
-              onChange={(): void => {
-                EventEditActions.changeIsChecked(!isChecked);
-              }}
-            />
-          </FormGroup>
-        </FormControl>
-        <div>
-          <span style={{ fontWeight: 'bold' }}>시작일시</span>
-          <TextField
-            id="datetime-local"
-            label="시작일자"
-            type="datetime-local"
-            className={classes2.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={startDate}
-            onChange={(event): void => {
-              const { value } = event.target;
-              EventEditActions.changeStartDate(value);
-            }}
-          />
-        </div>
-        <span style={{ fontWeight: 'bold' }}>종료 일시</span>
-        <span>{showEndDate()}</span>
-        <div>
-          <span style={{ fontWeight: 'bold' }}>이미지 업로드</span>
-          <input
-            type="file"
-            style={{ margin: 20, paddingRight: 40 }}
-            id="pageImgFile"
-            onChange={(event): void => {
-              const { files } = event.target;
-              if (files !== null) {
-                handleChangeImageFile(files[0], 'pageImage');
-              }
-            }}
-          ></input>
-        </div>
-        {handleChangePreviewImageFile(pageImage)}
-        <div>
-          <span style={{ fontWeight: 'bold' }}>배너페이지 업로드</span>
-          <input
-            type="file"
-            style={{ margin: 10, paddingRight: 70 }}
-            id="bannerImgFile"
-            onChange={(event): void => {
-              const { files } = event.target;
-              if (files !== null) {
-                handleChangeImageFile(files[0], 'bannerImage');
-              }
-            }}
-          ></input>
-        </div>
-        {handleChangePreviewImageFile(bannerImage)}
-        <div style={{ paddingBottom: 30 }}>
-          <span style={{ fontWeight: 'bold' }}>하단버튼</span>
-          <input
-            type="file"
-            style={{ margin: 20 }}
-            id="buttonImgFile"
-            onChange={(event): void => {
-              const { files } = event.target;
-              if (files !== null) {
-                handleChangeImageFile(files[0], 'buttonImage');
-              }
-            }}
-          ></input>
-        </div>
-
-        {handleChangePreviewImageFile(buttonImage)}
-        {showCouponListInput()}
-        <div className={classes.root}>
-          <div style={{ paddingTop: 40, margin: -10 }}>
-            <span style={{ fontWeight: 'bold', paddingRight: 39, margin: -21 }}>
-              상세페이지 URL
-            </span>
-            <TextField
-              id="standard-textarea"
-              placeholder="상세 연결될 URL"
-              style={{ paddingRight: 65 }}
-              multiline
-              value={detailPageUrl}
-              onChange={(event): void => {
-                const { value } = event.target;
-                EventEditActions.changePageUrl(value);
-              }}
-            />
-          </div>
-        </div>
-        <button style={{ margin: 20 }} type="submit">
-          등록/수정
-        </button>
-      </form>
+      <EventEditView
+        handleSubmitFormData={handleSubmitFormData}
+        eventTitle={eventTitle}
+        changedTitle={changedTitle}
+        isChecked={isChecked}
+        changedChecked={changedChecked}
+        startDate={startDate}
+        changedStartData={changedStartData}
+        showEndDate={showEndDate}
+        handleChangeImageFile={handleChangeImageFile}
+        handleChangePreviewImageFile={handleChangePreviewImageFile}
+        pageImage={pageImage}
+        bannerImage={bannerImage}
+        buttonImage={buttonImage}
+        showCouponListInput={showCouponListInput}
+        detailPageUrl={detailPageUrl}
+        changedUrl={changedUrl}
+      />
     </div>
   );
 };
