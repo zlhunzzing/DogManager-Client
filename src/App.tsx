@@ -20,6 +20,9 @@ import AdminSupport from './pages/AdminSupport';
 import AdminCouponList from './pages/AdminCouponList';
 import AdminCouponEdit from './pages/AdminCouponEdit';
 import AdminCouponView from './pages/AdminCouponView';
+
+import Chat from './views/Chat';
+
 import axios from 'axios';
 interface AppProps {
   UserActions: any;
@@ -62,6 +65,7 @@ const App: React.FunctionComponent<AppProps> = ({ UserActions }: AppProps) => {
         <Route path="/admin/coupon-view" component={AdminCouponView} />
         <Redirect path="*" to="/" />
       </Switch>
+      <Chat isLogin={true} />
     </BrowserRouter>
   );
 };

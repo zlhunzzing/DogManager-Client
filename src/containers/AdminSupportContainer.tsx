@@ -6,7 +6,11 @@ const AdminSupportContainer: React.FunctionComponent = () => {
   return (
     <div>
       <AdminMenu />
-      <div>여기가 고객문의 관리</div>
+      <div>각채팅방</div>
+      <div>각채팅방</div>
+      <div>각채팅방</div>
+      <div>각채팅방</div>
+      <div>각채팅방</div>
     </div>
   );
 };
