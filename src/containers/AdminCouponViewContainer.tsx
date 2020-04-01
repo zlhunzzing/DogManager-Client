@@ -44,7 +44,7 @@ const AdminCouponViewContainer: React.FunctionComponent<AdminCouponViewContainer
   useEffect(() => {
     CouponActions.axiosAdminCouponViewListRequest();
   }, []);
-  console.log('adminCouponViewList:', adminCouponViewList);
+  // console.log('adminCouponViewList:', adminCouponViewList);
 
   function changed(e: any): void {
     e.preventDefault();

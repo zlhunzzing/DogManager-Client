@@ -10,6 +10,7 @@ import { UserState, userReducer as user } from './user';
 import { CouponEditState, couponEditReducer as couponEdit } from './couponEdit';
 import { CommentState, commentReducer as comment } from './comment';
 import { CouponState, couponReducer as coupon } from './coupon';
+import { ChatState, chatReducer as chat } from './chat';
 
 export interface StoreState {
   admin: AdminState;
@@ -19,6 +20,7 @@ export interface StoreState {
   event: EventState;
   eventEdit: EventEditState;
   coupon: CouponState;
+  chat: ChatState;
   couponEdit: CouponEditState;
   comment: CommentState;
 }
@@ -33,4 +35,5 @@ export default combineReducers<StoreState>({
   coupon,
   couponEdit,
   comment,
+  chat,
 });
