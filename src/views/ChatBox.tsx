@@ -1,19 +1,73 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-interface ChatProps {
+import socket from '../socket';
+
+interface ChatBoxProps {
   isLogin: boolean;
+  chatLog?: [];
 }
+
 // 메세지들이 담긴 리스트가 계속 업데이트 되겠지,,?
-const Chat: React.FunctionComponent<ChatProps> = ({ isLogin }: ChatProps) => {
+
+const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
+  isLogin,
+  chatLog,
+}: ChatBoxProps) => {
   const [open, setOpen] = React.useState(false);
+  const [isSocketConnected, setIsSocketConnected] = React.useState(false);
+  const [myChat, setMyChat] = React.useState('');
+  const [sendChat, setSendChat] = React.useState(false);
 
   const handleOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    // socket.disconnect();
     setOpen(false);
+    setIsSocketConnected(false);
   };
+
+  const chat = () => {
+    console.log('소켓으로 채팅 보내기');
+    socket.emit('chat', {
+      content: myChat,
+      token: localStorage.getItem('accessToken'),
+    });
+    console.log(myChat);
+    setMyChat('');
+    setSendChat(true);
+  };
+
+  useEffect(() => {
+    socket.on('chatLog', (chatLogs: any) => {
+      console.log('여기', chatLogs);
+      setSendChat(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on('disconnect', function() {
+      console.log('client disconnected from server');
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on('connect', function() {
+      console.log('여기는 뭐라고 나오려나');
+    });
+  }, []);
+
+  useEffect(() => {
+    if (open) {
+      console.log('로그인 에밋');
+      socket.emit('login', {
+        token: localStorage.getItem('accessToken'),
+      });
+    } else {
+    }
+  }, []);
+
   return (
     <div>
       <img
@@ -82,40 +136,23 @@ const Chat: React.FunctionComponent<ChatProps> = ({ isLogin }: ChatProps) => {
             <div>메세지</div>
           </div>
           <div style={{ position: 'absolute', bottom: '5px' }}>
-            <input style={{ marginLeft: '10px' }} type="text" placeholder="채팅입력" />
-            <button
-              style={{ position: 'relative', right: '10px' }}
-              onClick={() => {
-                console.log('소켓으로 채팅 보내기');
+            <input
+              style={{ marginLeft: '10px' }}
+              type="text"
+              placeholder="메세지를 입력해주세요"
+              value={myChat}
+              onChange={event => {
+                setMyChat(event.target.value);
               }}
-            >
+            />
+            <button style={{ position: 'relative', right: '10px' }} onClick={chat}>
               입력
             </button>
           </div>
         </div>
       ) : null}
-
-      {/* <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        open={open}
-        onClose={handleClose}
-      >
-        <div style={modalStyle} className={classes.paper}>
-          <h2 id="simple-modal-title">쿠폰 삭제</h2>
-          <p id="simple-modal-description">정말 삭제하시겠습니까?</p>
-          <button
-            onClick={() => {
-              handleClose();
-            }}
-          >
-            삭제
-          </button>
-          <button onClick={handleClose}>닫기</button>
-        </div>
-      </Modal> */}
     </div>
   );
 };
 
-export default Chat;
+export default ChatBox;

@@ -3,11 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 export interface UserState {
   isLogin: boolean;
   userId: number | null;
+  chatLog: [];
 }
 
 export const initialState: UserState = {
   isLogin: false,
   userId: null,
+  chatLog: [],
 };
 
 export const userSlice = createSlice({
