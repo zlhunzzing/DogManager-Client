@@ -36,7 +36,7 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
       content: myChat,
       token: localStorage.getItem('accessToken'),
     });
-    console.log(myChat);
+    console.log('myChatMessage: ', myChat);
     setMyChat('');
     setSendChat(true);
   };

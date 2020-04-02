@@ -20,7 +20,7 @@ export const userCouponPostUrl = server + '/api/user/coupon';
 export const adminCounponListUrl = server + '/api/admin/coupon/list';
 export const adminCounponViewListUrl = server + '/api/admin/user/coupon/list';
 export const adminCouponPostUrl = server + '/api/admin/coupon';
-
+export const adminChatRoomGetUrl = server + '/api/admin/room/list';
 // POST & PUT & DELETE
 export const userCommentUrl = server + '/api/user/comment/entry'; // /:commentId
 // POST & DELETE
