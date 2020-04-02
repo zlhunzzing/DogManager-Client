@@ -1,5 +1,5 @@
 //! 모듈
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, ReactElement } from 'react';
 import socket from '../socket';
 //! 컴포넌트
 import { ChatData } from '../modules/chat';
@@ -11,6 +11,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import StarIcon from '@material-ui/icons/Star';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import RadioButtonUncheckedOutlinedIcon from '@material-ui/icons/RadioButtonUncheckedOutlined';
+import RadioButtonCheckedOutlinedIcon from '@material-ui/icons/RadioButtonCheckedOutlined';
 
 interface AdminChatListContainerContainerProps {
   chatRoom: ChatData;
@@ -42,17 +44,17 @@ export const useStyles = makeStyles((theme: Theme) =>
 const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerProps> = ({
   chatRoom,
 }: AdminChatListContainerContainerProps) => {
-  //!소켓
-  // const [open, setOpen] = React.useState(false);
-  const [isSocketConnected, setIsSocketConnected] = React.useState(false);
-  const [myChat, setMyChat] = React.useState('');
-  const [chatLog, setChatLog] = React.useState([]);
-
-  //!---
-  //! 모달
+  //!모달
   const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
+  //! 소켓
+  const [isSocketConnected, setIsSocketConnected] = React.useState(false);
+  //! 스크롤 고정
+  const chatBoxRef = useRef<HTMLDivElement>(null);
+  const [chatLog, setChatLog] = React.useState<Array<any>>([]);
+  //! state:
+  const [myChat, setMyChat] = React.useState('');
+  // const [chatLog, setChatLog] = React.useState([]);
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -78,16 +80,24 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
     socket.on('chatLog', (chatLogs: any) => {
       console.log('와우 기록데이터:', chatLogs);
       setChatLog(chatLogs);
+      chatBoxRef.current?.scrollTo(0, chatBoxRef.current?.scrollHeight);
     });
   }, []);
 
-  //!--
+  console.log('chatRoom: ', chatRoom);
+  console.log('chatRoom.adminCheck: ', chatRoom.adminCheck);
+
+  let icon: JSX.Element;
+  if (!chatRoom.adminCheck) {
+    icon = <RadioButtonUncheckedOutlinedIcon />;
+  } else {
+    icon = <RadioButtonCheckedOutlinedIcon />;
+  }
+
   return (
     <div>
       <ListItem button>
-        <ListItemIcon>
-          <StarIcon />
-        </ListItemIcon>
+        <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText
           onClick={handleOpen}
           primary={`${'고유번호:  '}${chatRoom.id} 이름:  ${chatRoom.name}`}
@@ -137,17 +147,35 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
               height: '65%',
               overflow: 'scroll',
             }}
+            onScrollCapture={() => {
+              console.log('스크롤');
+            }}
+            ref={chatBoxRef}
           >
             {chatLog.map((chat: any, index: number) => {
               if (chat.writer === 'admin') {
                 return (
-                  <div
-                    style={{
-                      textAlign: 'right',
-                    }}
-                    key={index}
-                  >
-                    {chat.content}
+                  <div>
+                    <div
+                      style={{
+                        color: 'red',
+                        fontWeight: 'bold',
+                        textAlign: 'right',
+                        margin: 12,
+                      }}
+                    >
+                      관리자
+                    </div>
+                    <div
+                      style={{
+                        textAlign: 'right',
+                        margin: 12,
+                        color: 'grey',
+                      }}
+                      key={index}
+                    >
+                      {chat.content}
+                    </div>
                   </div>
                 );
               } else {
