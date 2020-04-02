@@ -22,11 +22,14 @@ export const userSlice = createSlice({
     changeUserId: (state, action): void => {
       state.userId = action.payload;
     },
+    changeChatLog: (state, action): void => {
+      state.chatLog = action.payload;
+    },
   },
 });
 
 export const userReducer = userSlice.reducer;
-export const { changeIsLogin, changeUserId } = userSlice.actions;
+export const { changeIsLogin, changeUserId, changeChatLog } = userSlice.actions;
 
 //////////////////////////////////////////////////////////////////////////////////////
 // 툴킷 적용 전 코드

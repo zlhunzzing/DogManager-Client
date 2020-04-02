@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators, combineReducers } from 'redux';
 import { userSlice } from './modules/user';
 
+import PrivateRoute from './containers/PrivateRoute';
+
 import HomeContainer from './containers/HomeContainer';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
@@ -24,6 +26,9 @@ import AdminCouponView from './pages/AdminCouponView';
 import UserChatContainer from './containers/UserChatContainer';
 
 import axios from 'axios';
+
+//////////////////////////////////////////////////////////////////////////////////////
+
 interface AppProps {
   UserActions: any;
 }
@@ -37,12 +42,13 @@ const App: React.FunctionComponent<AppProps> = ({ UserActions }: AppProps) => {
         },
       })
       .then(res => {
+        console.log('이거 얼마나 찍힐까? 로그인 유지?');
         UserActions.changeIsLogin(true);
         UserActions.changeUserId(res.data.id);
+      })
+      .catch(err => {
+        console.log(err.response);
       });
-    // if (localStorage.getItem('accessToken')) {
-    //   UserActions.changeIsLogin(true);
-    // }
   }, []);
 
   return (
@@ -53,7 +59,7 @@ const App: React.FunctionComponent<AppProps> = ({ UserActions }: AppProps) => {
         <Route path="/user/signup" component={Signup} />
         <Route path="/user/event-list" component={EventList} />
         <Route path="/user/event/:eventurl" component={Event} />
-        <Route path="/user/coupon" component={CouponList} />
+        <PrivateRoute path="/user/coupon" component={CouponList} />
 
         <Route path="/admin/signin" component={AdminSignin} />
         <Route path="/admin/event-list" component={AdminEventList} />

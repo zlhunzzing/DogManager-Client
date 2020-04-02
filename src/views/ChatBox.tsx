@@ -2,21 +2,23 @@ import React, { useEffect } from 'react';
 
 import socket from '../socket';
 
+//////////////////////////////////////////////////////////////////////////////////////
+
 interface ChatBoxProps {
   isLogin: boolean;
-  chatLog?: [];
+  UserActions: any;
 }
-
-// 메세지들이 담긴 리스트가 계속 업데이트 되겠지,,?
 
 const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
   isLogin,
-  chatLog,
+  UserActions,
 }: ChatBoxProps) => {
   const [open, setOpen] = React.useState(false);
   const [isSocketConnected, setIsSocketConnected] = React.useState(false);
   const [myChat, setMyChat] = React.useState('');
   const [sendChat, setSendChat] = React.useState(false);
+
+  const [chatLog, setChatLog] = React.useState([]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -42,6 +44,7 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
   useEffect(() => {
     socket.on('chatLog', (chatLogs: any) => {
       console.log('여기', chatLogs);
+      setChatLog(chatLogs);
       setSendChat(false);
     });
   }, []);
@@ -66,7 +69,7 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
       });
     } else {
     }
-  }, []);
+  }, [open]);
 
   return (
     <div>
@@ -91,12 +94,13 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
       {open ? (
         <div
           style={{
-            width: '300px',
+            width: '400px',
             height: '500px',
             backgroundColor: '#D5D5D5',
             position: 'fixed',
-            right: '10px',
+            right: '20px',
             bottom: '10px',
+            borderRadius: 4,
           }}
         >
           <div style={{ position: 'relative', height: '20px' }}>
@@ -113,6 +117,23 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
               overflow: 'auto',
             }}
           >
+            {chatLog.map((chat: any, index: number) => {
+              if (chat.writer === 'user') {
+                return (
+                  <div
+                    style={{
+                      textAlign: 'right',
+                    }}
+                    key={index}
+                  >
+                    {chat.content}
+                  </div>
+                );
+              } else {
+                return <div key={index}>{chat.content}</div>;
+              }
+            })}
+            {/* <div>메세지</div>
             <div>메세지</div>
             <div>메세지</div>
             <div>메세지</div>
@@ -132,8 +153,7 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
             <div>메세지</div>
             <div>메세지</div>
             <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
+            <div>메세지</div> */}
           </div>
           <div style={{ position: 'absolute', bottom: '5px' }}>
             <input
