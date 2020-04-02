@@ -16,19 +16,15 @@ interface AdminChatListContainerContainerProps {
   chatRoom: ChatData;
 }
 
-// interface ChatBoxProps {
-//   isLogin: boolean;
-//   chatLog?: [];
-// }
-
 const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerProps> = ({
   chatRoom,
 }: AdminChatListContainerContainerProps) => {
   //!소켓
   // const [open, setOpen] = React.useState(false);
-  // const [isSocketConnected, setIsSocketConnected] = React.useState(false);
-  // const [myChat, setMyChat] = React.useState('');
-  // const [sendChat, setSendChat] = React.useState(false);
+  const [isSocketConnected, setIsSocketConnected] = React.useState(false);
+  const [myChat, setMyChat] = React.useState('');
+  const [chatLog, setChatLog] = React.useState([]);
+
   //!---
   //! 모달
   const classes = useStyles();
@@ -43,14 +39,23 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
   const handleClose = () => {
     setOpen(false);
   };
-
+  useEffect(() => {
+    if (open) {
+      console.log('어드민 로그인 에밋');
+      socket.emit('login', {
+        token: localStorage.getItem('accessToken'),
+        userId: chatRoom.id,
+      });
+    } else {
+    }
+  }, [open]);
   //! 소켓
-  // useEffect(() => {
-  //   socket.on('chatLog', (chatLogs: any) => {
-  //     console.log('와우 기록데이터:', chatLogs);
-  //     setSendChat(false);
-  //   });
-  // }, []);
+  useEffect(() => {
+    socket.on('chatLog', (chatLogs: any) => {
+      console.log('와우 기록데이터:', chatLogs);
+      setChatLog(chatLogs);
+    });
+  }, []);
   //!--
   return (
     <div>
@@ -94,35 +99,31 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
               overflow: 'auto',
             }}
           >
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
+            {chatLog.map((e: any, index: number) => {
+              return <div key={index}>{e.content}</div>;
+            })}
           </div>
           <div style={{ bottom: '5px' }}>
             <input
               style={{ margin: 20, width: 200, height: 20, fontSize: 10 }}
               type="text"
               placeholder="메세지를 입력해주세요"
+              onChange={e => {
+                setMyChat(e.target.value);
+              }}
             />
-            <button style={{ position: 'relative', right: '10px' }}>입력</button>
+            <button
+              onClick={() => {
+                socket.emit('chat', {
+                  token: localStorage.getItem('accessToken'),
+                  userId: chatRoom.id,
+                  content: myChat,
+                });
+              }}
+              style={{ position: 'relative', right: '10px' }}
+            >
+              입력
+            </button>
           </div>
           <button onClick={handleClose} style={{ padding: 12, marginLeft: 330 }}>
             완료
