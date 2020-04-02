@@ -1,6 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import socket from '../socket';
+
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Chat from './Chat';
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -18,7 +22,7 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
   const [myChat, setMyChat] = React.useState('');
   const [sendChat, setSendChat] = React.useState(false);
 
-  const [chatLog, setChatLog] = React.useState([]);
+  const [chatLog, setChatLog] = React.useState<Array<any>>([]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -30,12 +34,16 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
     setIsSocketConnected(false);
   };
 
+  const chatBoxRef = useRef<HTMLDivElement>(null);
+
   const chat = () => {
     console.log('소켓으로 채팅 보내기');
-    socket.emit('chat', {
-      content: myChat,
-      token: localStorage.getItem('accessToken'),
-    });
+    if (myChat.length !== 0) {
+      socket.emit('chat', {
+        content: myChat,
+        token: localStorage.getItem('accessToken'),
+      });
+    }
     console.log('myChatMessage: ', myChat);
     setMyChat('');
     setSendChat(true);
@@ -46,6 +54,9 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
       console.log('여기', chatLogs);
       setChatLog(chatLogs);
       setSendChat(false);
+      // 여기서 저 div 스크롤 bottom으로 고정시켜야지
+      chatBoxRef.current?.scrollTo(0, chatBoxRef.current?.scrollHeight);
+      // console.log(chatBoxRef.current?.scrollHeight);
     });
   }, []);
 
@@ -91,83 +102,92 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
         src="https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-speech-bubble-26.png&r=0&g=0&b=0"
       ></img>
 
-      {open ? (
+      {open && isLogin ? (
         <div
           style={{
             width: '400px',
-            height: '500px',
-            backgroundColor: '#D5D5D5',
+            height: '800px',
+            backgroundColor: '#FFFFFF',
             position: 'fixed',
             right: '20px',
             bottom: '10px',
             borderRadius: 4,
+            border: 'solid 1px blue',
           }}
         >
           <div style={{ position: 'relative', height: '20px' }}>
-            <button style={{ position: 'absolute', right: '0px' }} onClick={handleClose}>
+            <Button
+              style={{ position: 'absolute', right: '0px' }}
+              size="small"
+              onClick={handleClose}
+              variant="outlined"
+            >
               X
-            </button>
+            </Button>
+            {/* <button style={{ position: 'absolute', right: '0px' }} onClick={handleClose}>
+              X
+            </button> */}
           </div>
-          <div style={{ textAlign: 'center' }}>안녕하세요 코드메이트입니다.</div>
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            ** 안녕하세요 코드메이트입니다. **
+          </div>
           <div
             style={{
-              marginTop: '10px',
+              margin: '10px',
               border: 'solid 1px',
               height: '80%',
               overflow: 'auto',
             }}
+            onScrollCapture={() => {
+              console.log('스크롤');
+            }}
+            ref={chatBoxRef}
           >
             {chatLog.map((chat: any, index: number) => {
               if (chat.writer === 'user') {
                 return (
-                  <div
-                    style={{
-                      textAlign: 'right',
-                    }}
-                    key={index}
-                  >
-                    {chat.content}
+                  <div>
+                    <div
+                      style={{
+                        textAlign: 'right',
+                      }}
+                      key={index}
+                    >
+                      {chat.content}
+                    </div>
+                    {index < chatLog.length - 1 ? (
+                      <div>
+                        {' '}
+                        {chatLog[index + 1].writer === 'admin' ? (
+                          <div>관리자</div>
+                        ) : null}{' '}
+                      </div>
+                    ) : null}
                   </div>
                 );
               } else {
                 return <div key={index}>{chat.content}</div>;
               }
             })}
-            {/* <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div>
-            <div>메세지</div> */}
           </div>
-          <div style={{ position: 'absolute', bottom: '5px' }}>
-            <input
-              style={{ marginLeft: '10px' }}
-              type="text"
-              placeholder="메세지를 입력해주세요"
+          <div style={{ margin: '10px', position: 'relative', border: 'solid 1px' }}>
+            <TextField
+              id="outlined-basic"
+              required={false}
+              variant="outlined"
+              style={{ width: '85%' }}
               value={myChat}
-              onChange={event => {
+              onChange={(event: any) => {
                 setMyChat(event.target.value);
               }}
             />
-            <button style={{ position: 'relative', right: '10px' }} onClick={chat}>
+            <Button
+              variant="outlined"
+              onClick={chat}
+              style={{ position: 'absolute', right: '0px', height: '100%', width: '10%' }}
+            >
               입력
-            </button>
+            </Button>
           </div>
         </div>
       ) : null}
