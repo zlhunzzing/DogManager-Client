@@ -9,12 +9,35 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import StarIcon from '@material-ui/icons/Star';
-import { useStyles, getModalStyle } from './CouponItem';
 import Modal from '@material-ui/core/Modal';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 interface AdminChatListContainerContainerProps {
   chatRoom: ChatData;
 }
+export function getModalStyle() {
+  return {
+    width: 615,
+    height: 378,
+    top: '50%',
+    left: '50%',
+    transform: `translate(-50%, -50%)`,
+  };
+}
+
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      position: 'absolute',
+      width: 200,
+      height: 400,
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+  }),
+);
 
 const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerProps> = ({
   chatRoom,
@@ -39,6 +62,7 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
   const handleClose = () => {
     setOpen(false);
   };
+
   useEffect(() => {
     if (open) {
       console.log('어드민 로그인 에밋');
@@ -56,6 +80,7 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
       setChatLog(chatLogs);
     });
   }, []);
+
   //!--
   return (
     <div>
@@ -74,14 +99,28 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
         open={open}
         onClose={handleClose}
       >
-        <div style={modalStyle} className={classes.paper}>
-          <div style={{ position: 'relative' }}>
+        <div
+          style={{
+            width: '400px',
+            height: '500px',
+            backgroundColor: 'white',
+            position: 'fixed',
+            right: '20px',
+            bottom: '10px',
+            borderRadius: 3,
+            top: '50%',
+            left: '50%',
+            transform: `translate(-50%, -50%)`,
+          }}
+        >
+          <div style={{ position: 'fixed' }}>
             <button
               style={{
-                position: 'absolute',
-                marginLeft: 398,
+                position: 'fixed',
+                marginLeft: 367,
                 paddingLeft: 90,
                 padding: 10,
+                fontSize: 'unset',
               }}
               onClick={handleClose}
             >
@@ -93,25 +132,44 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
           </h1>
           <div
             style={{
-              marginTop: '10px',
+              marginTop: '12px',
               border: 'solid 1px',
-              height: '80%',
-              overflow: 'auto',
+              height: '65%',
+              overflow: 'scroll',
             }}
           >
-            {chatLog.map((e: any, index: number) => {
-              return <div key={index}>{e.content}</div>;
+            {chatLog.map((chat: any, index: number) => {
+              if (chat.writer === 'admin') {
+                return (
+                  <div
+                    style={{
+                      textAlign: 'right',
+                    }}
+                    key={index}
+                  >
+                    {chat.content}
+                  </div>
+                );
+              } else {
+                return <div key={index}>{chat.content}</div>;
+              }
             })}
           </div>
           <div style={{ bottom: '5px' }}>
-            <input
-              style={{ margin: 20, width: 200, height: 20, fontSize: 10 }}
-              type="text"
+            <textarea
+              name="Text1"
+              style={{
+                width: '334px',
+                height: '64px',
+                margin: '12px',
+                fontSize: '16px',
+              }}
+              value={myChat}
               placeholder="메세지를 입력해주세요"
               onChange={e => {
                 setMyChat(e.target.value);
               }}
-            />
+            ></textarea>
             <button
               onClick={() => {
                 socket.emit('chat', {
@@ -119,15 +177,22 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
                   userId: chatRoom.id,
                   content: myChat,
                 });
+                setMyChat('');
               }}
-              style={{ position: 'relative', right: '10px' }}
+              style={{
+                position: 'absolute',
+                marginLeft: 366,
+                padding: 6,
+                marginTop: -43,
+                display: 'flex',
+              }}
             >
               입력
             </button>
           </div>
-          <button onClick={handleClose} style={{ padding: 12, marginLeft: 330 }}>
+          {/* <button onClick={handleClose} style={{ position: 'relative', right: '10px' }}>
             완료
-          </button>
+          </button> */}
         </div>
       </Modal>
     </div>
@@ -135,16 +200,3 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
 };
 
 export default AdminSupportView;
-
-{
-  /* <div style={{ position: 'absolute', bottom: '5px' }}>
-            <input
-              style={{ marginLeft: '10px' }}
-              type="text"
-              placeholder="메세지를 입력해주세요"
-            />
-            <button style={{ position: 'relative', right: '10px' }}>입력</button>
-          </div>
-          <button onClick={handleClose}>완료</button>
-        </div> */
-}
