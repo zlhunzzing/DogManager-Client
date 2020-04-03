@@ -6,7 +6,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
-import CouponItem from './CouponItem';
+import CouponListItem from './CouponListItem';
 import { CouponData } from '../modules/coupon';
 
 interface CouponListTableProps {
@@ -39,7 +39,7 @@ const CouponListTable: React.FunctionComponent<CouponListTableProps> = ({
           {couponList
             ? couponList.map((coupon, index) => {
                 return (
-                  <CouponItem
+                  <CouponListItem
                     key={index}
                     num={index}
                     coupon={coupon}

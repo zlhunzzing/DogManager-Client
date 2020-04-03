@@ -8,7 +8,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
-import EventItem from '../views/EventItem';
+import EventListItem from './EventListItem';
 
 interface EventListTableProps {
   eventList: EventData[] | null;
@@ -33,7 +33,7 @@ const EventListTable: React.FunctionComponent<EventListTableProps> = ({
   for (let i = perPage * (currentPage - 1); i < perPage * currentPage; i++) {
     if (eventList && eventList[i] !== undefined) {
       eventItems.push(
-        <EventItem
+        <EventListItem
           key={i}
           num={i}
           event={eventList[i]}

@@ -9,7 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import StarIcon from '@material-ui/icons/Star';
-import { useStyles, getModalStyle } from './CouponItem';
+import { useStyles, getModalStyle } from './CouponListItem';
 import Modal from '@material-ui/core/Modal';
 
 interface AdminChatListContainerContainerProps {

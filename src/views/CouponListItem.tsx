@@ -38,7 +38,7 @@ interface CouponItemProps {
   history?: any;
 }
 
-const CouponItem: React.FunctionComponent<CouponItemProps> = ({
+const CouponListItem: React.FunctionComponent<CouponItemProps> = ({
   num,
   coupon,
   handleClickDeleteCoupon,
@@ -96,4 +96,4 @@ const CouponItem: React.FunctionComponent<CouponItemProps> = ({
   );
 };
 
-export default CouponItem;
+export default CouponListItem;

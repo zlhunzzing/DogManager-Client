@@ -3,11 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 export interface AdminState {
   menuDrawerIsOpen: boolean;
   nowMenu: string;
+  isAdminPage: boolean;
 }
 
 export const initialState: AdminState = {
   menuDrawerIsOpen: false,
   nowMenu: '이벤트 관리',
+  isAdminPage: false,
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -22,11 +24,18 @@ export const adminSlice = createSlice({
     changeNowMenu: (state, action): void => {
       state.nowMenu = action.payload;
     },
+    changeIsAdminPage: (state, action): void => {
+      state.isAdminPage = action.payload;
+    },
   },
 });
 
 export const adminReducer = adminSlice.reducer;
-export const { changeMenuDrawerIsOpen, changeNowMenu } = adminSlice.actions;
+export const {
+  changeMenuDrawerIsOpen,
+  changeNowMenu,
+  changeIsAdminPage,
+} = adminSlice.actions;
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // 툴킷 사용 전 코드

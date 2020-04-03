@@ -1,10 +1,7 @@
 import React from 'react';
 import { EventData } from '../modules/event';
 
-import axios from 'axios';
-import serverurl from '../server';
-
-import { useStyles, getModalStyle } from './CouponItem';
+import { useStyles, getModalStyle } from './CouponListItem';
 
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,7 +15,7 @@ interface EventItemProps {
   deleteEvent: (id: number, history: any) => void;
 }
 
-const EventItem: React.FunctionComponent<EventItemProps> = ({
+const EventListItem: React.FunctionComponent<EventItemProps> = ({
   num,
   event,
   changeSelectedEvent,
@@ -103,4 +100,4 @@ const EventItem: React.FunctionComponent<EventItemProps> = ({
   );
 };
 
-export default EventItem;
+export default EventListItem;
