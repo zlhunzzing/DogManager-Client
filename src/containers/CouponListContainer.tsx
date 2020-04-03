@@ -6,7 +6,7 @@ import { StoreState } from '../modules';
 import { CouponData, couponSlice } from '../modules/coupon';
 
 import UserMenu from '../views/UserMenu';
-
+import Coupon from '../views/Coupon';
 //////////////////////////////////////////////////////////////////////////////////////
 
 interface CouponListContainerProps {
@@ -32,32 +32,13 @@ const CouponListContainer: React.FunctionComponent<CouponListContainerProps> = (
           textAlign: 'center',
           marginLeft: '15%',
           width: '70%',
+          // border: 'solid 1px red',
         }}
       >
         <h1> 나의 쿠폰함 </h1>
         <div style={{ marginLeft: '25%', width: '50%' }}>
           {userCouponList?.map((coupon, index) => {
-            return (
-              <div
-                key={index}
-                style={{
-                  marginLeft: '15%',
-                  marginTop: '20px',
-                  width: '70%',
-                  height: '100px',
-                  border: 'solid 1px',
-                  backgroundColor: 'yellow',
-                }}
-              >
-                <h3>{coupon.couponName}</h3>
-                <div>{coupon.description}</div>
-                <div>
-                  {coupon.expiredAt?.slice(0, 4)}년 {coupon.expiredAt?.slice(4, 6)}월{' '}
-                  {coupon.expiredAt?.slice(6, 8)}일 {coupon.expiredAt?.slice(8, 10)}시{' '}
-                  {coupon.expiredAt?.slice(10, 12)}분까지 사용가능
-                </div>
-              </div>
-            );
+            return <Coupon key={index} coupon={coupon} />;
           })}
         </div>
       </div>
