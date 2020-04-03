@@ -20,6 +20,7 @@ interface SigninContainerProps {
   idInput: string;
   pwInput: string;
   SigninActions: any;
+  history: any;
 }
 
 const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
@@ -28,6 +29,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
   idInput,
   pwInput,
   SigninActions,
+  history,
 }: SigninContainerProps) => {
   //
 
@@ -56,11 +58,13 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
       SigninActions.axiosAdminSigninRequest({
         email: idInput,
         password: pwInput,
+        history: history,
       });
     } else {
       SigninActions.axiosUserSigninRequest({
         email: idInput,
         password: pwInput,
+        history: history,
       });
     }
   }
@@ -79,7 +83,10 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
     );
   };
 
-  if (!isLogin) {
+  if (isLogin && isAdmin) {
+    alert('접근 권한이 없습니다.');
+    return <Redirect to="/user" />;
+  } else {
     return (
       <div style={{ textAlign: 'center' }}>
         <UserMenu isLogin={isLogin} />
@@ -119,11 +126,6 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
         </div>
       </div>
     );
-  } else {
-    if (isAdmin) {
-      return <Redirect to="/admin/event-list" />;
-    }
-    return <Redirect to="/" />;
   }
 };
 

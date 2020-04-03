@@ -134,9 +134,10 @@ const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
           <Typography variant="h6" className={classes.title}>
             {nowMenu}
           </Typography>
-          <Link to="/">
+          <Link to="/" style={{ textDecoration: 'none' }}>
             <Button
               color="inherit"
+              style={{ backgroundColor: '#FFFFFF' }}
               className={classes.logout}
               onClick={() => {
                 localStorage.removeItem('accessToken');

@@ -66,6 +66,10 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
     return <Redirect to="/"></Redirect>;
   }
 
+  const perPage = 3;
+  const pages = Number.isInteger(filteredEventList.length / perPage)
+    ? filteredEventList.length / perPage
+    : Math.floor(filteredEventList.length / perPage + 1);
   return (
     <div>
       <AdminMenu />
@@ -77,13 +81,9 @@ const AdminEventListContainer: React.FunctionComponent<EventListTableProps> = ({
         deleteEvent={deleteEvent}
         history={history}
         currentPage={currentPage}
-        perPage={2}
+        perPage={perPage}
       />
-      <PageBar
-        pages={Math.floor(filteredEventList.length / 2 + 1)}
-        currentPage={currentPage}
-        changePage={changePage}
-      />
+      <PageBar pages={pages} currentPage={currentPage} changePage={changePage} />
     </div>
   );
 };
