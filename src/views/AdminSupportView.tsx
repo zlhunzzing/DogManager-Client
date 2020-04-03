@@ -195,7 +195,18 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
                   </div>
                 );
               } else {
-                return <div key={index}>{chat.content}</div>;
+                return (
+                  <div
+                    style={{
+                      color: 'black',
+                      textAlign: 'left',
+                      margin: 12,
+                    }}
+                    key={index}
+                  >
+                    {chat.content}
+                  </div>
+                );
               }
             })}
           </div>
