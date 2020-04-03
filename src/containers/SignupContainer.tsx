@@ -49,23 +49,23 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
     SignupActions.changeRePwInput(value);
   };
 
-  const handlMobileInputChange = (value: string): any => {
-    SignupActions.changeMobileInput(value);
-  };
+  // const handlMobileInputChange = (value: string): any => {
+  //   SignupActions.changeMobileInput(value);
+  // };
   const handlAddressInputChange = (value: string): any => {
     SignupActions.changeAddressInput(value);
   };
 
   //! 디바운스 함수들 ..
 
-  const debouncedHandlNameInputChange = debounce(handlNameInputChange, 700);
-  const debouncedHandlEmailInputChange = debounce(handlEmailInputChange, 700);
-  const debouncedHandlPwInputChange = debounce(handlPwInputChange, 700);
-  const debouncedHandlRePwInputChange = debounce(handlRePwInputChange, 700);
+  const debouncedHandlNameInputChange = debounce(handlNameInputChange, 300);
+  const debouncedHandlEmailInputChange = debounce(handlEmailInputChange, 300);
+  const debouncedHandlPwInputChange = debounce(handlPwInputChange, 300);
+  const debouncedHandlRePwInputChange = debounce(handlRePwInputChange, 300);
   //? 디바운스 시간을 0.7초로 하면 하이픈 add 함수랑 연결되어 있기 때문에 UI 에 보여지는 값이 늦어진다.
   //? 그렇기 때문에 초를 작게 가져갸야 한다. //! 아예 없어도 될것같다. 이부분은.
-  const debouncedHandlMobileInputChange = debounce(handlMobileInputChange, 100);
-  const debouncedHandlAddressInputChange = debounce(handlAddressInputChange, 700);
+  // const debouncedHandlMobileInputChange = debounce(handlMobileInputChange, 100);
+  const debouncedHandlAddressInputChange = debounce(handlAddressInputChange, 300);
 
   // 핸드폰 하이픈 자동으로 추가되는 함수
   function autoHypenPhone(str: any): void {
@@ -222,7 +222,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
             onChange={(event): void => {
               const { value } = event.target;
               const inputvalue: any = autoHypenPhone(value);
-              debouncedHandlMobileInputChange(inputvalue);
+              SignupActions.changeMobileInput(inputvalue);
             }}
           />
         </div>
