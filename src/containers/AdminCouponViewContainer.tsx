@@ -10,6 +10,7 @@ import AdminMenu from '../views/AdminMenu';
 import CouponViewListTable from '../views/CouponViewListTable';
 import { couponSlice, CouponViewData } from '../modules/coupon';
 import server from '../server';
+import PageBar from '../views/PageBar';
 
 //! CSS
 
@@ -51,6 +52,12 @@ const AdminCouponViewContainer: React.FunctionComponent<AdminCouponViewContainer
     e.preventDefault();
     changeCouponFilter(adminCouponFilter2);
   }
+  //! 페이징 기능
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const changePage = (page: number): void => {
+    setCurrentPage(page);
+  };
+  //!
 
   return (
     <div>
@@ -71,7 +78,14 @@ const AdminCouponViewContainer: React.FunctionComponent<AdminCouponViewContainer
         </button>
       </form>
       <CouponViewListTable
+        currentPage={currentPage}
+        perPage={2}
         couponViewList={filteredCouponList ? filteredCouponList : []}
+      />
+      <PageBar
+        pages={filteredCouponList ? Math.floor(filteredCouponList.length / 2 + 1) : 0}
+        currentPage={currentPage}
+        changePage={changePage}
       />
     </div>
   );

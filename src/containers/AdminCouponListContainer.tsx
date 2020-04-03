@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
@@ -10,6 +10,7 @@ import AdminMenu from '../views/AdminMenu';
 import CouponListTable from '../views/CouponListTable';
 
 import Button from '@material-ui/core/Button';
+import PageBar from '../views/PageBar';
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,7 +25,6 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
   CouponActions,
   history,
 }: AdminCouponListContainerContainerProps) => {
-  //
   useEffect(() => {
     CouponActions.axiosAdminCouponListRequest();
   }, []);
@@ -33,7 +33,12 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
     CouponActions.axiosAdminCouponDeleteRequest({ id: id, history: history });
   }
   console.log('adminCouponList????:', adminCouponList);
-
+  //! 페이징 기능
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const changePage = (page: number): void => {
+    setCurrentPage(page);
+  };
+  //!
   return (
     <div>
       <AdminMenu />
@@ -49,6 +54,13 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
         history={history}
         couponList={adminCouponList}
         handleClickDeleteCoupon={handleClickDeleteCoupon}
+        currentPage={currentPage}
+        perPage={2}
+      />
+      <PageBar
+        pages={Math.floor(adminCouponList.length / 2 + 1)}
+        currentPage={currentPage}
+        changePage={changePage}
       />
     </div>
   );

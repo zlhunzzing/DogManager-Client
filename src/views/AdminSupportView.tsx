@@ -70,6 +70,10 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
     history.go('/admin/support');
   };
 
+  // useEffect(callback,[]) [] < 이것은 무엇인가? 무엇이 들어가는가?
+  // userEffect()함수안에 callback,[] 매게변수가 들어간다.
+  // [open]의 의미는?
+  // open 값은 false 인데 open 값이 변경 될때마다 callback 함수가 실행되는것으로 이해함.
   useEffect(() => {
     if (open) {
       console.log('어드민 로그인 에밋');
@@ -80,6 +84,7 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
     } else {
     }
   }, [open]);
+
   //! 소켓
   useEffect(() => {
     socket.on('chatLog', (chatLogs: any) => {

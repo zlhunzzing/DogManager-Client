@@ -12,21 +12,24 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-//!
-
-//!
-
-// interface couponViewProps {
-//   coupon: FakeCouponData;
-// }
 
 interface CouponViewListTableProps {
   couponViewList: CouponViewData[];
+  currentPage: number;
+  perPage: number;
 }
 
 const CouponViewListTable: React.FunctionComponent<CouponViewListTableProps> = ({
   couponViewList,
+  currentPage,
+  perPage,
 }: CouponViewListTableProps) => {
+  const eventItems = [];
+  for (let i = perPage * (currentPage - 1); i < perPage * currentPage; i++) {
+    if (couponViewList && couponViewList[i] !== undefined) {
+      eventItems.push(<CouponViewItem key={i} coupon={couponViewList[i]} />);
+    }
+  }
   return (
     <Table>
       <TableHead>
@@ -39,11 +42,7 @@ const CouponViewListTable: React.FunctionComponent<CouponViewListTableProps> = (
           <TableCell>상태</TableCell>
         </TableRow>
       </TableHead>
-      <TableBody>
-        {couponViewList.map((coupon, index) => {
-          return <CouponViewItem key={index} coupon={coupon} />;
-        })}
-      </TableBody>
+      <TableBody>{eventItems}</TableBody>
     </Table>
   );
 };
