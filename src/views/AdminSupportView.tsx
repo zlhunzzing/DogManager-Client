@@ -54,7 +54,7 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
   const [chatLog, setChatLog] = React.useState<Array<any>>([]);
   //! state:
   const [myChat, setMyChat] = React.useState('');
-  // const [chatLog, setChatLog] = React.useState([]);
+
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -93,7 +93,6 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
   } else {
     icon = <RadioButtonCheckedOutlinedIcon />;
   }
-
   return (
     <div>
       <ListItem button>
@@ -137,9 +136,9 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
               X
             </button>
           </div>
-          <h1 id="simple-modal-title" style={{ textAlign: 'center' }}>
+          <h3 id="simple-modal-title" style={{ textAlign: 'center' }}>
             답변 하기
-          </h1>
+          </h3>
           <div
             style={{
               marginTop: '12px',
@@ -218,9 +217,7 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
               입력
             </button>
           </div>
-          {/* <button onClick={handleClose} style={{ position: 'relative', right: '10px' }}>
-            완료
-          </button> */}
+          {/* <button style={{ position: 'absolute', right: '10px' }}>완료</button> */}
         </div>
       </Modal>
     </div>
