@@ -8,16 +8,23 @@ interface ChatProps {
 const Chat: React.FunctionComponent<ChatProps> = ({ chat, timeStamp }: ChatProps) => {
   if (chat.writer === 'user') {
     return (
-      <div>
-        <div>
+      <div
+        style={{
+          marginTop: '15px',
+          textAlign: 'right',
+          paddingRight: '15px',
+          paddingLeft: '30px',
+        }}
+      >
+        <span style={{ backgroundColor: '#B2CCFF', padding: '3px', borderRadius: 5 }}>
           {timeStamp ? chat.createdAt : null}
           {chat.content}
-        </div>
+        </span>
       </div>
     );
   } else {
     return (
-      <div>
+      <div style={{ marginTop: '15px', paddingLeft: '15px', paddingRight: '30px' }}>
         <div>
           {chat.content}
           {timeStamp ? chat.createdAt : null}

@@ -17,16 +17,18 @@ import { changeIsLogin, changeUserId } from '../modules/user';
 // admin signin 요청
 function* axiosAdminSignin$(action: any) {
   try {
-    delay(500);
     const res = yield call(async () => {
-      return await axios.post(adminSigninUrl, action.payload);
+      return await axios.post(adminSigninUrl, {
+        email: action.payload.email,
+        password: action.payload.password,
+      });
     });
-    if (res.status === 200) {
-      localStorage.setItem('accessToken', res.data.token);
-      yield put({ type: changeIdInput.type, payload: '' });
-      yield put({ type: changePwInput.type, payload: '' });
-      yield put({ type: changeIsLogin.type, payload: true });
-    }
+
+    localStorage.setItem('accessToken', res.data.token);
+    yield put({ type: changeIdInput.type, payload: '' });
+    yield put({ type: changePwInput.type, payload: '' });
+    // yield put({ type: changeIsLogin.type, payload: true });
+    action.payload.history.push('/admin/event-list');
   } catch (err) {
     alert('이메일 또는 비밀번호가 맞지 않습니다.');
   }
@@ -38,18 +40,21 @@ function* axiosAdminSigninSaga(): Generator {
 
 // user signin 요청
 function* axiosUserSignin$(action: any) {
+  console.log('액션', action);
   try {
-    delay(500);
     const res = yield call(async () => {
-      return await axios.post(userSigninUrl, action.payload);
+      return await axios.post(userSigninUrl, {
+        email: action.payload.email,
+        password: action.payload.password,
+      });
     });
-    if (res.status === 200) {
-      localStorage.setItem('accessToken', res.data.token);
-      yield put({ type: changeIdInput.type, payload: '' });
-      yield put({ type: changePwInput.type, payload: '' });
-      yield put({ type: changeIsLogin.type, payload: true });
-      yield put({ type: changeUserId.type, payload: res.data.userId });
-    }
+
+    localStorage.setItem('accessToken', res.data.token);
+    yield put({ type: changeIdInput.type, payload: '' });
+    yield put({ type: changePwInput.type, payload: '' });
+    yield put({ type: changeIsLogin.type, payload: true });
+    yield put({ type: changeUserId.type, payload: res.data.userId });
+    action.payload.history.push('/user');
   } catch (err) {
     alert('이메일 또는 비밀번호가 맞지 않습니다.');
   }
