@@ -6,6 +6,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Chat from './Chat';
 
+import img from '../codemate.jpg';
+
 //////////////////////////////////////////////////////////////////////////////////////
 
 interface ChatBoxProps {
@@ -147,26 +149,37 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
               if (chat.writer === 'user') {
                 return (
                   <div>
-                    <div
+                    <Chat chat={chat} key={index} />
+                    {/* <div
                       style={{
                         textAlign: 'right',
                       }}
                       key={index}
                     >
                       {chat.content}
-                    </div>
+                    </div> */}
                     {index < chatLog.length - 1 ? (
                       <div>
                         {' '}
                         {chatLog[index + 1].writer === 'admin' ? (
-                          <div>관리자</div>
+                          <img
+                            style={{
+                              marginLeft: '10px',
+                              marginTop: '10px',
+                              width: '50px',
+                              height: '50px',
+                              borderRadius: 5,
+                            }}
+                            src={img}
+                          />
                         ) : null}{' '}
                       </div>
                     ) : null}
                   </div>
                 );
               } else {
-                return <div key={index}>{chat.content}</div>;
+                return <Chat key={index} chat={chat} />;
+                // <div key={index}>{chat.content}</div>;
               }
             })}
           </div>

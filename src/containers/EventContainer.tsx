@@ -39,9 +39,8 @@ const EventContainer: React.FunctionComponent<EventContainerProps> = ({
 
   useEffect(() => {
     EventActions.axiosUserEventRequest(match.params.eventurl);
-    if (isLogin) {
-      CommentActions.axiosCommentThumbListRequest(match.params.eventurl);
-    }
+
+    CommentActions.axiosCommentThumbListRequest(match.params.eventurl);
   }, []);
 
   return (
