@@ -37,13 +37,13 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
     SigninActions.changeIdInput(value);
   };
 
-  const debouncedHandleIdInputChange = debounce(handleIdInputChange, 500);
+  const debouncedHandleIdInputChange = debounce(handleIdInputChange, 300);
 
   const handlePwInputChange = (value: string): any => {
     SigninActions.changePwInput(value);
   };
 
-  const debouncedHandlePwInputChange = debounce(handlePwInputChange, 500);
+  const debouncedHandlePwInputChange = debounce(handlePwInputChange, 300);
 
   const signupButton = (
     <Link to="/user/signup" style={{ color: 'inherit', textDecoration: 'inherit' }}>

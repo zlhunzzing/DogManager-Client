@@ -32,11 +32,13 @@ const useStyles = makeStyles((theme: Theme) =>
 interface AdminChatListContainerContainerProps {
   userChatList: ChatData[];
   ChatActions: any;
+  history: any;
 }
 
 const AdminSupportContainer: React.FunctionComponent<AdminChatListContainerContainerProps> = ({
   userChatList,
   ChatActions,
+  history,
 }: AdminChatListContainerContainerProps) => {
   const classes = useStyles();
 
@@ -65,7 +67,9 @@ const AdminSupportContainer: React.FunctionComponent<AdminChatListContainerConta
         <List component="nav" className={classes.root} aria-label="contacts">
           {userChatList
             ? userChatList.map((chatRoom, index) => {
-                return <AdminSupportView key={index} chatRoom={chatRoom} />;
+                return (
+                  <AdminSupportView history={history} key={index} chatRoom={chatRoom} />
+                );
               })
             : null}
         </List>

@@ -13,14 +13,33 @@ interface CouponListTableProps {
   couponList: CouponData[];
   handleClickDeleteCoupon(id: number, history: any): void;
   history?: any;
+  currentPage: number;
+  perPage: number;
 }
 
 const CouponListTable: React.FunctionComponent<CouponListTableProps> = ({
   couponList,
   handleClickDeleteCoupon,
   history,
+  currentPage,
+  perPage,
 }: CouponListTableProps) => {
   console.log('couponList:', couponList);
+
+  const eventItems = [];
+  for (let i = perPage * (currentPage - 1); i < perPage * currentPage; i++) {
+    if (couponList && couponList[i] !== undefined) {
+      eventItems.push(
+        <CouponListItem
+          key={i}
+          num={i}
+          coupon={couponList[i]}
+          handleClickDeleteCoupon={handleClickDeleteCoupon}
+          history={history}
+        />,
+      );
+    }
+  }
   return (
     <div>
       <Table>
@@ -36,7 +55,8 @@ const CouponListTable: React.FunctionComponent<CouponListTableProps> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {couponList
+          {eventItems}
+          {/* {couponList
             ? couponList.map((coupon, index) => {
                 return (
                   <CouponListItem
@@ -48,7 +68,7 @@ const CouponListTable: React.FunctionComponent<CouponListTableProps> = ({
                   />
                 );
               })
-            : null}
+            : null} */}
         </TableBody>
       </Table>
     </div>

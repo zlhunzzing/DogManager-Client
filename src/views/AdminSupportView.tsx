@@ -1,8 +1,10 @@
 //! 모듈
 import React, { useEffect, useRef, ReactElement } from 'react';
 import socket from '../socket';
+// import { RouteComponentProps } from 'react-router-dom';
 //! 컴포넌트
 import { ChatData } from '../modules/chat';
+
 //! css
 
 import ListItem from '@material-ui/core/ListItem';
@@ -17,6 +19,7 @@ import RadioButtonCheckedOutlinedIcon from '@material-ui/icons/RadioButtonChecke
 
 interface AdminChatListContainerContainerProps {
   chatRoom: ChatData;
+  history: any;
 }
 export function getModalStyle() {
   return {
@@ -44,6 +47,7 @@ export const useStyles = makeStyles((theme: Theme) =>
 
 const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerProps> = ({
   chatRoom,
+  history,
 }: AdminChatListContainerContainerProps) => {
   //!모달
   const classes = useStyles();
@@ -64,8 +68,13 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
 
   const handleClose = () => {
     setOpen(false);
+    history.go('/admin/support');
   };
 
+  // useEffect(callback,[]) [] < 이것은 무엇인가? 무엇이 들어가는가?
+  // userEffect()함수안에 callback,[] 매게변수가 들어간다.
+  // [open]의 의미는?
+  // open 값은 false 인데 open 값이 변경 될때마다 callback 함수가 실행되는것으로 이해함.
   useEffect(() => {
     if (open) {
       console.log('어드민 로그인 에밋');
@@ -76,6 +85,7 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
     } else {
     }
   }, [open]);
+
   //! 소켓
   useEffect(() => {
     socket.on('chatLog', (chatLogs: any) => {
@@ -152,7 +162,11 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
             }}
             ref={chatBoxRef}
           >
+            {' '}
             {chatLog.map((chat: any, index: number) => {
+              console.log('chat: ', chat);
+              console.log('chatLog:', chatLog);
+              console.log('chatLog.length: ', chatLog.length);
               if (chat.writer === 'admin') {
                 return (
                   <div>
@@ -163,23 +177,42 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
                         textAlign: 'right',
                         margin: 12,
                       }}
-                    >
-                      관리자
-                    </div>
-                    <div
-                      style={{
-                        textAlign: 'right',
-                        margin: 12,
-                        color: 'grey',
-                      }}
                       key={index}
                     >
                       {chat.content}
                     </div>
+                    {index < chatLog.length - 1 ? (
+                      <div>
+                        {' '}
+                        {chatLog[index + 1].writer === 'user' ? (
+                          <div
+                            style={{
+                              color: 'black',
+                              fontWeight: 'bold',
+                              textAlign: 'left',
+                              margin: 12,
+                            }}
+                          >
+                            User
+                          </div>
+                        ) : null}{' '}
+                      </div>
+                    ) : null}
                   </div>
                 );
               } else {
-                return <div key={index}>{chat.content}</div>;
+                return (
+                  <div
+                    style={{
+                      color: 'black',
+                      textAlign: 'left',
+                      margin: 12,
+                    }}
+                    key={index}
+                  >
+                    {chat.content}
+                  </div>
+                );
               }
             })}
           </div>
