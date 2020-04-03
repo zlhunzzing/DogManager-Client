@@ -50,18 +50,18 @@ const AdminSupportContainer: React.FunctionComponent<AdminChatListContainerConta
       <AdminMenu />
       <div
         style={{
-          height: 50,
+          height: 40,
           textAlign: 'center',
           fontSize: '35px',
           fontWeight: 'bold',
           paddingBottom: 20,
         }}
       >
-        <div style={{ height: '75%' }}></div>
-        <div>현재 채팅 방</div>
+        <div style={{ height: '85%' }}></div>
+        <div>채팅 방</div>
+        <Divider />
       </div>
-      <Divider />
-      <div style={{ marginTop: 20, textAlign: 'center' }}>
+      <div style={{ marginTop: 30, textAlign: 'center' }}>
         <List component="nav" className={classes.root} aria-label="contacts">
           {userChatList
             ? userChatList.map((chatRoom, index) => {
