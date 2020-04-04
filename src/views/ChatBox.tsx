@@ -20,10 +20,7 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
   UserActions,
 }: ChatBoxProps) => {
   const [open, setOpen] = React.useState(false);
-  const [isSocketConnected, setIsSocketConnected] = React.useState(false);
   const [myChat, setMyChat] = React.useState('');
-  const [sendChat, setSendChat] = React.useState(false);
-
   const [chatLog, setChatLog] = React.useState<Array<any>>([]);
 
   const handleOpen = () => {
@@ -33,7 +30,6 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
   const handleClose = () => {
     // socket.disconnect();
     setOpen(false);
-    setIsSocketConnected(false);
   };
 
   const chatBoxRef = useRef<HTMLDivElement>(null);
@@ -48,14 +44,12 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
     }
     console.log('myChatMessage: ', myChat);
     setMyChat('');
-    setSendChat(true);
   };
 
   useEffect(() => {
     socket.on('chatLog', (chatLogs: any) => {
       console.log('여기', chatLogs);
       setChatLog(chatLogs);
-      setSendChat(false);
       // 여기서 저 div 스크롤 bottom으로 고정시켜야지
       chatBoxRef.current?.scrollTo(0, chatBoxRef.current?.scrollHeight);
       // console.log(chatBoxRef.current?.scrollHeight);
