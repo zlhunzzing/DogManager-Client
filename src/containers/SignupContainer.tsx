@@ -149,9 +149,6 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
       }
     }
   }
-  // useEffect(() => {
-  //   history.go('/user/signup');
-  // });
 
   return (
     <div style={{ textAlign: 'center' }}>

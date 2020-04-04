@@ -4,14 +4,17 @@ import socket from '../socket';
 // import { RouteComponentProps } from 'react-router-dom';
 //! 컴포넌트
 import { ChatData } from '../modules/chat';
+import img from '../codemate.jpg';
+import SupportChat from './SupportChat';
 
 //! css
-
+import TextField from '@material-ui/core/TextField';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import StarIcon from '@material-ui/icons/Star';
 
+import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import RadioButtonUncheckedOutlinedIcon from '@material-ui/icons/RadioButtonUncheckedOutlined';
@@ -153,8 +156,9 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
           </h3>
           <div
             style={{
-              marginTop: '12px',
+              marginTop: '20px',
               border: 'solid 1px',
+              paddingTop: 40,
               height: '65%',
               overflow: 'scroll',
             }}
@@ -163,76 +167,54 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
             }}
             ref={chatBoxRef}
           >
-            {' '}
             {chatLog.map((chat: any, index: number) => {
-              console.log('chat: ', chat);
-              console.log('chatLog:', chatLog);
-              console.log('chatLog.length: ', chatLog.length);
-              if (chat.writer === 'admin') {
+              if (chat.writer === 'user') {
                 return (
                   <div>
-                    <div
-                      style={{
-                        color: 'red',
-                        fontWeight: 'bold',
-                        textAlign: 'right',
-                        margin: 12,
-                      }}
-                      key={index}
-                    >
-                      {chat.content}
-                    </div>
+                    <SupportChat chat={chat} key={index} />
+
                     {index < chatLog.length - 1 ? (
                       <div>
                         {' '}
-                        {chatLog[index + 1].writer === 'user' ? (
-                          <div
+                        {chatLog[index + 1].writer === 'admin' ? (
+                          <img
                             style={{
-                              color: 'black',
-                              fontWeight: 'bold',
-                              textAlign: 'left',
-                              margin: 12,
+                              marginLeft: '324px',
+                              marginTop: '10px',
+                              width: '50px',
+                              height: '50px',
+                              borderRadius: 5,
                             }}
-                          >
-                            User
-                          </div>
+                            src={img}
+                          />
                         ) : null}{' '}
                       </div>
                     ) : null}
                   </div>
                 );
               } else {
-                return (
-                  <div
-                    style={{
-                      color: 'black',
-                      textAlign: 'left',
-                      margin: 12,
-                    }}
-                    key={index}
-                  >
-                    {chat.content}
-                  </div>
-                );
+                return <SupportChat key={index} chat={chat} />;
               }
             })}
           </div>
-          <div style={{ bottom: '5px' }}>
-            <textarea
-              name="Text1"
+          <div style={{ bottom: '5px', paddingTop: '-3px' }}>
+            <TextField
               style={{
-                width: '334px',
-                height: '64px',
+                width: '310px',
+                height: '40px',
                 margin: '12px',
                 fontSize: '16px',
               }}
+              id="outlined-basic"
+              required={false}
+              variant="outlined"
               value={myChat}
               placeholder="메세지를 입력해주세요"
               onChange={e => {
                 setMyChat(e.target.value);
               }}
-            ></textarea>
-            <button
+            ></TextField>
+            <Button
               onClick={() => {
                 socket.emit('chat', {
                   token: localStorage.getItem('accessToken'),
@@ -241,18 +223,18 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
                 });
                 setMyChat('');
               }}
+              variant="outlined"
               style={{
                 position: 'absolute',
-                marginLeft: 366,
-                padding: 6,
-                marginTop: -43,
-                display: 'flex',
+                right: '0px',
+                height: '10%',
+                width: '5%',
+                marginTop: '4%',
               }}
             >
               입력
-            </button>
+            </Button>
           </div>
-          {/* <button style={{ position: 'absolute', right: '10px' }}>완료</button> */}
         </div>
       </Modal>
     </div>
