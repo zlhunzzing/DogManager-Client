@@ -127,7 +127,6 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
       alert('데이터를 다 채워주세요~');
       return;
     }
-
     try {
       const res = await axios.post(
         'http://13.125.249.151:3002/api/user/signup',
@@ -143,7 +142,8 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
       console.log(res.status); // 있으면 201 없던지 존재하던지 둘다 409
       history.push('/user/signin');
     } catch (error) {
-      if (error.response.data === 'email already exist') {
+      console.log('error.response.data: ', error.response.data);
+      if (error.response.data === 'already exist') {
         alert('이미 이메일이 존재합니다.');
       }
     }
@@ -222,7 +222,6 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
             onChange={(event): void => {
               const { value } = event.target;
               const inputvalue: any = autoHypenPhone(value);
-              // SignupActions.changeMobileInput(inputvalue);
               handlMobileInputChange(inputvalue);
             }}
           />
