@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { debounce } from 'lodash';
 
 //? components 불러오기
@@ -141,6 +141,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
       );
       console.log(res.status); // 있으면 201 없던지 존재하던지 둘다 409
       history.push('/user/signin');
+      history.go('/user/signin');
     } catch (error) {
       console.log('error.response.data: ', error.response.data);
       if (error.response.data === 'already exist') {
@@ -148,6 +149,9 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
       }
     }
   }
+  // useEffect(() => {
+  //   history.go('/user/signup');
+  // });
 
   return (
     <div style={{ textAlign: 'center' }}>
