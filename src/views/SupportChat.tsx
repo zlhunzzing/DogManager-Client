@@ -27,12 +27,6 @@ const SupportChat: React.FunctionComponent<ChatProps> = ({
     );
   } else {
     return (
-      //   <div style={{ marginTop: '15px', paddingLeft: '15px', paddingRight: '30px' }}>
-      //     <div>
-      //       {chat.content}
-      //       {timeStamp ? chat.createdAt : null}
-      //     </div>
-      //   </div>
       <div
         style={{
           marginTop: '15px',

@@ -82,7 +82,7 @@ const AdminSupportContainer: React.FunctionComponent<AdminChatListContainerConta
           {eventItems}
         </List>
         <PageBar
-          pages={Math.floor(userChatList.length / 4)}
+          pages={Math.floor(userChatList.length / 4 + 1)}
           currentPage={currentPage}
           changePage={changePage}
         />
