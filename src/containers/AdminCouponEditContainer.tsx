@@ -194,7 +194,7 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
             <span style={{ fontWeight: 'bold' }}>쿠폰 유효기간</span>
             <TextField
               id="standard-textarea"
-              placeholder="얼마간 쿠폰이 유효한지 숫자만 적어주세요 ex) 7 <- 7일동안 유효"
+              placeholder="숫자만 적어주세요 ex)7동안 => 7"
               style={{ paddingRight: 65 }}
               multiline
               onChange={(event): void => {
@@ -207,7 +207,7 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
             <span style={{ fontWeight: 'bold' }}>할인 적용</span>
             <TextField
               id="standard-textarea"
-              placeholder="ex) 50% 3000원"
+              placeholder="숫자만 적어주세요 ex) 50%할인 => 50"
               style={{ paddingRight: 65 }}
               multiline
               onChange={(event): void => {
