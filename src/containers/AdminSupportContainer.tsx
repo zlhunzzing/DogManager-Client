@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { StoreState } from '../modules';
 import { bindActionCreators } from 'redux';
 import { ChatData, chatSlice } from '../modules/chat';
+import PageBar from '../views/PageBar';
 
 //! css
 import Divider from '@material-ui/core/Divider';
@@ -46,7 +47,20 @@ const AdminSupportContainer: React.FunctionComponent<AdminChatListContainerConta
     ChatActions.axiosUserChatListRequest();
   }, []);
   console.log('userChatList: ', userChatList);
+  //! 페이징 기능
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const changePage = (page: number): void => {
+    setCurrentPage(page);
+  };
+  //!
 
+  const eventItems = [];
+  const num = 5;
+  for (let i = num * (currentPage - 1); i < num * currentPage; i++) {
+    if (userChatList && userChatList[i] !== undefined) {
+      eventItems.push(<AdminSupportView history={history} chatRoom={userChatList[i]} />);
+    }
+  }
   return (
     <div>
       <AdminMenu />
@@ -65,14 +79,13 @@ const AdminSupportContainer: React.FunctionComponent<AdminChatListContainerConta
       </div>
       <div style={{ marginTop: 30, textAlign: 'center' }}>
         <List component="nav" className={classes.root} aria-label="contacts">
-          {userChatList
-            ? userChatList.map((chatRoom, index) => {
-                return (
-                  <AdminSupportView history={history} key={index} chatRoom={chatRoom} />
-                );
-              })
-            : null}
+          {eventItems}
         </List>
+        <PageBar
+          pages={Math.floor(userChatList.length / 4)}
+          currentPage={currentPage}
+          changePage={changePage}
+        />
       </div>
     </div>
   );
