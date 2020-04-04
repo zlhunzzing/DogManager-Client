@@ -79,11 +79,11 @@ const AdminCouponViewContainer: React.FunctionComponent<AdminCouponViewContainer
       </form>
       <CouponViewListTable
         currentPage={currentPage}
-        perPage={2}
+        perPage={3}
         couponViewList={filteredCouponList ? filteredCouponList : []}
       />
       <PageBar
-        pages={filteredCouponList ? Math.floor(filteredCouponList.length / 2 + 1) : 0}
+        pages={filteredCouponList ? Math.floor(filteredCouponList.length / 3 + 1) : 0}
         currentPage={currentPage}
         changePage={changePage}
       />
