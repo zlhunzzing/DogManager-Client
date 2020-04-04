@@ -29,7 +29,7 @@ const CommentListBox: React.FunctionComponent<CommentListBoxProps> = ({
       <CommentInput isLogin={isLogin} CommentActions={CommentActions} eventId={eventId} />
       <div>
         {commentList
-          ? commentList.map(comment => {
+          ? commentList.map((comment, index) => {
               if (comment.userId === userId) {
                 if (userThumbsList.indexOf(comment.id) !== -1) {
                   return (
@@ -40,6 +40,8 @@ const CommentListBox: React.FunctionComponent<CommentListBoxProps> = ({
                       eventId={eventId}
                       isLogin={isLogin}
                       isLiked={true}
+                      key={index}
+                      index={index}
                     ></Comment>
                   );
                 } else {
@@ -51,6 +53,8 @@ const CommentListBox: React.FunctionComponent<CommentListBoxProps> = ({
                       comment={comment}
                       isLogin={isLogin}
                       isLiked={false}
+                      key={index}
+                      index={index}
                     ></Comment>
                   );
                 }
@@ -62,6 +66,8 @@ const CommentListBox: React.FunctionComponent<CommentListBoxProps> = ({
                       comment={comment}
                       isLogin={isLogin}
                       isLiked={true}
+                      key={index}
+                      index={index}
                     ></Comment>
                   );
                 } else {
@@ -71,6 +77,8 @@ const CommentListBox: React.FunctionComponent<CommentListBoxProps> = ({
                       comment={comment}
                       isLogin={isLogin}
                       isLiked={false}
+                      key={index}
+                      index={index}
                     ></Comment>
                   );
                 }

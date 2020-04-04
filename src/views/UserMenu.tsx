@@ -25,7 +25,7 @@ const UserMenu: React.FunctionComponent<UserMenuProps> = ({
 }: UserMenuProps) => {
   return (
     <div>
-      <div style={{ height: 50, overflow: 'hidden', width: '100%' }}>
+      <div style={{ height: '50px', overflow: 'hidden', width: '100%' }}>
         <div style={{ height: '25%' }}></div>
 
         <StyledLink to="/">

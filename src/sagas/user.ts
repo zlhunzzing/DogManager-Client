@@ -24,7 +24,7 @@ function* axiosAdminSignin$(action: any) {
       });
     });
 
-    localStorage.setItem('accessToken', res.data.token);
+    localStorage.setItem('adminAccessToken', res.data.token);
     yield put({ type: changeIdInput.type, payload: '' });
     yield put({ type: changePwInput.type, payload: '' });
     // yield put({ type: changeIsLogin.type, payload: true });

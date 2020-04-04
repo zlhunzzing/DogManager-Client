@@ -84,7 +84,7 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
         style={{
           position: 'fixed',
           bottom: '30px',
-          right: '10px',
+          right: '30px',
           width: '80px',
           height: '80px',
         }}
@@ -95,7 +95,7 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
             alert('로그인이 필요합니다.');
           }
         }}
-        src="https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-speech-bubble-26.png&r=0&g=0&b=0"
+        src="https://clipartart.com/images/chat-icon-clipart.png"
       ></img>
 
       {open && isLogin ? (
@@ -144,14 +144,7 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
                 return (
                   <div>
                     <Chat chat={chat} key={index} />
-                    {/* <div
-                      style={{
-                        textAlign: 'right',
-                      }}
-                      key={index}
-                    >
-                      {chat.content}
-                    </div> */}
+
                     {index < chatLog.length - 1 ? (
                       <div>
                         {' '}
@@ -177,15 +170,20 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
               }
             })}
           </div>
-          <div style={{ margin: '10px', position: 'relative', border: 'solid 1px' }}>
+          <div style={{ margin: '10px', position: 'relative' }}>
             <TextField
               id="outlined-basic"
               required={false}
               variant="outlined"
-              style={{ width: '85%' }}
+              style={{ width: '80%' }}
               value={myChat}
               onChange={(event: any) => {
                 setMyChat(event.target.value);
+              }}
+              onKeyDown={(event: any) => {
+                if (event.keyCode === 13) {
+                  chat();
+                }
               }}
             />
             <Button

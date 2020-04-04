@@ -66,7 +66,7 @@ function* axiosAdminEventList$() {
     const userEventList = yield call(async () => {
       const res = await axios.get(adminEventListUrl, {
         headers: {
-          Authorization: localStorage.getItem('accessToken'),
+          Authorization: localStorage.getItem('adminAccessToken'),
         },
       });
       const { eventList } = res.data;
@@ -100,7 +100,7 @@ function* axiosAdminEventDelete$(action: any) {
     const result = yield call(async () => {
       return await axios.delete(adminEventUrl + `/${action.payload.id}`, {
         headers: {
-          Authorization: localStorage.getItem('accessToken'),
+          Authorization: localStorage.getItem('adminAccessToken'),
         },
       });
     });
