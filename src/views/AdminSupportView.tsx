@@ -213,11 +213,21 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
               onChange={e => {
                 setMyChat(e.target.value);
               }}
+              onKeyDown={(event: any) => {
+                if (event.keyCode === 13) {
+                  socket.emit('chat', {
+                    token: localStorage.getItem('adminAccessToken'),
+                    userId: chatRoom.id,
+                    content: myChat,
+                  });
+                  setMyChat('');
+                }
+              }}
             ></TextField>
             <Button
               onClick={() => {
                 socket.emit('chat', {
-                  token: localStorage.getItem('accessToken'),
+                  token: localStorage.getItem('adminAccessToken'),
                   userId: chatRoom.id,
                   content: myChat,
                 });

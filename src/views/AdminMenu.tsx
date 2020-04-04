@@ -140,7 +140,7 @@ const AdminMenu: React.FunctionComponent<AdminMenuProps> = ({
               style={{ backgroundColor: '#FFFFFF' }}
               className={classes.logout}
               onClick={() => {
-                localStorage.removeItem('accessToken');
+                localStorage.removeItem('adminAccessToken');
                 UserActions.changeIsLogin(false);
               }}
             >

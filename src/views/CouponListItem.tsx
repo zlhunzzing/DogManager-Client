@@ -67,9 +67,6 @@ const CouponListItem: React.FunctionComponent<CouponItemProps> = ({
       <TableCell>{coupon.couponCode}</TableCell>
       <TableCell>{coupon.discount}</TableCell>
       <TableCell>
-        <button>수정</button>
-      </TableCell>
-      <TableCell>
         <button onClick={handleOpen}>삭제</button>
         <Modal
           aria-labelledby="simple-modal-title"

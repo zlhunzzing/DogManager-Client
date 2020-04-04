@@ -49,7 +49,6 @@ const CouponListTable: React.FunctionComponent<CouponListTableProps> = ({
             <TableCell>설명</TableCell>
             <TableCell>쿠폰 코드</TableCell>
             <TableCell>할인율</TableCell>
-            <TableCell>수정</TableCell>
             <TableCell>삭제</TableCell>
           </TableRow>
         </TableHead>

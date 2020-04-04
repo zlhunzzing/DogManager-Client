@@ -34,7 +34,7 @@ function* axiosAdminCouponViewList$() {
     const adminCouponViewList = yield call(async () => {
       const res = await axios.get(adminCounponViewListUrl, {
         headers: {
-          Authorization: localStorage.getItem('accessToken'),
+          Authorization: localStorage.getItem('adminAccessToken'),
         },
       });
       console.log('res.data: ', res.data);
@@ -57,7 +57,7 @@ function* axiosAdminCouponList$() {
     const adminCouponList = yield call(async () => {
       const res = await axios.get(adminCounponListUrl, {
         headers: {
-          Authorization: localStorage.getItem('accessToken'),
+          Authorization: localStorage.getItem('adminAccessToken'),
         },
       });
       console.log(res.data);
@@ -80,7 +80,7 @@ function* axiosAdminCouponDelete$(action: any) {
     const result = yield call(async () => {
       const res = await axios.delete(adminCouponPostUrl + `/${action.payload.id}`, {
         headers: {
-          Authorization: localStorage.getItem('accessToken'),
+          Authorization: localStorage.getItem('adminAccessToken'),
         },
       });
       return res;

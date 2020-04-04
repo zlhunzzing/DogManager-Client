@@ -18,7 +18,7 @@ function* axiosUserChatList$() {
     const userChatList = yield call(async () => {
       const res = await axios.get(adminChatRoomGetUrl, {
         headers: {
-          Authorization: localStorage.getItem('accessToken'),
+          Authorization: localStorage.getItem('adminAccessToken'),
         },
       });
       console.log('res.data: ', res.data);
