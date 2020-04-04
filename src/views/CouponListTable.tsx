@@ -31,7 +31,6 @@ const CouponListTable: React.FunctionComponent<CouponListTableProps> = ({
     if (couponList && couponList[i] !== undefined) {
       eventItems.push(
         <CouponListItem
-          key={i}
           num={i}
           coupon={couponList[i]}
           handleClickDeleteCoupon={handleClickDeleteCoupon}

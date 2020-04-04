@@ -55,10 +55,10 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
         couponList={adminCouponList}
         handleClickDeleteCoupon={handleClickDeleteCoupon}
         currentPage={currentPage}
-        perPage={2}
+        perPage={3}
       />
       <PageBar
-        pages={Math.floor(adminCouponList.length / 2 + 1)}
+        pages={Math.floor(adminCouponList.length / 3 + 1)}
         currentPage={currentPage}
         changePage={changePage}
       />

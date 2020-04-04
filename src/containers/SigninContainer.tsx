@@ -96,7 +96,7 @@ const SigninContainer: React.FunctionComponent<SigninContainerProps> = ({
           <TextField
             style={{ width: 400 }}
             id="outlined-basic"
-            label="Login"
+            label="Email"
             variant="outlined"
             onChange={(event): void => {
               const { value } = event.target;

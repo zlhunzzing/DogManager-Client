@@ -151,8 +151,11 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
         onSubmit={handleSubmitCouponEdit}
       >
         <div className={classes.root}>
-          <div style={{ paddingRight: 50, paddingTop: 20, margin: 10 }}>
-            <span style={{ fontWeight: 'bold', paddingRight: 20 }}> 쿠폰이름</span>
+          <div style={{ paddingRight: 50, paddingTop: 20, margin: 10, marginTop: -34 }}>
+            <span style={{ fontWeight: 'bold', paddingRight: 20, marginLeft: -20 }}>
+              {' '}
+              쿠폰이름
+            </span>
             <TextField
               id="standard-textarea"
               style={{ paddingRight: 50 }}
@@ -191,10 +194,10 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
             />
           </div>
           <div style={{ paddingRight: 50, paddingTop: 20, margin: 10 }}>
-            <span style={{ fontWeight: 'bold' }}>쿠폰 유효기간</span>
+            <span style={{ fontWeight: 'bold', marginLeft: -31 }}>쿠폰 유효기간</span>
             <TextField
               id="standard-textarea"
-              placeholder="얼마간 쿠폰이 유효한지 숫자만 적어주세요 ex) 7 <- 7일동안 유효"
+              placeholder="숫자만 적어주세요 ex) 7동안 => 7"
               style={{ paddingRight: 65 }}
               multiline
               onChange={(event): void => {
@@ -207,7 +210,7 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
             <span style={{ fontWeight: 'bold' }}>할인 적용</span>
             <TextField
               id="standard-textarea"
-              placeholder="ex) 50% 3000원"
+              placeholder="숫자만 적어주세요 ex) 50%할인 => 50"
               style={{ paddingRight: 65 }}
               multiline
               onChange={(event): void => {
@@ -217,7 +220,11 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
             />
           </div>
         </div>
-        <Button style={{ width: 100, marginRight: 10 }} variant="outlined" type="submit">
+        <Button
+          style={{ width: 100, marginRight: 10, marginTop: -44 }}
+          variant="outlined"
+          type="submit"
+        >
           등록
         </Button>
       </form>

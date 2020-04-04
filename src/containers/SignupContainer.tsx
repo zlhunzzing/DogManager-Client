@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { debounce } from 'lodash';
 
 //? components 불러오기
@@ -49,9 +49,9 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
     SignupActions.changeRePwInput(value);
   };
 
-  // const handlMobileInputChange = (value: string): any => {
-  //   SignupActions.changeMobileInput(value);
-  // };
+  const handlMobileInputChange = (value: string): any => {
+    SignupActions.changeMobileInput(value);
+  };
   const handlAddressInputChange = (value: string): any => {
     SignupActions.changeAddressInput(value);
   };
@@ -64,7 +64,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
   const debouncedHandlRePwInputChange = debounce(handlRePwInputChange, 300);
   //? 디바운스 시간을 0.7초로 하면 하이픈 add 함수랑 연결되어 있기 때문에 UI 에 보여지는 값이 늦어진다.
   //? 그렇기 때문에 초를 작게 가져갸야 한다. //! 아예 없어도 될것같다. 이부분은.
-  // const debouncedHandlMobileInputChange = debounce(handlMobileInputChange, 100);
+  const debouncedHandlMobileInputChange = debounce(handlMobileInputChange, 10);
   const debouncedHandlAddressInputChange = debounce(handlAddressInputChange, 300);
 
   // 핸드폰 하이픈 자동으로 추가되는 함수
@@ -127,7 +127,6 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
       alert('데이터를 다 채워주세요~');
       return;
     }
-
     try {
       const res = await axios.post(
         'http://13.125.249.151:3002/api/user/signup',
@@ -142,8 +141,10 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
       );
       console.log(res.status); // 있으면 201 없던지 존재하던지 둘다 409
       history.push('/user/signin');
+      history.go('/user/signin');
     } catch (error) {
-      if (error.response.data === 'email already exist') {
+      console.log('error.response.data: ', error.response.data);
+      if (error.response.data === 'already exist') {
         alert('이미 이메일이 존재합니다.');
       }
     }
@@ -222,7 +223,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
             onChange={(event): void => {
               const { value } = event.target;
               const inputvalue: any = autoHypenPhone(value);
-              SignupActions.changeMobileInput(inputvalue);
+              handlMobileInputChange(inputvalue);
             }}
           />
         </div>
