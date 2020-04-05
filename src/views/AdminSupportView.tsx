@@ -82,7 +82,7 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
     if (open) {
       console.log('어드민 로그인 에밋');
       socket.emit('login', {
-        token: localStorage.getItem('accessToken'),
+        token: localStorage.getItem('adminAccessToken'),
         userId: chatRoom.id,
       });
     } else {
@@ -110,10 +110,20 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
 
   return (
     <div>
-      <ListItem button>
+      <ListItem
+        style={{
+          border: 'solid 1px',
+          borderRadius: 10,
+          width: '30%',
+          marginLeft: '35%',
+          marginTop: '20px',
+          height: '100px',
+        }}
+        onClick={handleOpen}
+      >
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText
-          onClick={handleOpen}
+          // onClick={handleOpen}
           primary={`${'고유번호:  '}${chatRoom.id} 이름:  ${chatRoom.name}`}
         />
       </ListItem>
@@ -160,7 +170,7 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
               border: 'solid 1px',
               paddingTop: 40,
               height: '65%',
-              overflow: 'scroll',
+              overflow: 'auto',
             }}
             onScrollCapture={() => {
               console.log('스크롤');
