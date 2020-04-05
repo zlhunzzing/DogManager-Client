@@ -125,7 +125,7 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
             </button> */}
           </div>
           <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            ** 안녕하세요 코드메이트입니다. **
+            ** 안녕하세요! 무엇을 도와드릴까요? **
           </div>
           <div
             style={{

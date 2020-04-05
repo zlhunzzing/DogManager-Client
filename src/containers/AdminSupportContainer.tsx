@@ -24,12 +24,12 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingTop: 50,
       maxWidth: 460,
       paddingLeft: 670,
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor: 'yellow',
       fontSize: 50,
     },
   }),
 );
-
+//theme.palette.background.paper
 interface AdminChatListContainerContainerProps {
   userChatList: ChatData[];
   ChatActions: any;
@@ -61,6 +61,11 @@ const AdminSupportContainer: React.FunctionComponent<AdminChatListContainerConta
       eventItems.push(<AdminSupportView history={history} chatRoom={userChatList[i]} />);
     }
   }
+  const perPage = 5;
+  const pages = Number.isInteger(userChatList.length / perPage)
+    ? userChatList.length / perPage
+    : Math.floor(userChatList.length / perPage + 1);
+
   return (
     <div>
       <AdminMenu />
@@ -74,18 +79,15 @@ const AdminSupportContainer: React.FunctionComponent<AdminChatListContainerConta
         }}
       >
         <div style={{ height: '85%' }}></div>
-        <div>채팅 방</div>
-        <Divider />
+        <div>고객 문의 리스트</div>
+        {/* <Divider /> */}
       </div>
       <div style={{ marginTop: 30, textAlign: 'center' }}>
-        <List component="nav" className={classes.root} aria-label="contacts">
-          {eventItems}
-        </List>
-        <PageBar
-          pages={Math.floor(userChatList.length / 4 + 1)}
-          currentPage={currentPage}
-          changePage={changePage}
-        />
+        <div style={{ height: '20px' }}></div>
+        {/* <List component="nav" className={classes.root} aria-label="contacts"> */}
+        {eventItems}
+        {/* </List> */}
+        <PageBar pages={pages} currentPage={currentPage} changePage={changePage} />
       </div>
     </div>
   );
