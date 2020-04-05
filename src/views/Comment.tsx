@@ -74,6 +74,7 @@ const Comment: React.FunctionComponent<CommentProps> = ({
         <div style={{ marginTop: '5px' }}>{comment ? commentTime : '작성시간'}</div>
         <div style={{ right: '10px', bottom: '5px', position: 'absolute' }}>
           <button
+            style={{ cursor: 'pointer' }}
             onClick={() => {
               if (isLogin) {
                 if (isLiked) {
@@ -98,6 +99,7 @@ const Comment: React.FunctionComponent<CommentProps> = ({
               onClick={() => {
                 setIsEditing(true);
               }}
+              style={{ cursor: 'pointer' }}
             >
               수정
             </button>{' '}
@@ -105,6 +107,7 @@ const Comment: React.FunctionComponent<CommentProps> = ({
               onClick={() => {
                 CommentActions.axiosCommentDeleteRequest(comment.id);
               }}
+              style={{ cursor: 'pointer' }}
             >
               삭제
             </button>
@@ -125,6 +128,7 @@ const Comment: React.FunctionComponent<CommentProps> = ({
                   });
                 }
               }}
+              style={{ cursor: 'pointer' }}
             >
               완료
             </button>
@@ -168,6 +172,7 @@ const Comment: React.FunctionComponent<CommentProps> = ({
       <div style={{ marginTop: '5px' }}>{comment ? commentTime : '작성시간'}</div>
       <div style={{ right: '10px', bottom: '5px', position: 'absolute' }}>
         <button
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             if (isLogin) {
               if (isLiked) {
@@ -192,6 +197,7 @@ const Comment: React.FunctionComponent<CommentProps> = ({
             onClick={() => {
               setIsEditing(true);
             }}
+            style={{ cursor: 'pointer' }}
           >
             수정
           </button>{' '}
@@ -199,6 +205,7 @@ const Comment: React.FunctionComponent<CommentProps> = ({
             onClick={() => {
               CommentActions.axiosCommentDeleteRequest(comment.id);
             }}
+            style={{ cursor: 'pointer' }}
           >
             삭제
           </button>
@@ -208,6 +215,7 @@ const Comment: React.FunctionComponent<CommentProps> = ({
       {isMine && isEditing ? (
         <div style={{ right: '0px', top: '0px', position: 'absolute' }}>
           <button
+            style={{ cursor: 'pointer' }}
             onClick={() => {
               setIsEditing(false);
               if (commentInput === '') {

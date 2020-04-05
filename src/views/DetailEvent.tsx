@@ -29,6 +29,7 @@ const DetailEvent: React.FunctionComponent<DetailEventProps> = ({
             width: '40%',
             height: '70px',
             border: 'solid 1px',
+            cursor: 'pointer',
           }}
           onClick={() => {
             if (isLogin) {

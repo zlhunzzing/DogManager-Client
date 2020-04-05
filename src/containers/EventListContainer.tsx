@@ -51,6 +51,7 @@ const EventListContainer: React.FunctionComponent<EventListContainerProps> = ({
           onClick={() => {
             setEndList(!endList);
           }}
+          style={{ cursor: 'pointer' }}
         >
           종료된 이벤트
         </button>

@@ -73,7 +73,7 @@ const AdminCouponViewContainer: React.FunctionComponent<AdminCouponViewContainer
             changeCouponFilter2(value);
           }}
         ></input>
-        <button type="submit" style={{ padding: 12 }}>
+        <button type="submit" style={{ padding: 12, cursor: 'pointer' }}>
           검색
         </button>
       </form>
