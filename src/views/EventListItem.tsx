@@ -59,22 +59,45 @@ const EventListItem: React.FunctionComponent<EventItemProps> = ({
     setOpen(false);
   };
 
+  //
+  function eventTime(stringTime: string | undefined) {
+    if (stringTime === '') return;
+    if (stringTime !== undefined) {
+      return `${stringTime.slice(0, 4)}.${stringTime.slice(4, 6)}.${stringTime.slice(
+        6,
+        8,
+      )}. ${stringTime.slice(8, 10)}:${stringTime.slice(10, 12)}`;
+    }
+  }
+
   return (
     <TableRow>
       <TableCell>{num}</TableCell>
       <TableCell>{event.condition}</TableCell>
       <TableCell>{event.eventTitle}</TableCell>
       <TableCell>
-        {event.startDate} - {event.endDate}
+        {eventTime(event.startDate)} - {eventTime(event.endDate)}
       </TableCell>
       <TableCell>
-        <button onClick={handleClickView.bind(null, event.detailPageUrl)}>보기</button>
+        <button
+          onClick={handleClickView.bind(null, event.detailPageUrl)}
+          style={{ cursor: 'pointer' }}
+        >
+          보기
+        </button>
       </TableCell>
       <TableCell>
-        <button onClick={handleClickEdit.bind(null, event.id)}>수정</button>
+        <button
+          onClick={handleClickEdit.bind(null, event.id)}
+          style={{ cursor: 'pointer' }}
+        >
+          수정
+        </button>
       </TableCell>
       <TableCell>
-        <button onClick={handleOpen}>삭제</button>
+        <button onClick={handleOpen} style={{ cursor: 'pointer' }}>
+          삭제
+        </button>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
@@ -89,10 +112,13 @@ const EventListItem: React.FunctionComponent<EventItemProps> = ({
                 deleteEvent(event.id, history);
                 handleClose();
               }}
+              style={{ cursor: 'pointer' }}
             >
               삭제
             </button>
-            <button onClick={handleClose}>닫기</button>
+            <button onClick={handleClose} style={{ cursor: 'pointer' }}>
+              닫기
+            </button>
           </div>
         </Modal>
       </TableCell>

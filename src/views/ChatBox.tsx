@@ -87,6 +87,7 @@ const ChatBox: React.FunctionComponent<ChatBoxProps> = ({
           right: '30px',
           width: '80px',
           height: '80px',
+          cursor: 'pointer',
         }}
         onClick={() => {
           if (isLogin) {

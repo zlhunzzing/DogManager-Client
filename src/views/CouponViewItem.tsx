@@ -28,6 +28,16 @@ interface CouponViewItemProps {
 const CouponViewItem: React.FunctionComponent<CouponViewItemProps> = ({
   coupon,
 }: CouponViewItemProps) => {
+  function eventTime(stringTime: string | undefined) {
+    if (stringTime === '') return;
+    if (stringTime !== undefined) {
+      return `${stringTime.slice(0, 4)}.${stringTime.slice(4, 6)}.${stringTime.slice(
+        6,
+        8,
+      )}. ${stringTime.slice(8, 10)}:${stringTime.slice(10, 12)}`;
+    }
+  }
+
   function convertToStr() {
     let word: any;
     const couponState = coupon.isDeleted;
@@ -45,8 +55,8 @@ const CouponViewItem: React.FunctionComponent<CouponViewItemProps> = ({
       <TableCell>{coupon.userName}</TableCell>
       <TableCell>{coupon.userEmail}</TableCell>
       <TableCell>{coupon.couponCode}</TableCell>
-      <TableCell>{coupon.assignedAt}</TableCell>
-      <TableCell>{coupon.expiredAt}</TableCell>
+      <TableCell>{eventTime(coupon.assignedAt)}</TableCell>
+      <TableCell>{eventTime(coupon.expiredAt)}</TableCell>
       <TableCell>{convertToStr()}</TableCell>
     </TableRow>
   );

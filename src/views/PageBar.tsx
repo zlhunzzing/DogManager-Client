@@ -36,6 +36,7 @@ const PageBar: React.FunctionComponent<PageBarProps> = ({
             backgroundColor: '#D8D8D8',
             margin: 10,
             fontSize: 20,
+            cursor: 'pointer',
             // textAlign: 'blod',
           }}
           key={i}
@@ -53,6 +54,7 @@ const PageBar: React.FunctionComponent<PageBarProps> = ({
             changePage(i);
           }}
           key={i}
+          style={{ cursor: 'pointer' }}
         >
           {i}
         </Button>,
