@@ -38,6 +38,11 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
   const changePage = (page: number): void => {
     setCurrentPage(page);
   };
+  const perPage = 8;
+  const pages = Number.isInteger(adminCouponList.length / perPage)
+    ? adminCouponList.length / perPage
+    : Math.floor(adminCouponList.length / perPage + 1);
+
   //!
   return (
     <div>
@@ -55,13 +60,9 @@ const AdminCouponListContainer: React.FunctionComponent<AdminCouponListContainer
         couponList={adminCouponList}
         handleClickDeleteCoupon={handleClickDeleteCoupon}
         currentPage={currentPage}
-        perPage={3}
+        perPage={perPage}
       />
-      <PageBar
-        pages={Math.floor(adminCouponList.length / 3 + 1)}
-        currentPage={currentPage}
-        changePage={changePage}
-      />
+      <PageBar pages={pages} currentPage={currentPage} changePage={changePage} />
     </div>
   );
 };
