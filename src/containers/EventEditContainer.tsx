@@ -131,7 +131,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     const serverurl = server + '/api/admin/events/entry/' + selectedEvent;
     const res = await axios.get(serverurl, {
       headers: {
-        Authorization: localStorage.getItem('accessToken'),
+        Authorization: localStorage.getItem('adminAccessToken'),
       },
     });
     EventEditActions.putOldData(res.data);
