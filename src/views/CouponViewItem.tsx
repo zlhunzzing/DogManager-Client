@@ -40,12 +40,12 @@ const CouponViewItem: React.FunctionComponent<CouponViewItemProps> = ({
 
   function convertToStr() {
     let word: any;
-    const couponState = coupon.isDeleted;
-    if (Number(couponState) === 0) {
+    const stateUserCoupon = coupon.couponState;
+    if (Number(stateUserCoupon) === 0) {
       word = '사용가능';
-    } else if (Number(couponState) === 1) {
+    } else if (Number(stateUserCoupon) === 1) {
       word = '사용완료';
-    } else if (Number(couponState) === 2) {
+    } else if (Number(stateUserCoupon) === 2) {
       word = '취소됨';
     }
     return word;

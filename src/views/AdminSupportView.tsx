@@ -125,7 +125,7 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText
           // onClick={handleOpen}
-          primary={`${'고유번호:  '}${chatRoom.id} 이름:  ${chatRoom.name}`}
+          primary={`${'ID:  '}${chatRoom.id} 이름:  ${chatRoom.name}`}
         />
       </ListItem>
       <Modal

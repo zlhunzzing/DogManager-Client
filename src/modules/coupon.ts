@@ -17,7 +17,7 @@ export interface CouponViewData {
   couponCode: string;
   assignedAt: string;
   expiredAt: string;
-  isDeleted: string;
+  couponState: string;
 }
 
 export interface CouponState {
