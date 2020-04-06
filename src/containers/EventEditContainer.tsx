@@ -237,7 +237,7 @@ const EventEditContainer: React.FunctionComponent<EventEditContainerProps> = ({
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
-        Authorization: localStorage.getItem('accessToken'),
+        Authorization: localStorage.getItem('adminAccessToken'),
       },
     };
 
