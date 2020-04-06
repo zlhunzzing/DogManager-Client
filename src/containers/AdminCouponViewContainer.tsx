@@ -58,6 +58,13 @@ const AdminCouponViewContainer: React.FunctionComponent<AdminCouponViewContainer
     setCurrentPage(page);
   };
   //!
+  const perPage = 8;
+  let pages = 0;
+  if (filteredCouponList) {
+    pages = Number.isInteger(filteredCouponList.length / perPage)
+      ? filteredCouponList.length / perPage
+      : Math.floor(filteredCouponList.length / perPage + 1);
+  }
 
   return (
     <div>
@@ -79,14 +86,10 @@ const AdminCouponViewContainer: React.FunctionComponent<AdminCouponViewContainer
       </form>
       <CouponViewListTable
         currentPage={currentPage}
-        perPage={3}
+        perPage={perPage}
         couponViewList={filteredCouponList ? filteredCouponList : []}
       />
-      <PageBar
-        pages={filteredCouponList ? Math.floor(filteredCouponList.length / 3 + 1) : 0}
-        currentPage={currentPage}
-        changePage={changePage}
-      />
+      <PageBar pages={pages} currentPage={currentPage} changePage={changePage} />
     </div>
   );
 };

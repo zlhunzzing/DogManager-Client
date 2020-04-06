@@ -84,7 +84,7 @@ function* axiosAdminEventList$() {
     console.log(err);
     // yield put(push('/'));
     // yield call(forwardTo, '/');
-    yield put({ type: axiosAdminEventListFailure.type, payload: null });
+    // yield put({ type: axiosAdminEventListFailure.type, payload: null });
   }
 }
 
