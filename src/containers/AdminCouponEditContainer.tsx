@@ -103,7 +103,7 @@ const AdminCouponEditContainer: React.FunctionComponent<CouponEditContainerProps
     const options = {
       headers: {
         //? 토큰을 헤더에 담는다.
-        Authorization: localStorage.getItem('accessToken'),
+        Authorization: localStorage.getItem('adminAccessToken'),
         withCredentials: true,
       },
     };
