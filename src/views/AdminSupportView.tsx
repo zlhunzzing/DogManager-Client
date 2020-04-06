@@ -118,6 +118,7 @@ const AdminSupportView: React.FunctionComponent<AdminChatListContainerContainerP
           marginLeft: '35%',
           marginTop: '20px',
           height: '100px',
+          cursor: 'pointer',
         }}
         onClick={handleOpen}
       >
