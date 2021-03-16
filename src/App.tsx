@@ -37,6 +37,8 @@ import UserChatContainer from './containers/UserChatContainer';
 
 import axios from 'axios';
 
+import { serverIp } from './env'
+
 //////////////////////////////////////////////////////////////////////////////////////
 
 interface AppProps {
@@ -50,7 +52,7 @@ const App: React.FunctionComponent<AppProps> = ({
 }: AppProps) => {
   useEffect(() => {
     axios
-      .get('http://13.125.249.151:3002/api/user/userId', {
+      .get(`http://${serverIp}/api/user/userId`, {
         headers: {
           Authorization: localStorage.getItem('accessToken'),
         },

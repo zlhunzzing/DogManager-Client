@@ -14,6 +14,8 @@ import { actionCreators as signupActions } from '../modules/signup';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import { serverIp } from '../env'
+
 interface SignupContainerProps {
   nameInput: string;
   emailInput: string;
@@ -129,7 +131,7 @@ const SignupContainer: React.FunctionComponent<SignupContainerProps> = ({
     }
     try {
       const res = await axios.post(
-        'http://13.125.249.151:3002/api/user/signup',
+        `http://${serverIp}/api/user/signup`,
         {
           name: nameInput,
           email: emailInput,

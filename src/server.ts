@@ -1,5 +1,7 @@
 // const server = 'http://localhost:4000';
-export const server = 'http://13.125.249.151:3002';
+import { serverIp } from './env'
+
+export const server = `http://${serverIp}`;
 
 export default server;
 
